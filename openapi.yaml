@@ -1,0 +1,307 @@
+openapi: 3.0.3
+
+info:
+  title: Xpand API
+  version: v2
+
+tags:
+  - name: Users
+  - name: Offers
+  - name: References
+
+paths:
+  /api/v2/users:
+    get:
+      tags:
+        - Users
+      summary: Fetch & search users
+      parameters:
+        - name: filter[ids]
+          in: query
+          description: "Comma separated list of Xpand User IDs"
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          example: "64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9"
+        - name: filter[emails]
+          in: query
+          description: "Comma separated list of User Emails"
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          example: "john@example.com,jane@example.com"
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+          example: 7
+      responses:
+        "200":
+          description: Successful responnse
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/User"
+    post:
+      tags:
+        - Users
+      summary: Create a user
+      responses:
+        "200":
+          description: Successful responnse
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/User"
+  /api/v2/users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Fetch a user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful responnse
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/User"
+    patch:
+      tags:
+        - Users
+      summary: Update a user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful responnse
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/User"
+  /api/v2/offer_letters:
+    get:
+      tags:
+        - Offers
+      summary: "Fetch & search offer letters"
+      parameters:
+        - name: filters[ids]
+          in: query
+          description: "Comma separated list of Xpand Offer IDs"
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          example: "64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9"
+        - name: filters[offer_ids]
+          in: query
+          description: "Comma separated list of Client Offer IDs"
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          example: "64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9"
+        - name: filters[user_ids]
+          in: query
+          description: "Comma separated list of Xpand User IDs"
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          example: "64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9"
+        - name: filters[statuses]
+          in: query
+          description: "Comma separated list of Offer Statuses"
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/OfferLetterStatus"
+          explode: false
+          example: "pending_initiation,pending_approval"
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+          example: 7
+      responses:
+        "200":
+          description: Successful responnse
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/OfferLetterResponse"
+    post:
+      tags:
+        - Offers
+      summary: "Create or update an offer letter"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OfferLetterRequest"
+      responses:
+        "200":
+          description: Successful responnse
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/OfferLetterResponse"
+  /api/v2/offer_letters/{id}:
+    delete:
+      tags:
+        - Offers
+      summary: Rescind an offer letter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Successful responnse
+  /api/v2/references:
+    post:
+      tags:
+        - References
+  /api/v2/references/job_profiles:
+    get:
+      tags:
+        - References
+  /api/v2/references/office_locations:
+    get:
+      tags:
+        - References
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 64891c74d5ee1bb16dfdafd8
+        first_name:
+          type: string
+          example: John
+        last_name:
+          type: string
+          example: Doe
+        email:
+          type: string
+          example: john@example.com
+        start_date:
+          type: string
+          example: "2023-10-23"
+        external_ids:
+          type: object
+          properties:
+            ats_id:
+              type: string
+              example: C-123
+            hris_id:
+              type: string
+              example: E1234
+    OfferLetterRequest:
+      type: object
+      properties:
+        user_id:
+          type: string
+          example: "64892208d5ee1bb16dfdafda"
+        offer_id:
+          type: string
+          example: "O3112-333"
+        job_title:
+          type: string
+          example: "Steamboat Captain"
+        currency:
+          type: string
+          description: "ISO 4217 Currency Code"
+          example: USD
+        base_salary:
+          type: integer
+          example: 45000
+        start_date:
+          type: string
+          example: "2023-10-23"
+    OfferLetterResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "64891c74d5ee1bb16dfdafd8"
+        user_id:
+          type: string
+          example: "64892208d5ee1bb16dfdafda"
+        offer_id:
+          type: string
+          example: "O3112-333"
+        status:
+          $ref: "#/components/schemas/OfferLetterStatus"
+        job_title:
+          type: string
+          example: "Steamboat Captain"
+        currency:
+          type: string
+          description: "ISO 4217 Currency Code"
+          example: USD
+        base_salary:
+          type: integer
+          example: 45000
+        start_date:
+          type: string
+          example: "2023-10-23"
+    OfferLetterStatus:
+      type: string
+      example: pending_approval
+      enum:
+        - pending_initiation
+        - pending_approval
+        - admin_approved
+        - admin_rejected
+        - candidate_pending
+        - candidate_accepted
+        - candidate_declined
+        - rescinded
+        - voided
