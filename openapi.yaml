@@ -229,7 +229,7 @@ components:
         - first_name
         - last_name
         - start_date
-        - hris_id
+        - external_ids
         - office_location_id
       properties:
         email:
@@ -284,59 +284,311 @@ components:
           type: string
           description: "A brief description of why the user why the user account is being disabled in Xpand"
           example: "inactive in ATS System"
-        ats_id:
-          type: string
-          description: "This is the unique id of the Applicant Tracking System (ATS)"
-          example: "external_ids: { ATS_ID: 'ATS123' }"
-        hris_id:
-          type: string
-          description: "This is the employee id of the Human Resource Information Systems (HRIS)"
-          example: "external_ids: { HRIS_ID: 'ATS123' }"
+        external_ids:
+          type: object
+          description: "This is the collection of unique id of the Applicant Tracking System (ATS) and employee id of the Human Resource Information Systems (HRIS)"
+          properties:
+            ats_id:
+              type: string
+              example: C-123
+            hris_id:
+              type: string
+              example: E1234
         office_location_id:
-          type: string
+          type: object
           description: "JSON where key is name of external service, e.g. {'HRIS_ID': 'NEWYORK'. There must be an office location in Xpand with a matching employee id. See reference values here for existing office location external ids"
-          example: "office_location_id: { workday: 'LOCATION-3-69' }"
+          properties:
+            workday:
+              type: string
+              example: 'LOCATION-3-69'
         recruiter_ids:
-          type: string
+          type: object
           description: "JSON where key is name of external service, e.g. {:recruiter=>{'HRIS_SYS'=>'12345'}, recruiting_manager=>{'HRIS_SYS'=>'56789'}} (There must be a recruiter in Xpand or HRIS_SYS(Ex: workday) with a matching employee id)"
-          example: "recruiter: { workday: '12345' }"
+          properties:
+            recruiter:
+              properties:
+                hris_id:
+                  type: string
+                  example: R-123
+            recruiting_coordinator:
+              properties:
+                hris_id:
+                  type: string
+                  example: R-1234
+            recruiting_manager:
+              properties:
+                hris_id:
+                  type: string
+                  example: R-12345
         manager_ids:
-          type: string
+          type: object
           description: "JSON where key is name of external service, e.g. {'HRIS_SYS': ['123456', '45678']} (There must be a manager in Xpand or HRIS with a matching employee id)"
-          example: "manager_ids: { workday: '12345' }"
+          properties:
+            hris_id:
+              type: array
+              example: [M12345, M12346]
         documents:
           type: array
           description: "Array which holds the collection of document information"
-          example: "documents: [{ document_type: 'type', document_title: 'title', files: [{file_name: 'abc', file_content_base64: 'base64'}]}]"
+          items:
+            type: object
+            properties:
+              document_type:
+                type: string
+                example: offer_letter
+              document_number:
+                type: string
+                example: 1234
+              document_title:
+                type: string
+                example: Offer Letter
+              document_description:
+                type: string
+                example: Offer Letter to the Joe
+              issuer:
+                type: string
+                example: Issuer
+              issuer_city:
+                type: string
+                example: New York
+              issuer_state:
+                type: string
+                example: New York
+              issuer_country:
+                type: string
+                example: USA
+              issued_date:
+                type: string
+                example: "2021-10-23"
+              expiry_date:
+                type: string
+                example: "2023-10-23"
+              files:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    file_name:
+                      type: string
+                      example: abc.pdf
+                    file_content_base64:
+                      type: string
+                      example: base64 string
         educations:
           type: array
           description: "Array which holds the collection of education information"
-          example: "educations: [{ school_name: 'School Name', degree: 'Bsc', files: [{file_name: 'abc', file_content_base64: 'base64'}]}]"
+          items:
+            type: object
+            properties:
+              school_name:
+                type: string
+                example: School Name
+              degree:
+                type: string
+                example: Degree
+              student_id:
+                type: string
+                example: 1001
+              time_type:
+                type: string
+                example: Full Time
+              major:
+                type: string
+                example: Communications
+              minor:
+                type: string
+                example: Publications
+              gpa:
+                type: integer
+                example: 4
+              specialization:
+                type: string
+                example: IT
+              graduation_date:
+                type: string
+                example: "2021-10-23"
+              grade:
+                type: string
+                example: A
+              name_while_attending:
+                type: string
+                example: Jon Doe
+              start_date:
+                type: string
+                example: "2021-10-23"
+              end_date:
+                type: string
+                example: "2023-10-23"
+              address:
+                type: object
+                properties:
+                  street:
+                    type: string
+                    example: 4th Avenue
+                  city:
+                    type: string
+                    example: New York
+                  postal_code:
+                    type: string
+                    example: 10018
+                  country:
+                    type: string
+                    example: USA
+              files:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    file_name:
+                      type: string
+                      example: abc.pdf
+                    file_content_base64:
+                      type: string
+                      example: base64 string
         work_experiences:
           type: array
           description: "Array which holds the collection of work experience information"
-          example: "work_experiences: [{ employer: 'Xpand', employee_id: 'engineer', files: [{file_name: 'abc', file_content_base64: 'base64'}]}]"
+          items:
+            type: object
+            properties:
+              employer:
+                type: string
+                example: Employer
+              employee_id:
+                type: string
+                example: E1234
+              current:
+                type: boolean
+                example: true
+              job_title:
+                type: string
+                example: Engineer
+              department:
+                type: string
+                example: Department
+              employment_type:
+                type: string
+                example: Regular
+              reason_for_leaving:
+                type: string
+                example: Change in technology
+              salary:
+                type: integer
+                example: 10000
+              manager_name:
+                type: string
+                example: Manager 1
+              manager_phone:
+                type: string
+                example: +1 4044578776
+              manager_email:
+                type: string
+                example: manager@xpand.io
+              hr_name:
+                type: string
+                example: HR 1
+              hr_phone:
+                type: string
+                example: +1 4044578777
+              hr_email:
+                type: string
+                example: hr@xpand.io
+              start_date:
+                type: string
+                example: "2021-10-23"
+              end_date:
+                type: string
+                example: "2023-10-23"
+              address:
+                type: object
+                properties:
+                  street:
+                    type: string
+                    example: 4th Avenue
+                  city:
+                    type: string
+                    example: New York
+                  postal_code:
+                    type: string
+                    example: 10018
+                  country:
+                    type: string
+                    example: USA
+              files:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    file_name:
+                      type: string
+                      example: abc.pdf
+                    file_content_base64:
+                      type: string
+                      example: base64 string
         addresses:
           type: array
-          description: "Array which holds the collection of addresse information"
-          example: "addresses: [{ line_1: '1st street', line_2: '2nd street', files: [{file_name: 'abc', file_content_base64: 'base64'}]}]"
+          description: "Array which holds the collection of current and permanent address information"
+          items:
+            type: object
+            properties:
+              line_1:
+                type: string
+                example: 31 St, 34 West
+              line_2:
+                type: string
+                example: 8th Avenue
+              line_3:
+                type: string
+              city:
+                type: string
+                example: New York
+              state:
+                type: string
+                example: New York
+              postal_code:
+                type: string
+                example: 100018
+              country:
+                type: string
+                example: USA
+              current:
+                type: boolean
+                example: true
+              permanent:
+                type: boolean
+                example: true
+              start_date:
+                type: string
+                example: "2021-10-23"
+              end_date:
+                type: string
+                example: "2023-10-23"
+              files:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    file_name:
+                      type: string
+                      example: abc.pdf
+                    file_content_base64:
+                      type: string
+                      example: base64 string
         phone_numbers:
           type: array
           description: "Array which holds the collection of phone number information"
-          example: "phone_numbers: [{ number: '+91 9490142231', type: 'mobile', primary: true }]"
-        offer_id:
-          type: string
-          example: "O3112-333"
-        job_title:
-          type: string
-          example: "Steamboat Captain"
-        currency:
-          type: string
-          description: "ISO 4217 Currency Code"
-          example: USD
-        base_salary:
-          type: integer
-          example: 45000
+          items:
+            type: object
+            properties:
+              number:
+                type: string
+                example: +1 4044580998
+              type:
+                type: string
+                example: mobile
+              primary:
+                type: boolean
+                example: true
     UserResponse:
       type: object
       properties:
@@ -654,15 +906,27 @@ components:
                 example: true
     OfferLetterRequest:
       type: object
+      required:
+        - user_id
+        - offer_id
+        - job_application_id
+        - start_date
       properties:
         user_id:
           type: string
+          description: "Unique ID of the user"
           example: "64892208d5ee1bb16dfdafda"
         offer_id:
           type: string
+          description: "Unique ID of the Offer"
           example: "O3112-333"
+        job_application_id:
+          type: string
+          description: "Unique ID of the Job Application"
+          example: "J-O3112"
         job_title:
           type: string
+          description: "Job Title of the offer"
           example: "Steamboat Captain"
         currency:
           type: string
@@ -670,10 +934,140 @@ components:
           example: USD
         base_salary:
           type: integer
+          description: "Basic Salary"
           example: 45000
         start_date:
           type: string
+          description: "Start date of the new hire"
           example: "2023-10-23"
+        end_date:
+          type: string
+          description: "End date of the new hire"
+          example: "2023-10-23"
+        induction_date:
+          type: string
+          description: "Induction Date"
+          example: "2023-10-23"
+        expiration_date:
+          type: string
+          description: "Expiration date of an offer"
+          example: "2023-10-23"
+        offer_dispositioned:
+          type: string
+          description: "dispositioning the offer"
+          example: "Y"
+        campus:
+          type: string
+          example: "Y"
+        compensation:
+          type: integer
+          description: "Total compensation of the offer (Base + Bonus + Allowes)"
+          example: 100000
+        non_compete_duration:
+          type: integer
+          example: 0
+        supplemental_non_compete_duration:
+          type: integer
+          example: 1
+        flsa_status:
+          type: string
+          description: "Exempt/Non-Exempt NY/CA wage forms"
+          example: "Exempt"
+        respond_by_date:
+          type: string
+          description: "Date by when action to be taken on offer"
+          example: "2023-10-23"
+        attorney_only:
+          type: boolean
+          example: true
+        confidential:
+          type: boolean
+          example: true
+        regulated:
+          type: string
+          example: "Y"
+        regulated_status:
+          type: string
+          example: "Active"
+        smcr:
+          type: boolean
+          description: "identify if someone is Senior Manager"
+          example: true
+        job_profile_id:
+          type: string
+          example: "Job Family"
+        business_unit_id:
+          type: string
+          example: "Business Unit"
+        department_code:
+          type: string
+          example: "Department Code"
+        position_type:
+          type: string
+          example: "Position Type"
+        pay_rate:
+          type: string
+          example: "Pay Rate"
+        job_level:
+          type: string
+          example: "Leval 1"
+        cost_center_id:
+          type: string
+          example: "Cost Center"
+        time_type:
+          type: string
+          example: "Full Time"
+        employee_type:
+          type: string
+          example: "Regular"
+        job_code:
+          type: string
+          example: "Engineer"
+        target_salary:
+          type: integer
+          example: 10000
+        max_salary:
+          type: integer
+          example: 100000
+        rsu:
+          type: integer
+          example: 5000
+        annual_bonus_percent:
+          type: integer
+          example: 10
+        signing_bonus_amount:
+          type: integer
+          example: 7000
+        commission_amount:
+          type: integer
+          example: 3000
+        car_allowance:
+          type: integer
+          example: 1000
+        relocation:
+          type: boolean
+          example: true
+        relocation_flex_allowance:
+          type: integer
+          example: 2000
+        work_from_home:
+          type: boolean
+          example: false
+        immigration:
+          type: boolean
+          example: false
+        visa_sponsorship_notes:
+          type: string
+          example: "Clear"
+        urgent:
+          type: boolean
+          example: false
+        is_exempt:
+          type: boolean
+          example: false
+        notes:
+          type: string
+          example: Ready to send the offer
     OfferLetterResponse:
       allOf:
         - type: object
