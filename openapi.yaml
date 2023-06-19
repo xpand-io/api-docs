@@ -51,196 +51,17 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/User"
+                      $ref: "#/components/schemas/UserResponse"
     post:
       tags:
         - Users
       summary: Create a user
-      parameters:
-        - name: first_name
-          in: query
-          description: "Must not contain numbers or any of the following special characters !@#$%^&*()"
-          required: true
-          schema:
-            type: string
-          explode: false
-          example: "Daniel"
-        - name: last_name
-          in: query
-          description: "Must not contain numbers or any of the following special characters !@#$%^&*()"
-          required: true
-          schema:
-            type: string
-          explode: false
-          example: "Smith"
-        - name: middle_name
-          in: query
-          description: "Must not contain numbers or any of the following special characters !@#$%^&*()"
-          required: false
-          schema:
-            type: string
-          explode: false
-          example: "Jones"
-        - name: email
-          in: query
-          description: "Must be a valid email address. Must be unique for each user. Non case-sensitive. Regex validation: ^(?!...)[a-zA-Z0-9][\\w-.]@[A-Za-z\\d-]+(.[A-Za-z\\d-]+)*.[A-Za-z]+$"
-          required: true
-          schema:
-            type: string
-          explode: false
-          example: "joe@example"
-        - name: work_email
-          in: query
-          description: "Must be a valid email address. Must be unique for each user."
-          required: false
-          schema:
-            type: string
-          explode: false
-          example: "joe@work-example"
-        - name: start_date
-          in: query
-          description: "Format: YYYY-MM-DD. Can be present, or future dates only."
-          required: true
-          schema:
-            type: string
-          explode: false
-          example: "2023-09-08"
-        - name: employee_type
-          in: query
-          description: "See reference values here for allowed employee type values."
-          required: false
-          schema:
-            type: string
-          explode: false
-          example: "Regular"
-        - name: candidate_status
-          in: query
-          description: "See reference values here for allowed candidate status values."
-          required: false
-          schema:
-            type: string
-          explode: false
-          example: "offer_accepted"
-        - name: legal_entity
-          in: query
-          description: "See reference values here for existing legal entity values."
-          required: false
-          schema:
-            type: string
-          explode: false
-          example: "Xpand Limited"
-        - name: cost_center_id
-          in: query
-          description: "See reference values here for existing cost center values."
-          required: false
-          schema:
-            type: string
-          explode: false
-          example: "Cost Center"
-        - name: relocation_type
-          in: query
-          description: "Allowes the relocation type values."
-          required: false
-          schema:
-            type: string
-          explode: false
-          example: "global_relocation"
-        - name: blocked
-          in: query
-          description: "Disable or enable a user account in Xpand."
-          required: false
-          schema:
-            type: boolean
-          explode: false
-          example: "false"
-        - name: reason_blocked
-          in: query
-          description: "A brief description of why the user why the user account is being disabled in Xpand"
-          required: false
-          schema:
-            type: string
-          explode: false
-          example: "inactive in ATS System"
-        - name: ats_id
-          in: query
-          description: "This is the unique id of the Applicant Tracking System (ATS)"
-          required: true
-          schema:
-            type: string
-          explode: false
-          example: "external_ids: { ATS_ID: 'ATS123' }"
-        - name: hris_id
-          in: query
-          description: "This is the employee id of the Human Resource Information Systems (HRIS)"
-          required: false
-          schema:
-            type: string
-          explode: false
-          example: "external_ids: { HRIS_ID: 'ATS123' }"
-        - name: office_location_id
-          in: query
-          description: "JSON where key is name of external service, e.g. {'HRIS_ID': 'NEWYORK'. There must be an office location in Xpand with a matching employee id. See reference values here for existing office location external ids"
-          required: true
-          schema:
-            type: string
-          explode: false
-          example: "office_location_id: { workday: 'LOCATION-3-69' }"
-        - name: recruiter_ids
-          in: query
-          description: "JSON where key is name of external service, e.g. {:recruiter=>{'HRIS_SYS'=>'12345'}, recruiting_manager=>{'HRIS_SYS'=>'56789'}} (There must be a recruiter in Xpand or HRIS_SYS(Ex: workday) with a matching employee id)"
-          required: false
-          schema:
-            type: string
-          explode: false
-          example: "recruiter: { workday: '12345' }"
-        - name: manager_ids
-          in: query
-          description: "JSON where key is name of external service, e.g. {'HRIS_SYS': ['123456', '45678']} (There must be a manager in Xpand or HRIS with a matching employee id)"
-          required: false
-          schema:
-            type: string
-          explode: false
-          example: "manager_ids: { workday: '12345' }"
-        - name: documents
-          in: query
-          description: "Array which holds the collection of document information"
-          required: false
-          schema:
-            type: array
-          explode: false
-          example: "documents: [{ document_type: 'type', document_title: 'title', files: [{file_name: 'abc', file_content_base64: 'base64'}]}]"
-        - name: educations
-          in: query
-          description: "Array which holds the collection of education information"
-          required: false
-          schema:
-            type: array
-          explode: false
-          example: "educations: [{ school_name: 'School Name', degree: 'Bsc', files: [{file_name: 'abc', file_content_base64: 'base64'}]}]"
-        - name: work_experiences
-          in: query
-          description: "Array which holds the collection of work experience information"
-          required: false
-          schema:
-            type: array
-          explode: false
-          example: "work_experiences: [{ employer: 'Xpand', employee_id: 'engineer', files: [{file_name: 'abc', file_content_base64: 'base64'}]}]"
-        - name: addresses
-          in: query
-          description: "Array which holds the collection of addresse information"
-          required: false
-          schema:
-            type: array
-          explode: false
-          example: "addresses: [{ line_1: '1st street', line_2: '2nd street', files: [{file_name: 'abc', file_content_base64: 'base64'}]}]"
-        - name: phone_numbers
-          in: query
-          description: "Array which holds the collection of phone number information"
-          required: false
-          schema:
-            type: array
-          explode: false
-          example: "phone_numbers: [{ number: '+91 9490142231', type: 'mobile', primary: true }]"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequest"
       responses:
         "200":
           description: Successful responnse
@@ -250,18 +71,18 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/User"
+                    $ref: "#/components/schemas/UserResponse"
   /api/v2/users/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
     get:
       tags:
         - Users
       summary: Fetch a user
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         "200":
           description: Successful responnse
@@ -271,17 +92,17 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/User"
+                    $ref: "#/components/schemas/UserResponse"
     patch:
       tags:
         - Users
       summary: Update a user
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequest"
       responses:
         "200":
           description: Successful responnse
@@ -291,7 +112,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/User"
+                    $ref: "#/components/schemas/UserResponse"
   /api/v2/offer_letters:
     get:
       tags:
@@ -373,16 +194,16 @@ paths:
                   data:
                     $ref: "#/components/schemas/OfferLetterResponse"
   /api/v2/offer_letters/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
     delete:
       tags:
         - Offers
       summary: Rescind an offer letter
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         "204":
           description: Successful responnse
@@ -401,7 +222,122 @@ paths:
 
 components:
   schemas:
-    User:
+    UserRequest:
+      type: object
+      required:
+        - email
+        - first_name
+        - last_name
+        - start_date
+        - hris_id
+        - office_location_id
+      properties:
+        email:
+          type: string
+          example: "daniel@personal.com"
+          description: "Must be a valid email address. Must be unique for each user. Non case-sensitive. Regex validation: ^(?!...)[a-zA-Z0-9][\\w-.]@[A-Za-z\\d-]+(.[A-Za-z\\d-]+)*.[A-Za-z]+$"
+        work_email:
+          type: string
+          example: "daniel@company.com"
+          description: "Must be a valid email address. Must be unique for each user. Non case-sensitive. Regex validation: ^(?!...)[a-zA-Z0-9][\\w-.]@[A-Za-z\\d-]+(.[A-Za-z\\d-]+)*.[A-Za-z]+$"
+        first_name:
+          type: string
+          example: "Daniel"
+          description: "Must not contain numbers or any of the following special characters !@#$%^&*()"
+        last_name:
+          type: string
+          example: "Smith"
+          description: "Must not contain numbers or any of the following special characters !@#$%^&*()"
+        middle_name:
+          type: string
+          example: "Jones"
+          description: "Must not contain numbers or any of the following special characters !@#$%^&*()"
+        start_date:
+          type: string
+          description: "Format: YYYY-MM-DD. Can be present, or future dates only."
+          example: "2023-09-08"
+        employee_type:
+          type: string
+          description: "See reference values here for allowed employee type values."
+          example: "Regular"
+        candidate_status:
+          type: string
+          description: "See reference values here for allowed candidate status values."
+          example: "offer_accepted"
+        legal_entity:
+          type: string
+          description: "See reference values here for existing legal entity values."
+          example: "Xpand Limited"
+        cost_center_id:
+          type: string
+          description: "See reference values here for existing cost center values."
+          example: "Cost Center"
+        relocation_type:
+          type: string
+          description: "Allowes the relocation type values."
+          example: "global_relocation"
+        blocked:
+          type: boolean
+          description: "Disable or enable a user account in Xpand."
+          example: "false"
+        reason_blocked:
+          type: string
+          description: "A brief description of why the user why the user account is being disabled in Xpand"
+          example: "inactive in ATS System"
+        ats_id:
+          type: string
+          description: "This is the unique id of the Applicant Tracking System (ATS)"
+          example: "external_ids: { ATS_ID: 'ATS123' }"
+        hris_id:
+          type: string
+          description: "This is the employee id of the Human Resource Information Systems (HRIS)"
+          example: "external_ids: { HRIS_ID: 'ATS123' }"
+        office_location_id:
+          type: string
+          description: "JSON where key is name of external service, e.g. {'HRIS_ID': 'NEWYORK'. There must be an office location in Xpand with a matching employee id. See reference values here for existing office location external ids"
+          example: "office_location_id: { workday: 'LOCATION-3-69' }"
+        recruiter_ids:
+          type: string
+          description: "JSON where key is name of external service, e.g. {:recruiter=>{'HRIS_SYS'=>'12345'}, recruiting_manager=>{'HRIS_SYS'=>'56789'}} (There must be a recruiter in Xpand or HRIS_SYS(Ex: workday) with a matching employee id)"
+          example: "recruiter: { workday: '12345' }"
+        manager_ids:
+          type: string
+          description: "JSON where key is name of external service, e.g. {'HRIS_SYS': ['123456', '45678']} (There must be a manager in Xpand or HRIS with a matching employee id)"
+          example: "manager_ids: { workday: '12345' }"
+        documents:
+          type: array
+          description: "Array which holds the collection of document information"
+          example: "documents: [{ document_type: 'type', document_title: 'title', files: [{file_name: 'abc', file_content_base64: 'base64'}]}]"
+        educations:
+          type: array
+          description: "Array which holds the collection of education information"
+          example: "educations: [{ school_name: 'School Name', degree: 'Bsc', files: [{file_name: 'abc', file_content_base64: 'base64'}]}]"
+        work_experiences:
+          type: array
+          description: "Array which holds the collection of work experience information"
+          example: "work_experiences: [{ employer: 'Xpand', employee_id: 'engineer', files: [{file_name: 'abc', file_content_base64: 'base64'}]}]"
+        addresses:
+          type: array
+          description: "Array which holds the collection of addresse information"
+          example: "addresses: [{ line_1: '1st street', line_2: '2nd street', files: [{file_name: 'abc', file_content_base64: 'base64'}]}]"
+        phone_numbers:
+          type: array
+          description: "Array which holds the collection of phone number information"
+          example: "phone_numbers: [{ number: '+91 9490142231', type: 'mobile', primary: true }]"
+        offer_id:
+          type: string
+          example: "O3112-333"
+        job_title:
+          type: string
+          example: "Steamboat Captain"
+        currency:
+          type: string
+          description: "ISO 4217 Currency Code"
+          example: USD
+        base_salary:
+          type: integer
+          example: 45000
+    UserResponse:
       type: object
       properties:
         id:
@@ -715,7 +651,7 @@ components:
                 example: mobile
               primary:
                 type: boolean
-                example: true 
+                example: true
     OfferLetterRequest:
       type: object
       properties:
@@ -739,32 +675,13 @@ components:
           type: string
           example: "2023-10-23"
     OfferLetterResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          example: "64891c74d5ee1bb16dfdafd8"
-        user_id:
-          type: string
-          example: "64892208d5ee1bb16dfdafda"
-        offer_id:
-          type: string
-          example: "O3112-333"
-        status:
-          $ref: "#/components/schemas/OfferLetterStatus"
-        job_title:
-          type: string
-          example: "Steamboat Captain"
-        currency:
-          type: string
-          description: "ISO 4217 Currency Code"
-          example: USD
-        base_salary:
-          type: integer
-          example: 45000
-        start_date:
-          type: string
-          example: "2023-10-23"
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              example: "64891c74d5ee1bb16dfdafd8"
+        - $ref: '#/components/schemas/OfferLetterRequest'
     OfferLetterStatus:
       type: string
       example: pending_approval
