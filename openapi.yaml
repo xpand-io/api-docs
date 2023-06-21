@@ -10,11 +10,11 @@ tags:
   - name: References
 
 paths:
-  /api/v2/users:
+  /api/v1/users:
     get:
       tags:
         - Users
-      summary: Fetch & search users
+      summary: Fetch & search users Pass the query in 'filters' parameters using ids and emails.
       parameters:
         - name: filter[ids]
           in: query
@@ -63,7 +63,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserRequest"
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    attributes:
+                      type: object
+                      $ref: "#/components/schemas/UserRequest"
       responses:
         "200":
           description: Successful responnse
@@ -74,7 +81,7 @@ paths:
                 properties:
                   data:
                     $ref: "#/components/schemas/UserResponseSimple"
-  /api/v2/users/{id}:
+  /api/v1/users/{id}:
     parameters:
       - name: id
         in: path
@@ -99,7 +106,7 @@ paths:
     patch:
       tags:
         - Users
-      summary: Update a user
+      summary: Update a user and pass within data and attributes
       requestBody:
         required: true
         content:
@@ -116,11 +123,11 @@ paths:
                 properties:
                   data:
                     $ref: "#/components/schemas/UserResponseSimple"
-  /api/v2/offer_letters:
+  /api/v1/offer_letters:
     get:
       tags:
         - Offers
-      summary: "Fetch & search offer letters"
+      summary: "Fetch & search offer letters. Pass the query in 'filters' parameters using ids, offer_ids, user_ids and statuses."
       parameters:
         - name: filters[ids]
           in: query
@@ -188,7 +195,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/OfferLetterRequest"
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    attributes:
+                      type: object
+                      $ref: "#/components/schemas/OfferLetterRequest"
       responses:
         "200":
           description: Successful responnse
@@ -199,7 +213,7 @@ paths:
                 properties:
                   data:
                     $ref: "#/components/schemas/OfferLetterResponseSimple"
-  /api/v2/offer_letters/{id}:
+  /api/v1/offer_letters/{id}:
     parameters:
       - name: id
         in: path
@@ -214,15 +228,15 @@ paths:
       responses:
         "204":
           description: Successful responnse
-  /api/v2/references:
+  /api/v1/references:
     post:
       tags:
         - References
-  /api/v2/references/job_profiles:
+  /api/v1/references/job_profiles:
     get:
       tags:
         - References
-  /api/v2/references/office_locations:
+  /api/v1/references/office_locations:
     get:
       tags:
         - References
@@ -269,8 +283,8 @@ components:
           type: string
           format: date
           example: "2023-10-23"
-        files:
-          $ref: "#/components/schemas/Files"
+        attachments:
+          $ref: "#/components/schemas/Attachments"
     Addresses:
       type: array
       description: "Array which holds the collection of current and permanent address information"
@@ -311,8 +325,8 @@ components:
           type: string
           format: date
           example: "2023-10-23"
-        files:
-          $ref: "#/components/schemas/Files"
+        attachments:
+          $ref: "#/components/schemas/Attachments"
     Documents:
       type: array
       description: "Array which holds the collection of document information"
@@ -366,14 +380,14 @@ components:
           example: "2023-10-23"
         address:
           $ref: "#/components/schemas/Address"
-        files:
-          $ref: "#/components/schemas/Files"
+        attachments:
+          $ref: "#/components/schemas/Attachments"
     Educations:
       type: array
       description: "Array which holds the collection of education information"
       items:
         $ref: "#/components/schemas/Education"
-    File:
+    Attachment:
       type: object
       properties:
         file_name:
@@ -383,16 +397,17 @@ components:
           type: string
           format: byte
           example: SGVsbG8gdGhlcmUgOi0pIEZpbmQgYW55dGhpbmcgZXhjaXRpbmc/
-    Files:
+    Attachments:
       type: array
       items:
-        $ref: "#/components/schemas/File"
+        $ref: "#/components/schemas/Attachment"
     OfferLetterRequest:
       type: object
       required:
         - user_id
         - offer_id
         - job_application_id
+        - office_location_id
         - start_date
       properties:
         user_id:
@@ -408,6 +423,22 @@ components:
           type: string
           description: "Unique ID of the Job Application"
           example: "J-O3112"
+        office_location_id:
+          type: object
+          description: "JSON where key is name of external service, e.g. {'HRIS_ID': 'NEWYORK'. There must be an office location in Xpand with a matching employee id. See reference values here for existing office location external ids"
+          properties:
+            workday:
+              type: string
+              example: 'LOCATION-3-69'
+        start_date:
+          type: string
+          format: date
+          description: "Start date of the new hire"
+          example: "2023-10-23"
+        legal_entity:
+          type: string
+          description: "See reference values here for existing legal entity values."
+          example: "Xpand Limited"
         job_title:
           type: string
           description: "Job Title of the offer"
@@ -420,11 +451,6 @@ components:
           type: integer
           description: "Basic Salary"
           example: 45000
-        start_date:
-          type: string
-          format: date
-          description: "Start date of the new hire"
-          example: "2023-10-23"
         end_date:
           type: string
           format: date
@@ -556,6 +582,8 @@ components:
         notes:
           type: string
           example: Ready to send the offer
+        documents:
+          $ref: "#/components/schemas/Documents"
     OfferLetterResponseFull:
       allOf:
         - type: object
@@ -616,6 +644,10 @@ components:
         - start_date
         - external_ids
         - office_location_id
+        - candidate_status
+        - cost_center_id
+        - employee_type
+        - recruiter_ids
       properties:
         email:
           type: string
@@ -857,8 +889,8 @@ components:
           example: "2023-10-23"
         address:
           $ref: "#/components/schemas/Address"
-        files:
-          $ref: "#/components/schemas/Files"
+        attachments:
+          $ref: "#/components/schemas/Attachments"
     WorkExperiences:
       type: array
       description: "Array which holds the collection of work experience information"
