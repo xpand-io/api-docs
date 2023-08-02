@@ -290,6 +290,30 @@ components:
       description: "Array which holds the collection of current and permanent address information"
       items:
         $ref: "#/components/schemas/Address"
+    Attachment:
+      type: object
+      properties:
+        file_name:
+          type: string
+          example: abc.pdf
+        file_content_base64:
+          type: string
+          format: byte
+          example: SGVsbG8gdGhlcmUgOi0pIEZpbmQgYW55dGhpbmcgZXhjaXRpbmc/
+        responses:
+          type: object
+          description: Responses provided in PDF form fields (only present when attachment is a PDF with form fields)
+          properties:
+            field_name_1:
+              type: string
+              example: abc
+            field_name_2:
+              type: string
+              example: cba
+    Attachments:
+      type: array
+      items:
+        $ref: "#/components/schemas/Attachment"
     Document:
       type: object
       properties:
@@ -387,20 +411,6 @@ components:
       description: "Array which holds the collection of education information"
       items:
         $ref: "#/components/schemas/Education"
-    Attachment:
-      type: object
-      properties:
-        file_name:
-          type: string
-          example: abc.pdf
-        file_content_base64:
-          type: string
-          format: byte
-          example: SGVsbG8gdGhlcmUgOi0pIEZpbmQgYW55dGhpbmcgZXhjaXRpbmc/
-    Attachments:
-      type: array
-      items:
-        $ref: "#/components/schemas/Attachment"
     OfferLetterRequest:
       type: object
       required:
