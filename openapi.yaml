@@ -10,119 +10,6 @@ tags:
   - name: References
 
 paths:
-  /api/v1/users:
-    get:
-      tags:
-        - Users
-      summary: Fetch & search users Pass the query in 'filters' parameters using ids and emails.
-      parameters:
-        - name: filter[ids]
-          in: query
-          description: "Comma separated list of Xpand User IDs"
-          schema:
-            type: array
-            items:
-              type: string
-              format: uuid
-          explode: false
-          example: "64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9"
-        - name: filter[emails]
-          in: query
-          description: "Comma separated list of User Emails"
-          schema:
-            type: array
-            items:
-              type: string
-              format: email
-          explode: false
-          example: "john@example.com,jane@example.com"
-        - name: page
-          in: query
-          schema:
-            type: integer
-            default: 1
-          example: 7
-      responses:
-        "200":
-          description: Successful responnse
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/UserResponseFull"
-    post:
-      tags:
-        - Users
-      summary: Create a user
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                data:
-                  type: object
-                  properties:
-                    attributes:
-                      type: object
-                      $ref: "#/components/schemas/UserRequest"
-      responses:
-        "200":
-          description: Successful responnse
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: "#/components/schemas/UserResponseSimple"
-  /api/v1/users/{id}:
-    parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-    get:
-      tags:
-        - Users
-      summary: Fetch a user
-      responses:
-        "200":
-          description: Successful responnse
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: "#/components/schemas/UserResponseFull"
-    patch:
-      tags:
-        - Users
-      summary: Update a user and pass within data and attributes
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserRequest"
-      responses:
-        "200":
-          description: Successful responnse
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: "#/components/schemas/UserResponseSimple"
   /api/v1/offer_letters:
     get:
       tags:
@@ -190,6 +77,16 @@ paths:
       tags:
         - Offers
       summary: "Create or update an offer letter"
+      responses:
+        "200":
+          description: Successful responnse
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/OfferLetterResponseSimple"
       requestBody:
         required: true
         content:
@@ -203,28 +100,18 @@ paths:
                     attributes:
                       type: object
                       $ref: "#/components/schemas/OfferLetterRequest"
-      responses:
-        "200":
-          description: Successful responnse
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: "#/components/schemas/OfferLetterResponseSimple"
   /api/v1/offer_letters/{id}:
-    parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
     delete:
       tags:
         - Offers
       summary: Rescind an offer letter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "204":
           description: Successful responnse
@@ -240,6 +127,126 @@ paths:
     get:
       tags:
         - References
+  /api/v1/users:
+    get:
+      tags:
+        - Users
+      summary: Fetch & search users Pass the query in 'filters' parameters using ids and emails.
+      parameters:
+        - name: filter[ids]
+          in: query
+          description: "Comma separated list of Xpand User IDs"
+          schema:
+            type: array
+            items:
+              type: string
+              format: uuid
+          explode: false
+          example: "64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9"
+        - name: filter[emails]
+          in: query
+          description: "Comma separated list of User Emails"
+          schema:
+            type: array
+            items:
+              type: string
+              format: email
+          explode: false
+          example: "john@example.com,jane@example.com"
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+          example: 7
+      responses:
+        "200":
+          description: Successful responnse
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/UserResponseFull"
+    post:
+      tags:
+        - Users
+      summary: Create a user
+      responses:
+        "200":
+          description: Successful responnse
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/UserResponseSimple"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    attributes:
+                      type: object
+                      $ref: "#/components/schemas/UserRequest"
+  /api/v1/users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Fetch a user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Successful responnse
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/UserResponseFull"
+    patch:
+      tags:
+        - Users
+      summary: Update a user and pass within data and attributes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Successful responnse
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/UserResponseSimple"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequest"
 
 components:
   schemas:
@@ -439,7 +446,7 @@ components:
           properties:
             workday:
               type: string
-              example: 'LOCATION-3-69'
+              example: "LOCATION-3-69"
         start_date:
           type: string
           format: date
@@ -602,7 +609,7 @@ components:
               type: string
               format: uuid
               example: "64891c74d5ee1bb16dfdafd8"
-        - $ref: '#/components/schemas/OfferLetterRequest'
+        - $ref: "#/components/schemas/OfferLetterRequest"
     OfferLetterResponseSimple:
       type: object
       properties:
@@ -730,7 +737,7 @@ components:
           properties:
             workday:
               type: string
-              example: 'LOCATION-3-69'
+              example: "LOCATION-3-69"
         recruiter_ids:
           type: object
           description: "JSON where key is name of external service, e.g. {:recruiter=>{'HRIS_SYS'=>'12345'}, recruiting_manager=>{'HRIS_SYS'=>'56789'}} (There must be a recruiter in Xpand or HRIS_SYS(Ex: workday) with a matching employee id)"
@@ -801,7 +808,7 @@ components:
           properties:
             workday:
               type: string
-              example: 'LOCATION-3-69'
+              example: "LOCATION-3-69"
         recruiter_ids:
           type: object
           properties:
