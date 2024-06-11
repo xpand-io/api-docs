@@ -1,0 +1,15 @@
+{
+  "name": "xpand",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "packageManager": "yarn@4.3.0",
+  "dependencies": {
+    "@typespec/compiler": "^0.57.0",
+    "@typespec/http": "^0.57.0",
+    "@typespec/openapi": "^0.57.0",
+    "@typespec/openapi3": "^0.57.0",
+    "@typespec/rest": "^0.57.0",
+    "@typespec/versioning": "^0.57.0"
+  }
+}

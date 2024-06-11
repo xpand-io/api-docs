@@ -1,69 +1,64 @@
-openapi: 3.0.3
-
+openapi: 3.0.0
 info:
-  title: Xpand API
-  version: v2
-
+  title: Xpand
+  version: 0.0.0
 tags:
   - name: Users
   - name: Offers
   - name: References
-
 paths:
   /api/v1/offer_letters:
     get:
       tags:
         - Offers
-      summary: "Fetch & search offer letters. Pass the query in 'filters' parameters using ids, offer_ids, user_ids and statuses."
+      operationId: Offers_list
+      summary: Fetch & search offer letters. Pass the query in 'filters' parameters using ids, offer_ids, user_ids and statuses.
       parameters:
-        - name: filters[ids]
+        - name: filters
           in: query
-          description: "Comma separated list of Xpand Offer IDs"
+          required: false
           schema:
-            type: array
-            items:
-              type: string
-              format: uuid
-          explode: false
-          example: "64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9"
-        - name: filters[offer_ids]
-          in: query
-          description: "Comma separated list of Client Offer IDs"
-          schema:
-            type: array
-            items:
-              type: string
-              format: uuid
-          explode: false
-          example: "64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9"
-        - name: filters[user_ids]
-          in: query
-          description: "Comma separated list of Xpand User IDs"
-          schema:
-            type: array
-            items:
-              type: string
-              format: uuid
-          explode: false
-          example: "64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9"
-        - name: filters[statuses]
-          in: query
-          description: "Comma separated list of Offer Statuses"
-          schema:
-            type: array
-            items:
-              $ref: "#/components/schemas/OfferLetterStatus"
-          explode: false
-          example: "pending_initiation,pending_approval"
+            type: object
+            properties:
+              ids:
+                type: array
+                items:
+                  $ref: '#/components/schemas/uuid'
+                description: Comma separated list of Xpand Offer IDs
+              offer_ids:
+                type: array
+                items:
+                  $ref: '#/components/schemas/uuid'
+                description: Comma separated list of Client Offer IDs
+              user_ids:
+                type: array
+                items:
+                  $ref: '#/components/schemas/uuid'
+                description: Comma separated list of Xpand User IDs
+              statuses:
+                type: array
+                items:
+                  type: string
+                  enum:
+                    - pending_initiation
+                    - pending_approval
+                    - admin_approved
+                    - admin_rejected
+                    - candidate_pending
+                    - candidate_accepted
+                    - candidate_declined
+                    - rescinded
+                    - voided
+                description: Comma separated list of Offer Statuses
         - name: page
           in: query
+          required: false
           schema:
             type: integer
             default: 1
-          example: 7
       responses:
-        "200":
-          description: Successful responnse
+        '200':
+          description: The request has succeeded.
           content:
             application/json:
               schema:
@@ -72,21 +67,27 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/OfferLetterResponseFull"
+                      $ref: '#/components/schemas/OfferLetterResponseFull'
+                required:
+                  - data
     post:
       tags:
         - Offers
-      summary: "Create or update an offer letter"
+      operationId: Offers_create
+      summary: Create or update an offer letter
+      parameters: []
       responses:
-        "200":
-          description: Successful responnse
+        '200':
+          description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/OfferLetterResponseSimple"
+                    $ref: '#/components/schemas/OfferLetterResponseSimple'
+                required:
+                  - data
       requestBody:
         required: true
         content:
@@ -98,70 +99,85 @@ paths:
                   type: object
                   properties:
                     attributes:
-                      type: object
-                      $ref: "#/components/schemas/OfferLetterRequest"
+                      $ref: '#/components/schemas/OfferLetterRequest'
+                  required:
+                    - attributes
+              required:
+                - data
   /api/v1/offer_letters/{id}:
     delete:
       tags:
         - Offers
+      operationId: Offers_delete
       summary: Rescind an offer letter
       parameters:
         - name: id
           in: path
           required: true
           schema:
-            type: string
-            format: uuid
+            $ref: '#/components/schemas/uuid'
       responses:
-        "204":
-          description: Successful responnse
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
   /api/v1/references:
     post:
       tags:
         - References
+      operationId: References_create
+      parameters: []
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
   /api/v1/references/job_profiles:
     get:
       tags:
         - References
+      operationId: References_job_profiles
+      parameters: []
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
   /api/v1/references/office_locations:
     get:
       tags:
         - References
+      operationId: References_office_locations
+      parameters: []
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
   /api/v1/users:
     get:
       tags:
         - Users
+      operationId: Users_list
       summary: Fetch & search users Pass the query in 'filters' parameters using ids and emails.
       parameters:
-        - name: filter[ids]
+        - name: filter
           in: query
-          description: "Comma separated list of Xpand User IDs"
+          required: false
           schema:
-            type: array
-            items:
-              type: string
-              format: uuid
-          explode: false
-          example: "64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9"
-        - name: filter[emails]
-          in: query
-          description: "Comma separated list of User Emails"
-          schema:
-            type: array
-            items:
-              type: string
-              format: email
-          explode: false
-          example: "john@example.com,jane@example.com"
+            type: object
+            properties:
+              ids:
+                type: array
+                items:
+                  $ref: '#/components/schemas/uuid'
+                description: Comma separated list of Xpand User IDs
+              emails:
+                type: array
+                items:
+                  $ref: '#/components/schemas/email'
+                description: Comma separated list of User Emails
         - name: page
           in: query
+          required: false
           schema:
             type: integer
             default: 1
-          example: 7
       responses:
-        "200":
-          description: Successful responnse
+        '200':
+          description: The request has succeeded.
           content:
             application/json:
               schema:
@@ -170,21 +186,27 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/UserResponseFull"
+                      $ref: '#/components/schemas/UserResponseFull'
+                required:
+                  - data
     post:
       tags:
         - Users
+      operationId: Users_create
       summary: Create a user
+      parameters: []
       responses:
-        "200":
-          description: Successful responnse
+        '200':
+          description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/UserResponseSimple"
+                    $ref: '#/components/schemas/UserResponseSimple'
+                required:
+                  - data
       requestBody:
         required: true
         content:
@@ -196,58 +218,64 @@ paths:
                   type: object
                   properties:
                     attributes:
-                      type: object
-                      $ref: "#/components/schemas/UserRequest"
+                      $ref: '#/components/schemas/UserRequest'
+                  required:
+                    - attributes
+              required:
+                - data
   /api/v1/users/{id}:
     get:
       tags:
         - Users
+      operationId: Users_read
       summary: Fetch a user
       parameters:
         - name: id
           in: path
           required: true
           schema:
-            type: string
-            format: uuid
+            $ref: '#/components/schemas/uuid'
       responses:
-        "200":
-          description: Successful responnse
+        '200':
+          description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/UserResponseFull"
+                    $ref: '#/components/schemas/UserResponseFull'
+                required:
+                  - data
     patch:
       tags:
         - Users
-      summary: Update a user and pass within data and attributes
+      operationId: Users_update
+      summary: Update a user
       parameters:
         - name: id
           in: path
           required: true
           schema:
-            type: string
-            format: uuid
+            $ref: '#/components/schemas/uuid'
       responses:
-        "200":
-          description: Successful responnse
+        '200':
+          description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/UserResponseSimple"
+                    $ref: '#/components/schemas/UserResponseSimple'
+                required:
+                  - data
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserRequest"
-
+              $ref: '#/components/schemas/UserRequestUpdate'
 components:
   schemas:
     Address:
@@ -258,166 +286,112 @@ components:
       properties:
         line_1:
           type: string
-          example: 31 St, 34 West
         line_2:
           type: string
-          example: 8th Avenue
         line_3:
           type: string
         city:
           type: string
-          example: New York
         state:
           type: string
-          example: New York
         postal_code:
           type: string
-          example: 100018
         country:
           type: string
-          example: USA
         current:
           type: boolean
-          example: true
         permanent:
           type: boolean
-          example: true
         start_date:
           type: string
           format: date
-          example: "2021-10-23"
         end_date:
           type: string
           format: date
-          example: "2023-10-23"
-        attachments:
-          $ref: "#/components/schemas/Attachments"
-    Addresses:
-      type: array
-      description: "Array which holds the collection of current and permanent address information"
-      items:
-        $ref: "#/components/schemas/Address"
     Attachment:
       type: object
       properties:
         file_name:
           type: string
-          example: abc.pdf
         file_content_base64:
           type: string
           format: byte
-          example: SGVsbG8gdGhlcmUgOi0pIEZpbmQgYW55dGhpbmcgZXhjaXRpbmc/
         responses:
           type: object
-          description: Responses provided in PDF form fields (only present when attachment is a PDF with form fields)
           properties:
             field_name_1:
               type: string
-              example: abc
             field_name_2:
               type: string
-              example: cba
-    Attachments:
-      type: array
-      items:
-        $ref: "#/components/schemas/Attachment"
+          description: Responses provided in PDF form fields (only present when attachment is a PDF with form fields)
     Document:
       type: object
       properties:
         document_type:
           type: string
-          example: offer_letter
         document_number:
           type: string
-          example: 1234
         document_title:
           type: string
-          example: Offer Letter
         document_description:
           type: string
-          example: Offer Letter to the Joe
         issuer:
           type: string
-          example: Issuer
         issuer_city:
           type: string
-          example: New York
         issuer_state:
           type: string
-          example: New York
         issuer_country:
           type: string
-          example: USA
         issued_date:
           type: string
           format: date
-          example: "2021-10-23"
         expiry_date:
           type: string
           format: date
-          example: "2023-10-23"
         attachments:
-          $ref: "#/components/schemas/Attachments"
-    Documents:
-      type: array
-      description: "Array which holds the collection of document information"
-      items:
-        $ref: "#/components/schemas/Document"
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
     Education:
       type: object
       properties:
         school_name:
           type: string
-          example: School Name
         degree:
           type: string
-          example: Degree
         student_id:
           type: string
-          example: 1001
         time_type:
           type: string
-          example: Full Time
         major:
           type: string
-          example: Communications
         minor:
           type: string
-          example: Publications
         gpa:
           type: number
           format: float
-          example: 4
         specialization:
           type: string
-          example: IT
         graduation_date:
           type: string
           format: date
-          example: "2021-10-23"
         grade:
           type: string
-          example: A
         name_while_attending:
           type: string
-          example: Jon Doe
         start_date:
           type: string
           format: date
-          example: "2021-10-23"
         end_date:
           type: string
           format: date
-          example: "2023-10-23"
         address:
-          $ref: "#/components/schemas/Address"
+          $ref: '#/components/schemas/Address'
         attachments:
-          $ref: "#/components/schemas/Attachments"
-    Educations:
-      type: array
-      description: "Array which holds the collection of education information"
-      items:
-        $ref: "#/components/schemas/Education"
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
     OfferLetterRequest:
       type: object
       required:
@@ -428,230 +402,262 @@ components:
         - start_date
       properties:
         user_id:
-          type: string
-          format: uuid
-          description: "Unique ID of the user"
-          example: "64892208d5ee1bb16dfdafda"
+          $ref: '#/components/schemas/uuid'
         offer_id:
           type: string
-          description: "Unique ID of the Offer"
-          example: "O3112-333"
         job_application_id:
           type: string
-          description: "Unique ID of the Job Application"
-          example: "J-O3112"
         office_location_id:
           type: object
-          description: "JSON where key is name of external service, e.g. {'HRIS_ID': 'NEWYORK'. There must be an office location in Xpand with a matching employee id. See reference values here for existing office location external ids"
           properties:
             workday:
               type: string
-              example: "LOCATION-3-69"
+          required:
+            - workday
         start_date:
           type: string
           format: date
-          description: "Start date of the new hire"
-          example: "2023-10-23"
         legal_entity:
           type: string
-          description: "See reference values here for existing legal entity values."
-          example: "Xpand Limited"
         job_title:
           type: string
-          description: "Job Title of the offer"
-          example: "Steamboat Captain"
         currency:
           type: string
-          description: "ISO 4217 Currency Code"
-          example: USD
         base_salary:
           type: integer
-          description: "Basic Salary"
-          example: 45000
         end_date:
           type: string
           format: date
-          description: "End date of the new hire"
-          example: "2023-10-23"
         induction_date:
           type: string
           format: date
-          description: "Induction Date"
-          example: "2023-10-23"
         expiration_date:
           type: string
           format: date
-          description: "Expiration date of an offer"
-          example: "2023-10-23"
         offer_dispositioned:
           type: string
-          description: "dispositioning the offer"
-          example: "Y"
         campus:
           type: string
-          example: "Y"
         compensation:
           type: integer
-          description: "Total compensation of the offer (Base + Bonus + Allowes)"
-          example: 100000
         non_compete_duration:
           type: integer
-          example: 0
         supplemental_non_compete_duration:
           type: integer
-          example: 1
         flsa_status:
           type: string
-          description: "Exempt/Non-Exempt NY/CA wage forms"
-          example: "Exempt"
         respond_by_date:
           type: string
-          description: "Date by when action to be taken on offer"
-          example: "2023-10-23"
+          format: date
         attorney_only:
           type: boolean
-          example: true
         confidential:
           type: boolean
-          example: true
         regulated:
           type: boolean
-          example: true
         regulated_status:
           type: string
-          example: "Active"
         smcr:
           type: boolean
-          description: "identify if someone is Senior Manager"
-          example: true
         job_profile_id:
           type: string
-          example: "Job Family"
         business_unit_id:
           type: string
-          example: "Business Unit"
         department_code:
           type: string
-          example: "Department Code"
         position_type:
           type: string
-          example: "Position Type"
         pay_rate:
           type: string
-          example: "Pay Rate"
         job_level:
           type: string
-          example: "Leval 1"
         cost_center_id:
           type: string
-          example: "Cost Center"
         time_type:
           type: string
-          example: "Full Time"
         employee_type:
           type: string
-          example: "Regular"
         job_code:
           type: string
-          example: "Engineer"
         target_salary:
           type: integer
-          example: 10000
         max_salary:
           type: integer
-          example: 100000
         rsu:
           type: integer
-          example: 5000
         annual_bonus_percent:
           type: integer
-          example: 10
         signing_bonus_amount:
           type: integer
-          example: 7000
         commission_amount:
           type: integer
-          example: 3000
         car_allowance:
           type: integer
-          example: 1000
         relocation:
           type: boolean
-          example: true
         relocation_flex_allowance:
           type: integer
-          example: 2000
         work_from_home:
           type: boolean
-          example: false
         immigration:
           type: boolean
-          example: false
         visa_sponsorship_notes:
           type: string
-          example: "Clear"
         urgent:
           type: boolean
-          example: false
         is_exempt:
           type: boolean
-          example: false
         notes:
           type: string
-          example: Ready to send the offer
         documents:
-          $ref: "#/components/schemas/Documents"
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
     OfferLetterResponseFull:
-      allOf:
-        - type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              example: "64891c74d5ee1bb16dfdafd8"
-        - $ref: "#/components/schemas/OfferLetterRequest"
-    OfferLetterResponseSimple:
       type: object
+      required:
+        - id
+        - user_id
+        - offer_id
+        - job_application_id
+        - office_location_id
+        - start_date
       properties:
         id:
+          $ref: '#/components/schemas/uuid'
+        user_id:
+          $ref: '#/components/schemas/uuid'
+        offer_id:
           type: string
-          format: uuid
-          example: "64891c74d5ee1bb16dfdafd8"
-    OfferLetterStatus:
-      type: string
-      example: pending_approval
-      enum:
-        - pending_initiation
-        - pending_approval
-        - admin_approved
-        - admin_rejected
-        - candidate_pending
-        - candidate_accepted
-        - candidate_declined
-        - rescinded
-        - voided
+        job_application_id:
+          type: string
+        office_location_id:
+          type: object
+          properties:
+            workday:
+              type: string
+          required:
+            - workday
+        start_date:
+          type: string
+          format: date
+        legal_entity:
+          type: string
+        job_title:
+          type: string
+        currency:
+          type: string
+        base_salary:
+          type: integer
+        end_date:
+          type: string
+          format: date
+        induction_date:
+          type: string
+          format: date
+        expiration_date:
+          type: string
+          format: date
+        offer_dispositioned:
+          type: string
+        campus:
+          type: string
+        compensation:
+          type: integer
+        non_compete_duration:
+          type: integer
+        supplemental_non_compete_duration:
+          type: integer
+        flsa_status:
+          type: string
+        respond_by_date:
+          type: string
+          format: date
+        attorney_only:
+          type: boolean
+        confidential:
+          type: boolean
+        regulated:
+          type: boolean
+        regulated_status:
+          type: string
+        smcr:
+          type: boolean
+        job_profile_id:
+          type: string
+        business_unit_id:
+          type: string
+        department_code:
+          type: string
+        position_type:
+          type: string
+        pay_rate:
+          type: string
+        job_level:
+          type: string
+        cost_center_id:
+          type: string
+        time_type:
+          type: string
+        employee_type:
+          type: string
+        job_code:
+          type: string
+        target_salary:
+          type: integer
+        max_salary:
+          type: integer
+        rsu:
+          type: integer
+        annual_bonus_percent:
+          type: integer
+        signing_bonus_amount:
+          type: integer
+        commission_amount:
+          type: integer
+        car_allowance:
+          type: integer
+        relocation:
+          type: boolean
+        relocation_flex_allowance:
+          type: integer
+        work_from_home:
+          type: boolean
+        immigration:
+          type: boolean
+        visa_sponsorship_notes:
+          type: string
+        urgent:
+          type: boolean
+        is_exempt:
+          type: boolean
+        notes:
+          type: string
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+    OfferLetterResponseSimple:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
     PhoneNumber:
       type: object
       properties:
         number:
           type: string
-          description: "E.164 format"
-          example: "+14044580998"
+          description: E.164 Format
         type:
           type: string
-          example: mobile
           enum:
             - mobile
             - landline
             - unknown
         primary:
           type: boolean
-          example: true
-    PhoneNumbers:
-      type: array
-      description: "Array which holds the collection of phone number information"
-      items:
-        $ref: "#/components/schemas/PhoneNumber"
     UserRequest:
       type: object
       required:
@@ -659,257 +665,321 @@ components:
         - first_name
         - last_name
         - start_date
-        - external_ids
-        - office_location_id
+        - employee_type
         - candidate_status
         - cost_center_id
-        - employee_type
+        - external_ids
+        - office_location_id
         - recruiter_ids
       properties:
         email:
-          type: string
-          format: email
-          example: "daniel@personal.com"
-          description: "Must be a valid email address. Must be unique for each user. Non case-sensitive. Regex validation: ^(?!...)[a-zA-Z0-9][\\w-.]@[A-Za-z\\d-]+(.[A-Za-z\\d-]+)*.[A-Za-z]+$"
+          $ref: '#/components/schemas/email'
         work_email:
-          type: string
-          format: email
-          description: "Must be a valid email address. Must be unique for each user. Non case-sensitive. Regex validation: ^(?!...)[a-zA-Z0-9][\\w-.]@[A-Za-z\\d-]+(.[A-Za-z\\d-]+)*.[A-Za-z]+$"
-          example: "daniel@company.com"
+          $ref: '#/components/schemas/email'
         first_name:
           type: string
-          description: "Must not contain numbers or any of the following special characters !@#$%^&*()"
-          example: "Daniel"
         last_name:
           type: string
-          description: "Must not contain numbers or any of the following special characters !@#$%^&*()"
-          example: "Smith"
         middle_name:
           type: string
-          description: "Must not contain numbers or any of the following special characters !@#$%^&*()"
-          example: "Jones"
         start_date:
           type: string
           format: date
-          description: "Format: YYYY-MM-DD. Can be present, or future dates only."
-          example: "2023-09-08"
         employee_type:
           type: string
-          description: "See reference values here for allowed employee type values."
-          example: "Regular"
         candidate_status:
           type: string
-          description: "See reference values here for allowed candidate status values."
-          example: "offer_accepted"
         legal_entity:
           type: string
-          description: "See reference values here for existing legal entity values."
-          example: "Xpand Limited"
         cost_center_id:
           type: string
-          description: "See reference values here for existing cost center values."
-          example: "Cost Center"
         relocation_type:
           type: string
-          description: "Allowes the relocation type values."
-          example: "global_relocation"
         blocked:
           type: boolean
-          description: "Disable or enable a user account in Xpand."
-          example: false
         reason_blocked:
           type: string
-          description: "A brief description of why the user why the user account is being disabled in Xpand"
-          example: "inactive in ATS System"
         external_ids:
           type: object
-          description: "This is the collection of unique id of the Applicant Tracking System (ATS) and employee id of the Human Resource Information Systems (HRIS)"
           properties:
             ats_id:
               type: string
-              example: A-1234
             hris_id:
               type: string
-              example: E-1234
         office_location_id:
           type: object
-          description: "JSON where key is name of external service, e.g. {'HRIS_ID': 'NEWYORK'. There must be an office location in Xpand with a matching employee id. See reference values here for existing office location external ids"
           properties:
             workday:
               type: string
-              example: "LOCATION-3-69"
+          required:
+            - workday
         recruiter_ids:
           type: object
-          description: "JSON where key is name of external service, e.g. {:recruiter=>{'HRIS_SYS'=>'12345'}, recruiting_manager=>{'HRIS_SYS'=>'56789'}} (There must be a recruiter in Xpand or HRIS_SYS(Ex: workday) with a matching employee id)"
           properties:
             recruiter:
+              type: object
               properties:
                 hris_id:
                   type: string
-                  example: R-1111
             recruiting_coordinator:
+              type: object
               properties:
                 hris_id:
                   type: string
-                  example: R-2222
             recruiting_manager:
+              type: object
               properties:
                 hris_id:
                   type: string
-                  example: R-3333
         manager_ids:
           type: object
-          description: "JSON where key is name of external service, e.g. {'HRIS_SYS': ['123456', '45678']} (There must be a manager in Xpand or HRIS with a matching employee id)"
           properties:
             hris_id:
               type: array
-              example: [M-1111, M-2222]
+              items:
+                type: string
         documents:
-          $ref: "#/components/schemas/Documents"
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
         educations:
-          $ref: "#/components/schemas/Educations"
+          type: array
+          items:
+            $ref: '#/components/schemas/Education'
         work_experiences:
-          $ref: "#/components/schemas/WorkExperiences"
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkExperience'
         addresses:
-          $ref: "#/components/schemas/Addresses"
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
         phone_numbers:
-          $ref: "#/components/schemas/PhoneNumbers"
-    UserResponseFull:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
+    UserRequestUpdate:
       type: object
       properties:
-        id:
-          type: string
-          example: 64891c74d5ee1bb16dfdafd8
+        email:
+          $ref: '#/components/schemas/email'
+        work_email:
+          $ref: '#/components/schemas/email'
         first_name:
           type: string
-          example: John
         last_name:
           type: string
-          example: Doe
-        email:
+        middle_name:
           type: string
-          format: email
-          example: john@example.com
         start_date:
           type: string
           format: date
-          example: "2023-10-23"
+        employee_type:
+          type: string
+        candidate_status:
+          type: string
+        legal_entity:
+          type: string
+        cost_center_id:
+          type: string
+        relocation_type:
+          type: string
+        blocked:
+          type: boolean
+        reason_blocked:
+          type: string
         external_ids:
           type: object
           properties:
             ats_id:
               type: string
-              example: A-1234
             hris_id:
               type: string
-              example: E-1234
         office_location_id:
           type: object
           properties:
             workday:
               type: string
-              example: "LOCATION-3-69"
         recruiter_ids:
           type: object
           properties:
             recruiter:
+              type: object
               properties:
                 hris_id:
                   type: string
-                  example: R-1111
             recruiting_coordinator:
+              type: object
               properties:
                 hris_id:
                   type: string
-                  example: R-2222
             recruiting_manager:
+              type: object
               properties:
                 hris_id:
                   type: string
-                  example: R-3333
         manager_ids:
           type: object
           properties:
             hris_id:
               type: array
-              example: [M-1111, M-2222]
+              items:
+                type: string
         documents:
-          $ref: "#/components/schemas/Documents"
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
         educations:
-          $ref: "#/components/schemas/Educations"
+          type: array
+          items:
+            $ref: '#/components/schemas/Education'
         work_experiences:
-          $ref: "#/components/schemas/WorkExperiences"
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkExperience'
         addresses:
-          $ref: "#/components/schemas/Addresses"
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
         phone_numbers:
-          $ref: "#/components/schemas/PhoneNumbers"
-    UserResponseSimple:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
+    UserResponseFull:
       type: object
+      required:
+        - id
+        - first_name
+        - last_name
+        - email
+        - start_date
+        - external_ids
+        - office_location_id
+        - recruiter_ids
       properties:
         id:
+          $ref: '#/components/schemas/uuid'
+        first_name:
           type: string
-          example: 64891c74d5ee1bb16dfdafd8
+        last_name:
+          type: string
+        email:
+          $ref: '#/components/schemas/email'
+        start_date:
+          type: string
+          format: date
+        external_ids:
+          type: object
+          properties:
+            ats_id:
+              type: string
+            hris_id:
+              type: string
+        office_location_id:
+          type: object
+          properties:
+            workday:
+              type: string
+          required:
+            - workday
+        recruiter_ids:
+          type: object
+          properties:
+            recruiter:
+              type: object
+              properties:
+                hris_id:
+                  type: string
+            recruiting_coordinator:
+              type: object
+              properties:
+                hris_id:
+                  type: string
+            recruiting_manager:
+              type: object
+              properties:
+                hris_id:
+                  type: string
+        manager_ids:
+          type: object
+          properties:
+            hris_id:
+              type: array
+              items:
+                type: string
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+        educations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Education'
+        work_experiences:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkExperience'
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+        phone_numbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
+    UserResponseSimple:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
     WorkExperience:
       type: object
       properties:
         employer:
           type: string
-          example: Employer
         employee_id:
           type: string
-          example: E1234
         current:
           type: boolean
-          example: true
         job_title:
           type: string
-          example: Engineer
         department:
           type: string
-          example: Department
         employment_type:
           type: string
-          example: Regular
         reason_for_leaving:
           type: string
-          example: Change in technology
         salary:
           type: integer
-          example: 10000
         manager_name:
           type: string
-          example: Manager 1
         manager_phone:
           type: string
-          example: "+14044578776"
         manager_email:
-          type: string
-          format: email
-          example: manager@xpand.io
+          $ref: '#/components/schemas/email'
         hr_name:
           type: string
-          example: HR 1
         hr_phone:
           type: string
-          example: +1 4044578777
         hr_email:
-          type: string
-          format: email
-          example: hr@xpand.io
+          $ref: '#/components/schemas/email'
         start_date:
           type: string
           format: date
-          example: "2021-10-23"
         end_date:
           type: string
           format: date
-          example: "2023-10-23"
         address:
-          $ref: "#/components/schemas/Address"
+          $ref: '#/components/schemas/Address'
         attachments:
-          $ref: "#/components/schemas/Attachments"
-    WorkExperiences:
-      type: array
-      description: "Array which holds the collection of work experience information"
-      items:
-        $ref: "#/components/schemas/WorkExperience"
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
+    email:
+      type: string
+      format: email
+    uuid:
+      type: string
+      format: uuid
