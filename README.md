@@ -6,7 +6,11 @@
 ## Development
 
 ```shell
-npm install -g @typespec/compiler
+yarn install
 overmind s # or foreman/hivemind/etc
+open http://localhost:8080
+```
+
+```shell
 code main.tsp # or vim/nano/etc
 ```

@@ -9,18 +9,16 @@ tags:
 paths:
   /api/v1/job_profiles:
     get:
-      tags:
-        - References
       operationId: References_job_profiles
       summary: Fetch Job Profiles
       parameters: []
       responses:
         '204':
           description: 'There is no content to send for this request, but the headers may be useful. '
+      tags:
+        - References
   /api/v1/offer_letters:
     get:
-      tags:
-        - Offers
       operationId: Offers_list
       summary: Search Offer Letters
       parameters:
@@ -57,12 +55,14 @@ paths:
                     - rescinded
                     - voided
                 description: Comma separated list of Offer Statuses
+          explode: false
         - name: page
           in: query
           required: false
           schema:
             type: integer
             default: 1
+          explode: false
       responses:
         '200':
           description: The request has succeeded.
@@ -77,9 +77,9 @@ paths:
                       $ref: '#/components/schemas/OfferLetterResponseFull'
                 required:
                   - data
-    post:
       tags:
         - Offers
+    post:
       operationId: Offers_create
       summary: Create/Update Offer Letter
       parameters: []
@@ -95,6 +95,8 @@ paths:
                     $ref: '#/components/schemas/OfferLetterResponseSimple'
                 required:
                   - data
+      tags:
+        - Offers
       requestBody:
         required: true
         content:
@@ -113,8 +115,6 @@ paths:
                 - data
   /api/v1/offer_letters/{id}:
     delete:
-      tags:
-        - Offers
       operationId: Offers_delete
       summary: Rescind Offer Letter
       parameters:
@@ -126,20 +126,20 @@ paths:
       responses:
         '204':
           description: 'There is no content to send for this request, but the headers may be useful. '
+      tags:
+        - Offers
   /api/v1/office_locations:
     get:
-      tags:
-        - References
       operationId: References_office_locations
       summary: Fetch Office Locations
       parameters: []
       responses:
         '204':
           description: 'There is no content to send for this request, but the headers may be useful. '
+      tags:
+        - References
   /api/v1/users:
     get:
-      tags:
-        - Users
       operationId: Users_list
       summary: Search Users
       parameters:
@@ -157,12 +157,14 @@ paths:
                 type: string
                 example: 64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9
                 description: Comma separated list of User Emails
+          explode: false
         - name: page
           in: query
           required: false
           schema:
             type: integer
             default: 1
+          explode: false
       responses:
         '200':
           description: The request has succeeded.
@@ -177,9 +179,9 @@ paths:
                       $ref: '#/components/schemas/UserResponseFull'
                 required:
                   - data
-    post:
       tags:
         - Users
+    post:
       operationId: Users_create
       summary: Create User
       parameters: []
@@ -195,6 +197,8 @@ paths:
                     $ref: '#/components/schemas/UserResponseSimple'
                 required:
                   - data
+      tags:
+        - Users
       requestBody:
         required: true
         content:
@@ -213,8 +217,6 @@ paths:
                 - data
   /api/v1/users/{id}:
     get:
-      tags:
-        - Users
       operationId: Users_read
       summary: Fetch User
       parameters:
@@ -235,9 +237,9 @@ paths:
                     $ref: '#/components/schemas/UserResponseFull'
                 required:
                   - data
-    patch:
       tags:
         - Users
+    patch:
       operationId: Users_update
       summary: Update User
       parameters:
@@ -258,6 +260,8 @@ paths:
                     $ref: '#/components/schemas/UserResponseSimple'
                 required:
                   - data
+      tags:
+        - Users
       requestBody:
         required: true
         content:
