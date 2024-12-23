@@ -159,16 +159,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typespec/compiler@npm:^0.62.0":
-  version: 0.62.0
-  resolution: "@typespec/compiler@npm:0.62.0"
+"@typespec/compiler@npm:^0.63.0":
+  version: 0.63.0
+  resolution: "@typespec/compiler@npm:0.63.0"
   dependencies:
     "@babel/code-frame": "npm:~7.25.7"
     ajv: "npm:~8.17.1"
     change-case: "npm:~5.4.4"
     globby: "npm:~14.0.2"
     mustache: "npm:~4.2.0"
-    picocolors: "npm:~1.1.0"
+    picocolors: "npm:~1.1.1"
     prettier: "npm:~3.3.3"
     prompts: "npm:~2.4.2"
     semver: "npm:^7.6.3"
@@ -180,69 +180,70 @@ __metadata:
   bin:
     tsp: cmd/tsp.js
     tsp-server: cmd/tsp-server.js
-  checksum: 10c0/3dc7e6af9829f7e7bbb15ca3b25ef3fb9e13623f2339094d49d98172134558a8f8c5877507eae02cfd96bb0d01f6d2f56331169d4074334b1dd83e520af12bf8
+  checksum: 10c0/1d84dfb8aed37298aaf80c2996e23c81e76db6a3ba7e6e9c09ab3432ec7b7f4cf8cddb82c8850f9c3087b317e00a410d9f77fff85354b233035d3971325bf0a8
   languageName: node
   linkType: hard
 
-"@typespec/http@npm:^0.62.0":
-  version: 0.62.0
-  resolution: "@typespec/http@npm:0.62.0"
+"@typespec/http@npm:^0.63.0":
+  version: 0.63.0
+  resolution: "@typespec/http@npm:0.63.0"
   peerDependencies:
-    "@typespec/compiler": ~0.62.0
-    "@typespec/streams": ~0.62.0
+    "@typespec/compiler": ~0.63.0
+    "@typespec/streams": ~0.63.0
   peerDependenciesMeta:
     "@typespec/streams":
       optional: true
-  checksum: 10c0/899dcd47c01c4eff2a7149e51c17e259a176682ac652edb39f2f50071198f57b3c1388afa91e6a61de7e0861220361870bd0ea8d5f751f0c8cbfc83d573dc15f
+  checksum: 10c0/97874647c87f235c8dc361363837270c30c258b5f307c385d23690e22cd00c11077e1628f1b89b501c817478d02f9e9fa41452afeb218248c2004c4d7a64d008
   languageName: node
   linkType: hard
 
-"@typespec/openapi3@npm:^0.62.0":
-  version: 0.62.0
-  resolution: "@typespec/openapi3@npm:0.62.0"
+"@typespec/openapi3@npm:^0.63.0":
+  version: 0.63.0
+  resolution: "@typespec/openapi3@npm:0.63.0"
   dependencies:
     "@readme/openapi-parser": "npm:~2.6.0"
+    openapi-types: "npm:~12.1.3"
     yaml: "npm:~2.5.1"
   peerDependencies:
-    "@typespec/compiler": ~0.62.0
-    "@typespec/http": ~0.62.0
-    "@typespec/openapi": ~0.62.0
-    "@typespec/versioning": ~0.62.0
+    "@typespec/compiler": ~0.63.0
+    "@typespec/http": ~0.63.0
+    "@typespec/openapi": ~0.63.0
+    "@typespec/versioning": ~0.63.0
   peerDependenciesMeta:
     "@typespec/xml":
       optional: true
   bin:
     tsp-openapi3: cmd/tsp-openapi3.js
-  checksum: 10c0/5c86cc38ba4f04357383750569a89d534e52fdc7816b65fae1ff852510ab96dc41200ecef8ed5116968b9efa3d11e24b065cc7f324c1f0bafcae09a9403cec5f
+  checksum: 10c0/8ed3c1b6e2dcc78d974e93163085321a55ae157196182ee98e42c84f2c7e2ddc63e26061254fd299519cdeb6f4800cb2d205c35cec553c70cd9207a0c97517b1
   languageName: node
   linkType: hard
 
-"@typespec/openapi@npm:^0.62.0":
-  version: 0.62.0
-  resolution: "@typespec/openapi@npm:0.62.0"
+"@typespec/openapi@npm:^0.63.0":
+  version: 0.63.0
+  resolution: "@typespec/openapi@npm:0.63.0"
   peerDependencies:
-    "@typespec/compiler": ~0.62.0
-    "@typespec/http": ~0.62.0
-  checksum: 10c0/938fe57ae3d30a2f0ff77da706dd9ebc15f2cc3ab994912e5bc12accda8ace3df432e6463fef68fceb55124fdd1f7497e353a6b94f07cfc7b27796870009e182
+    "@typespec/compiler": ~0.63.0
+    "@typespec/http": ~0.63.0
+  checksum: 10c0/637c797dc0a26f6d55a97a33e3355f4d54577c5bed598f6711670aad73442c74f777c17c1326d1817ad306f51b2aaf6355f2ee4f85698bb4ae2357b4c9b3c3ed
   languageName: node
   linkType: hard
 
-"@typespec/rest@npm:^0.62.0":
-  version: 0.62.0
-  resolution: "@typespec/rest@npm:0.62.0"
+"@typespec/rest@npm:^0.63.0":
+  version: 0.63.0
+  resolution: "@typespec/rest@npm:0.63.0"
   peerDependencies:
-    "@typespec/compiler": ~0.62.0
-    "@typespec/http": ~0.62.0
-  checksum: 10c0/1678d31490f6b72c8b876d12885b0707ba60c966541022400a978449f58ccd3842fb0be868e56706addc8e6ef2d162788cdd282e6f2c0f6f7aaab2accc89bfb7
+    "@typespec/compiler": ~0.63.0
+    "@typespec/http": ~0.63.0
+  checksum: 10c0/15a23c7715967b78845dd47b1c94998b85b66233af0feaef9aa04871d76eb934d455b0e542f2c70b8675583d5b0bdd8c3cea42a089e4a1855a6a41f609aa8ae3
   languageName: node
   linkType: hard
 
-"@typespec/versioning@npm:^0.62.0":
-  version: 0.62.0
-  resolution: "@typespec/versioning@npm:0.62.0"
+"@typespec/versioning@npm:^0.63.0":
+  version: 0.63.0
+  resolution: "@typespec/versioning@npm:0.63.0"
   peerDependencies:
-    "@typespec/compiler": ~0.62.0
-  checksum: 10c0/247e00d219b89943d2defa2f2aad967c6ff194554e4db1603657847ad28da8a055db66e22cfa052199bed0658a277e1da0934642569f55b376a93e0150118a94
+    "@typespec/compiler": ~0.63.0
+  checksum: 10c0/866a20adccfc1584f9165f70e8343ed4aae70751bcdf57b41433ff6348ec27aefd0c195a8610cc1c2a2e639042d6e65fa2b3047868a42dc24067a97a64576874
   languageName: node
   linkType: hard
 
@@ -445,11 +446,11 @@ __metadata:
   linkType: hard
 
 "fastq@npm:^1.6.0":
-  version: 1.17.1
-  resolution: "fastq@npm:1.17.1"
+  version: 1.18.0
+  resolution: "fastq@npm:1.18.0"
   dependencies:
     reusify: "npm:^1.0.4"
-  checksum: 10c0/1095f16cea45fb3beff558bb3afa74ca7a9250f5a670b65db7ed585f92b4b48381445cd328b3d87323da81e43232b5d5978a8201bde84e0cd514310f1ea6da34
+  checksum: 10c0/7be87ecc41762adbddf558d24182f50a4b1a3ef3ee807d33b7623da7aee5faecdcc94fce5aa13fe91df93e269f383232bbcdb2dc5338cd1826503d6063221f36
   languageName: node
   linkType: hard
 
@@ -632,6 +633,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"openapi-types@npm:~12.1.3":
+  version: 12.1.3
+  resolution: "openapi-types@npm:12.1.3"
+  checksum: 10c0/4ad4eb91ea834c237edfa6ab31394e87e00c888fc2918009763389c00d02342345195d6f302d61c3fd807f17723cd48df29b47b538b68375b3827b3758cd520f
+  languageName: node
+  linkType: hard
+
 "path-type@npm:^5.0.0":
   version: 5.0.0
   resolution: "path-type@npm:5.0.0"
@@ -639,7 +647,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"picocolors@npm:^1.0.0, picocolors@npm:~1.1.0":
+"picocolors@npm:^1.0.0, picocolors@npm:~1.1.1":
   version: 1.1.1
   resolution: "picocolors@npm:1.1.1"
   checksum: 10c0/e2e3e8170ab9d7c7421969adaa7e1b31434f789afb9b3f115f6b96d91945041ac3ceb02e9ec6fe6510ff036bcc0bf91e69a1772edc0b707e12b19c0f2d6bcf58
@@ -866,12 +874,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "xpand@workspace:."
   dependencies:
-    "@typespec/compiler": "npm:^0.62.0"
-    "@typespec/http": "npm:^0.62.0"
-    "@typespec/openapi": "npm:^0.62.0"
-    "@typespec/openapi3": "npm:^0.62.0"
-    "@typespec/rest": "npm:^0.62.0"
-    "@typespec/versioning": "npm:^0.62.0"
+    "@typespec/compiler": "npm:^0.63.0"
+    "@typespec/http": "npm:^0.63.0"
+    "@typespec/openapi": "npm:^0.63.0"
+    "@typespec/openapi3": "npm:^0.63.0"
+    "@typespec/rest": "npm:^0.63.0"
+    "@typespec/versioning": "npm:^0.63.0"
   languageName: unknown
   linkType: soft
 
