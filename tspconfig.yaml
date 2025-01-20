@@ -4,3 +4,4 @@ emit:
 options:
   "@typespec/openapi3":
     emitter-output-dir: "{cwd}/docs"
+    openapi-versions: ["3.1.0"]
