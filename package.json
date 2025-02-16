@@ -5,11 +5,11 @@
   "private": true,
   "packageManager": "yarn@4.6.0",
   "dependencies": {
-    "@typespec/compiler": "^0.64.0",
-    "@typespec/http": "^0.64.0",
-    "@typespec/openapi": "^0.64.0",
-    "@typespec/openapi3": "^0.64.0",
-    "@typespec/rest": "^0.64.0",
-    "@typespec/versioning": "^0.64.0"
+    "@typespec/compiler": "^0.65.2",
+    "@typespec/http": "^0.65.0",
+    "@typespec/openapi": "^0.65.0",
+    "@typespec/openapi3": "^0.65.0",
+    "@typespec/rest": "^0.65.0",
+    "@typespec/versioning": "^0.65.0"
   }
 }
