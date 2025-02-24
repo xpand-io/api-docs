@@ -414,9 +414,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typespec/compiler@npm:^0.65.2":
-  version: 0.65.2
-  resolution: "@typespec/compiler@npm:0.65.2"
+"@typespec/compiler@npm:^0.65.3":
+  version: 0.65.3
+  resolution: "@typespec/compiler@npm:0.65.3"
   dependencies:
     "@babel/code-frame": "npm:~7.26.2"
     "@npmcli/arborist": "npm:^8.0.0"
@@ -436,7 +436,7 @@ __metadata:
   bin:
     tsp: cmd/tsp.js
     tsp-server: cmd/tsp-server.js
-  checksum: 10c0/603be0680114e9b50fbf78a9c367f0268b5e8987c07740c70433362f0f68d1d397de02cb5507435fb6f865abfe908813408086882525beed63e2668e33edf26b
+  checksum: 10c0/dfa0112bc5f190052565fcb5dde0313014c801c2791d7b0e3cbebee73c8d892c367fe63605dbfd71756074530cf7a96310a5a147c5a32075b2adfa4bc2496089
   languageName: node
   linkType: hard
 
@@ -708,7 +708,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-spawn@npm:^7.0.0":
+"cross-spawn@npm:^7.0.6":
   version: 7.0.6
   resolution: "cross-spawn@npm:7.0.6"
   dependencies:
@@ -844,12 +844,12 @@ __metadata:
   linkType: hard
 
 "foreground-child@npm:^3.1.0":
-  version: 3.3.0
-  resolution: "foreground-child@npm:3.3.0"
+  version: 3.3.1
+  resolution: "foreground-child@npm:3.3.1"
   dependencies:
-    cross-spawn: "npm:^7.0.0"
+    cross-spawn: "npm:^7.0.6"
     signal-exit: "npm:^4.0.1"
-  checksum: 10c0/028f1d41000553fcfa6c4bb5c372963bf3d9bf0b1f25a87d1a6253014343fb69dfb1b42d9625d7cf44c8ba429940f3d0ff718b62105d4d4a4f6ef8ca0a53faa2
+  checksum: 10c0/8986e4af2430896e65bc2788d6679067294d6aee9545daefc84923a0a4b399ad9c7a3ea7bd8c0b2b80fdf4a92de4c69df3f628233ff3224260e9c1541a9e9ed3
   languageName: node
   linkType: hard
 
@@ -2114,7 +2114,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "xpand@workspace:."
   dependencies:
-    "@typespec/compiler": "npm:^0.65.2"
+    "@typespec/compiler": "npm:^0.65.3"
     "@typespec/http": "npm:^0.65.0"
     "@typespec/openapi": "npm:^0.65.0"
     "@typespec/openapi3": "npm:^0.65.0"
