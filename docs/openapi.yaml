@@ -1,11 +1,13 @@
 openapi: 3.1.0
 info:
   title: Xpand API
-  version: v2
+  version: 2025-03
 tags:
   - name: Users
   - name: Offers
   - name: References
+  - name: Journeys
+  - name: User Journeys
 paths:
   /api/v1/job_profiles:
     get:
@@ -156,12 +158,12 @@ paths:
                 type: string
                 description: Comma separated list of Xpand User IDs
                 examples:
-                  - john@example.com,jane@example.com
+                  - 64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9
               emails:
                 type: string
                 description: Comma separated list of User Emails
                 examples:
-                  - 64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9
+                  - john@example.com,jane@example.com
           explode: false
         - name: page
           in: query
@@ -273,6 +275,210 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UserRequestUpdate'
+  /api/v2/journeys:
+    get:
+      operationId: Journeys_list
+      summary: List Journeys
+      parameters:
+        - name: filters
+          in: query
+          required: false
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Comma separated list of title
+                examples:
+                  - Offer,Next Offer
+              type:
+                type: string
+                description: Comma separated list of type
+                examples:
+                  - offer, pre-offer
+              published:
+                type: boolean
+                examples:
+                  - true
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Journey'
+      tags:
+        - Journeys
+  /api/v2/journeys/{id}:
+    get:
+      operationId: Journeys_get
+      summary: Fetch Journey
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Journey'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+      tags:
+        - Journeys
+  /api/v2/user_journeys:
+    get:
+      operationId: UserJourneys_list
+      summary: List User Journeys
+      parameters:
+        - name: filters
+          in: query
+          required: false
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Comma separated list of User Journey IDs
+                examples:
+                  - 1234,123456
+              user_id:
+                type: string
+                description: Comma separated list of User IDs
+                examples:
+                  - 64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9
+              state:
+                type: string
+                description: Comma separated list of States
+                examples:
+                  - draft, published
+              custom_fields:
+                $ref: '#/components/schemas/CustomFields'
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserJourney'
+      tags:
+        - User Journeys
+    post:
+      operationId: UserJourneys_create
+      summary: Create User Journey
+      parameters: []
+      responses:
+        '201':
+          description: The request has succeeded and a new resource has been created as a result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserJourney'
+        '422':
+          description: Client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      tags:
+        - User Journeys
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserJourney'
+    patch:
+      operationId: UserJourneys_rescind
+      summary: Rescind User Journey
+      parameters: []
+      responses:
+        '201':
+          description: The request has succeeded and a new resource has been created as a result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserJourney'
+      tags:
+        - User Journeys
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rescind_reason:
+                  type: string
+  /api/v2/user_journeys/{id}:
+    get:
+      operationId: UserJourneys_get
+      summary: Fetch User Journey
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserJourney'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+      tags:
+        - User Journeys
+    patch:
+      operationId: UserJourneys_update
+      summary: Update User Journey
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserJourney'
+        '422':
+          description: Client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      tags:
+        - User Journeys
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserJourneyUpdate'
 components:
   schemas:
     Address:
@@ -348,6 +554,37 @@ components:
               examples:
                 - cba
           description: Responses provided in PDF form fields (only present when attachment is a PDF with form fields)
+    CustomFields:
+      type: object
+      properties:
+        start_date:
+          type: string
+          examples:
+            - 1-2-2025
+        pay_rate:
+          type: string
+          examples:
+            - '1.2345'
+        recruiter:
+          type: string
+          examples:
+            - R-111
+        recruiting_coordinator:
+          type: string
+          examples:
+            - R-2222
+        recruiting_manager:
+          type: string
+          examples:
+            - R-333
+        hiring_manager:
+          type: string
+          examples:
+            - M-111
+        direct_manager:
+          type: string
+          examples:
+            - D-1234
     Document:
       type: object
       properties:
@@ -462,6 +699,40 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Attachment'
+    Journey:
+      type: object
+      required:
+        - id
+        - title
+        - published
+        - created_at
+      properties:
+        id:
+          type: string
+          examples:
+            - '12345'
+        title:
+          type: string
+          examples:
+            - Offer
+        published:
+          type: boolean
+        created_at:
+          type: string
+          examples:
+            - 2025/01/01
+    NotFoundError:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - NOT_FOUND
+        message:
+          type: string
     OfferLetterRequest:
       type: object
       required:
@@ -948,6 +1219,13 @@ components:
             - $ref: '#/components/schemas/uuid'
           examples:
             - 64891c74d5ee1bb16dfdafd8
+    OfficeLocationId:
+      type: object
+      properties:
+        workday:
+          type: string
+          examples:
+            - LOCATION-3-69
     PhoneNumber:
       type: object
       properties:
@@ -968,6 +1246,64 @@ components:
           type: boolean
           examples:
             - true
+    UserJourney:
+      type: object
+      required:
+        - type
+        - user_id
+      properties:
+        type:
+          type: string
+          examples:
+            - pre_offer
+        user_id:
+          type: string
+          examples:
+            - '123456'
+        office_location_id:
+          $ref: '#/components/schemas/OfficeLocationId'
+        custom_fields:
+          $ref: '#/components/schemas/CustomFields'
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+    UserJourneyQueryData:
+      type: object
+      properties:
+        id:
+          type: string
+          examples:
+            - '12345'
+        user_id:
+          type: string
+          examples:
+            - '1234'
+        state:
+          type: string
+          examples:
+            - draft
+        custom_fields:
+          $ref: '#/components/schemas/CustomFields'
+    UserJourneyUpdate:
+      type: object
+      properties:
+        type:
+          type: string
+          examples:
+            - pre_offer
+        user_id:
+          type: string
+          examples:
+            - '123456'
+        office_location_id:
+          $ref: '#/components/schemas/OfficeLocationId'
+        custom_fields:
+          $ref: '#/components/schemas/CustomFields'
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
     UserRequest:
       type: object
       required:
@@ -1390,6 +1726,23 @@ components:
             - $ref: '#/components/schemas/uuid'
           examples:
             - 64891c74d5ee1bb16dfdafd8
+    ValidationError:
+      type: object
+      required:
+        - code
+        - message
+        - details
+      properties:
+        code:
+          type: string
+          enum:
+            - VALIDATION_ERROR
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: string
     WorkExperience:
       type: object
       properties:
