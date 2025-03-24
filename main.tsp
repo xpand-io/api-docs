@@ -4,14 +4,8 @@ import "@typespec/openapi";
 using TypeSpec.Http;
 using TypeSpec.OpenAPI;
 
-@service({
-  title: "Xpand API",
-})
-
-@info({
-  version: "v2"
-})
-
+@service(#{ title: "Xpand API" })
+@info(#{ version: "v2" })
 @route("/api/v1")
 namespace API {
   @format("uuid")

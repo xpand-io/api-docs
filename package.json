@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "type": "module",
   "private": true,
-  "packageManager": "yarn@4.6.0",
+  "packageManager": "yarn@4.7.0",
   "dependencies": {
-    "@typespec/compiler": "^0.65.3",
-    "@typespec/http": "^0.65.0",
-    "@typespec/openapi": "^0.65.0",
-    "@typespec/openapi3": "^0.65.0",
-    "@typespec/rest": "^0.65.0",
-    "@typespec/versioning": "^0.65.0"
+    "@typespec/compiler": "^0.67.1",
+    "@typespec/http": "^0.67.1",
+    "@typespec/openapi": "^0.67.1",
+    "@typespec/openapi3": "^0.67.1",
+    "@typespec/rest": "^0.67.1",
+    "@typespec/versioning": "^0.67.1"
   }
 }
