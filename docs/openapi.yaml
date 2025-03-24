@@ -413,6 +413,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserJourney'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: Client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
       tags:
         - User Journeys
       requestBody:
@@ -465,6 +477,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserJourney'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
         '422':
           description: Client error
           content:

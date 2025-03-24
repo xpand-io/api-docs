@@ -136,13 +136,13 @@ namespace API {
       },
     ): {
       @statusCode statusCode: 200;
-      @body journeys: Journey[];
+      @body body: Journey[];
     };
 
     @summary("Fetch Journey")
     op get(@path id: string): {
       @statusCode statusCode: 200;
-      @body journey: Journey;
+      @body body: Journey;
     } | {
       @statusCode statusCode: 404;
       @body error: NotFoundError;
@@ -171,13 +171,13 @@ namespace API {
       },
     ): {
       @statusCode statusCode: 200;
-      @body userJourneys: UserJourney[];
+      @body body: UserJourney[];
     };
 
     @summary("Fetch User Journey")
     op get(@path id: string): {
       @statusCode statusCode: 200;
-      @body userJourney: UserJourney;
+      @body body: UserJourney;
     } | {
       @statusCode statusCode: 404;
       @body error: NotFoundError;
@@ -186,7 +186,7 @@ namespace API {
     @summary("Create User Journey")
     op create(@body userJourney: UserJourney): {
       @statusCode statusCode: 201;
-      @body newUserJourney: UserJourney;
+      @body body: UserJourney;
     } | {
       @statusCode statusCode: 422;
       @body error: ValidationError;
@@ -196,7 +196,10 @@ namespace API {
     @patch
     op update(@path id: string, @body userJourney: UserJourney): {
       @statusCode statusCode: 204;
-      @body updatedUserJourney: UserJourney;
+      @body body: UserJourney;
+    } | {
+      @statusCode statusCode: 404;
+      @body error: NotFoundError;
     } | {
       @statusCode statusCode: 422;
       @body error: ValidationError;
@@ -205,12 +208,18 @@ namespace API {
     @summary("Rescind User Journey")
     @patch
     op rescind(
-      @body data: {
+      @body body: {
         rescind_reason: string;
       },
     ): {
       @statusCode statusCode: 201;
-      @body newUserJourney: UserJourney;
+      @body body: UserJourney;
+    } | {
+      @statusCode statusCode: 404;
+      @body error: NotFoundError;
+    } | {
+      @statusCode statusCode: 422;
+      @body error: ValidationError;
     };
   }
 
