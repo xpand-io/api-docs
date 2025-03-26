@@ -4,8 +4,21 @@ import "@typespec/openapi";
 using TypeSpec.Http;
 using TypeSpec.OpenAPI;
 
-@service(#{ title: "Xpand API" })
-@info(#{ version: "2025-03" })
+@service({
+  title: "Xpand API",
+})
+@info({
+  version: "2025-03"
+})
+
+@server("https://mphasis-staging.xpand.io", "Mphasis Staging")
+@server("https://citadel-staging.xpand.io", "Citadel Staging")
+@server("https://creditkarma-staging.xpand.io", "CK Staging")
+@server("https://demo-staging.xpand.io", "Demo Staging")
+@server("https://demo-uat.xpand.io", "Demo UAT")
+
+@useAuth(BearerAuth)
+
 @route("/api")
 namespace API {
   //
@@ -134,6 +147,10 @@ namespace API {
         @example(true)
         published?: boolean;
       },
+      @query offset?: integer = 0,
+      @query limit?: integer = 50,
+      @query order_by?: string = "created_at",
+      @query direction?: string = "asc",
     ): {
       @statusCode statusCode: 200;
       @body body: Journey[];
@@ -167,8 +184,12 @@ namespace API {
         @example("draft, published")
         state?: string;
 
-        custom_fields?: CustomFields;
+        custom_fields?: CustomFieldsObject;
       },
+      @query offset?: integer = 0,
+      @query limit?: integer = 50,
+      @query order_by?: string = "created_at",
+      @query direction?: string = "asc",
     ): {
       @statusCode statusCode: 200;
       @body body: UserJourney[];
@@ -205,9 +226,10 @@ namespace API {
       @body error: ValidationError;
     };
 
+    @route("{id}/rescind")
     @summary("Rescind User Journey")
     @patch
-    op rescind(
+    op rescind(@path id: string,
       @body body: {
         rescind_reason: string;
       },
@@ -222,6 +244,73 @@ namespace API {
       @body error: ValidationError;
     };
   }
+
+  @tag("Custom Fields")
+    @summary("Custom Fields")
+    @route("v2/custom_fields")
+    namespace CustomFields{
+      @summary("Index User Journeys")
+      @get
+      op listCustomFields( @query filters?: {
+        @doc("Comma separated list of Custom Field IDs")
+        @example("1234,123456")
+        id?: string;
+
+        @doc("Comma separated list of Types")
+        @example("Journey, User Journey")
+        type?: string;
+
+        @doc("Comma separated list of Sub Types")
+        @example("Offer")
+        sub_type?: string;
+
+        @doc("Comma separated list of Data Types")
+        @example("Datetime, String")
+        data_type?: string;
+      },
+      @query offset?: integer = 0,
+      @query limit?: integer = 50,
+      @query order_by?: string = "created_at",
+      @query direction?: string = "asc",
+      ): | {
+        @statusCode statusCode: 200;
+        @body customFields: CustomField[];
+      };
+
+      @summary("Show a Custom Field")
+      @get
+      op getCustomField(@path id: string): {
+        @statusCode statusCode: 200;
+        @body customField: CustomField;
+      } | {
+        @statusCode statusCode: 404;
+        @body error: NotFoundError;
+      };
+
+      @summary("Create a Custom Field")
+      @post
+      op createCustomField(@body customField: CustomField): {
+        @statusCode statusCode: 201;
+        @body newCustomField: CustomField;
+      } | {
+        @statusCode statusCode: 422;
+        @body error: ValidationError;
+      };
+
+      @route("{id}/activate")
+      @summary("Activate a Custom Field")
+      @patch
+      op activateCustomField(@path id: string): {
+        @statusCode statusCode: 200;
+      };
+
+      @route("{id}/deactivate")
+      @summary("Deactivate a Custom Field")
+      @patch
+      op deactivateCustomField(@path id: string): {
+        @statusCode statusCode: 200;
+      };
+    }
 
   //
   // Models
@@ -278,7 +367,48 @@ namespace API {
     };
   }
 
-  model CustomFields {
+  model CustomField {
+    @example("12345")
+    id: string;
+
+    @example("pre_offer")
+    type: string;
+    
+    @example("offer")
+    sub_type: string;
+
+    @example("Start date")
+    name: string;
+    
+    @example("start_date")
+    slug: string;
+
+    @example("Datetime")
+    data_type: string;
+
+    @example(false)
+    mandatory: boolean;
+
+    @example("")
+    default_value?: string;
+
+    @example("")
+    mapping?: string;
+
+    @example("")
+    validation_rule?: string;
+
+    @example("")
+    regexp_pattern?: string;
+    
+    @example(#["a", "b", "c"])
+    allowed_values: string[];
+
+    @example("citadel_LegalEntityLOV")
+    list_of_values_map_id: string;
+  }
+
+  model CustomFieldsObject {
     @example("1-2-2025")
     start_date?: string;
 
@@ -599,7 +729,7 @@ namespace API {
     user_id: string;
 
     office_location_id?: OfficeLocationId;
-    custom_fields?: CustomFields;
+    custom_fields?: CustomFieldsObject;
     documents?: Document[];
   }
 
@@ -613,7 +743,7 @@ namespace API {
     @example("draft")
     state?: string;
 
-    custom_fields?: CustomFields;
+    custom_fields?: CustomFieldsObject;
   }
 
   model UserRequest {

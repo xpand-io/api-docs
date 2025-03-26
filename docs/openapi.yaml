@@ -8,6 +8,7 @@ tags:
   - name: References
   - name: Journeys
   - name: User Journeys
+  - name: Custom Fields
 paths:
   /api/v1/job_profiles:
     get:
@@ -275,6 +276,157 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UserRequestUpdate'
+  /api/v2/custom_fields:
+    get:
+      operationId: CustomFields_listCustomFields
+      summary: Index User Journeys
+      parameters:
+        - name: filters
+          in: query
+          required: false
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Comma separated list of Custom Field IDs
+                examples:
+                  - 1234,123456
+              type:
+                type: string
+                description: Comma separated list of Types
+                examples:
+                  - Journey, User Journey
+              sub_type:
+                type: string
+                description: Comma separated list of Sub Types
+                examples:
+                  - Offer
+              data_type:
+                type: string
+                description: Comma separated list of Data Types
+                examples:
+                  - Datetime, String
+          explode: false
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+          explode: false
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+          explode: false
+        - name: order_by
+          in: query
+          required: false
+          schema:
+            type: string
+            default: created_at
+          explode: false
+        - name: direction
+          in: query
+          required: false
+          schema:
+            type: string
+            default: asc
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomField'
+      tags:
+        - Custom Fields
+    post:
+      operationId: CustomFields_createCustomField
+      summary: Create a Custom Field
+      parameters: []
+      responses:
+        '201':
+          description: The request has succeeded and a new resource has been created as a result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomField'
+        '422':
+          description: Client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      tags:
+        - Custom Fields
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomField'
+  /api/v2/custom_fields/{id}:
+    get:
+      operationId: CustomFields_getCustomField
+      summary: Show a Custom Field
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomField'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+      tags:
+        - Custom Fields
+  /api/v2/custom_fields/{id}/activate:
+    patch:
+      operationId: CustomFields_activateCustomField
+      summary: Activate a Custom Field
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+      tags:
+        - Custom Fields
+  /api/v2/custom_fields/{id}/deactivate:
+    patch:
+      operationId: CustomFields_deactivateCustomField
+      summary: Deactivate a Custom Field
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+      tags:
+        - Custom Fields
   /api/v2/journeys:
     get:
       operationId: Journeys_list
@@ -300,6 +452,34 @@ paths:
                 type: boolean
                 examples:
                   - true
+          explode: false
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+          explode: false
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+          explode: false
+        - name: order_by
+          in: query
+          required: false
+          schema:
+            type: string
+            default: created_at
+          explode: false
+        - name: direction
+          in: query
+          required: false
+          schema:
+            type: string
+            default: asc
           explode: false
       responses:
         '200':
@@ -364,7 +544,35 @@ paths:
                 examples:
                   - draft, published
               custom_fields:
-                $ref: '#/components/schemas/CustomFields'
+                $ref: '#/components/schemas/CustomFieldsObject'
+          explode: false
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+          explode: false
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+          explode: false
+        - name: order_by
+          in: query
+          required: false
+          schema:
+            type: string
+            default: created_at
+          explode: false
+        - name: direction
+          in: query
+          required: false
+          schema:
+            type: string
+            default: asc
           explode: false
       responses:
         '200':
@@ -402,40 +610,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UserJourney'
-    patch:
-      operationId: UserJourneys_rescind
-      summary: Rescind User Journey
-      parameters: []
-      responses:
-        '201':
-          description: The request has succeeded and a new resource has been created as a result.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserJourney'
-        '404':
-          description: The server cannot find the requested resource.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundError'
-        '422':
-          description: Client error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationError'
-      tags:
-        - User Journeys
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                rescind_reason:
-                  type: string
   /api/v2/user_journeys/{id}:
     get:
       operationId: UserJourneys_get
@@ -497,6 +671,48 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UserJourneyUpdate'
+  /api/v2/user_journeys/{id}/rescind:
+    patch:
+      operationId: UserJourneys_rescind
+      summary: Rescind User Journey
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: The request has succeeded and a new resource has been created as a result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserJourney'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: Client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      tags:
+        - User Journeys
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rescind_reason:
+                  type: string
+security:
+  - BearerAuth: []
 components:
   schemas:
     Address:
@@ -572,7 +788,76 @@ components:
               examples:
                 - cba
           description: Responses provided in PDF form fields (only present when attachment is a PDF with form fields)
-    CustomFields:
+    CustomField:
+      type: object
+      required:
+        - id
+        - type
+        - sub_type
+        - name
+        - slug
+        - data_type
+        - mandatory
+        - allowed_values
+        - list_of_values_map_id
+      properties:
+        id:
+          type: string
+          examples:
+            - '12345'
+        type:
+          type: string
+          examples:
+            - pre_offer
+        sub_type:
+          type: string
+          examples:
+            - offer
+        name:
+          type: string
+          examples:
+            - Start date
+        slug:
+          type: string
+          examples:
+            - start_date
+        data_type:
+          type: string
+          examples:
+            - Datetime
+        mandatory:
+          type: boolean
+          examples:
+            - false
+        default_value:
+          type: string
+          examples:
+            - ''
+        mapping:
+          type: string
+          examples:
+            - ''
+        validation_rule:
+          type: string
+          examples:
+            - ''
+        regexp_pattern:
+          type: string
+          examples:
+            - ''
+        allowed_values:
+          type: array
+          items:
+            type: string
+          examples:
+            - - a
+              - b
+              - c
+        list_of_values_map_id:
+          type: string
+          examples:
+            - citadel_LegalEntityLOV
+    CustomFieldsObject:
       type: object
       properties:
         start_date:
@@ -1281,7 +1566,7 @@ components:
         office_location_id:
           $ref: '#/components/schemas/OfficeLocationId'
         custom_fields:
-          $ref: '#/components/schemas/CustomFields'
+          $ref: '#/components/schemas/CustomFieldsObject'
         documents:
           type: array
           items:
@@ -1302,7 +1587,7 @@ components:
           examples:
             - draft
         custom_fields:
-          $ref: '#/components/schemas/CustomFields'
+          $ref: '#/components/schemas/CustomFieldsObject'
     UserJourneyUpdate:
       type: object
       properties:
@@ -1317,7 +1602,7 @@ components:
         office_location_id:
           $ref: '#/components/schemas/OfficeLocationId'
         custom_fields:
-          $ref: '#/components/schemas/CustomFields'
+          $ref: '#/components/schemas/CustomFieldsObject'
         documents:
           type: array
           items:
@@ -1844,3 +2129,23 @@ components:
     uuid:
       type: string
       format: uuid
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+servers:
+  - url: https://demo-uat.xpand.io
+    description: Demo UAT
+    variables: {}
+  - url: https://demo-staging.xpand.io
+    description: Demo Staging
+    variables: {}
+  - url: https://creditkarma-staging.xpand.io
+    description: CK Staging
+    variables: {}
+  - url: https://citadel-staging.xpand.io
+    description: Citadel Staging
+    variables: {}
+  - url: https://mphasis-staging.xpand.io
+    description: Mphasis Staging
+    variables: {}
