@@ -4,12 +4,8 @@ import "@typespec/openapi";
 using TypeSpec.Http;
 using TypeSpec.OpenAPI;
 
-@service({
-  title: "Xpand API",
-})
-@info({
-  version: "2025-03"
-})
+@service(#{ title: "Xpand API" })
+@info(#{ version: "2025-03" })
 
 @server("https://mphasis-staging.xpand.io", "Mphasis Staging")
 @server("https://citadel-staging.xpand.io", "Citadel Staging")
