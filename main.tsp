@@ -133,11 +133,11 @@ namespace API {
     op list(
       @query filters?: {
         @doc("Comma separated list of title")
-        @example("Offer,Next Offer")
+        @example("Offer, Next Offer")
         title?: string;
 
         @doc("Comma separated list of type")
-        @example("offer, pre-offer")
+        @example("pre_offer, offer, post_offer, onboarding, offboarding")
         type?: string;
 
         @example(true)
@@ -176,8 +176,8 @@ namespace API {
         @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
         user_id?: string;
 
-        @doc("Comma separated list of States")
-        @example("draft, published")
+        @doc("Comma separated list of states")
+        @example("draft, needs_attention, pending_approval, approved, rejected, rescinded, user_pending, submitted, declined, completed")
         state?: string;
 
         custom_fields?: CustomFieldsObject;
@@ -257,7 +257,7 @@ namespace API {
         type?: string;
 
         @doc("Comma separated list of Sub Types")
-        @example("Offer")
+        @example("PreOffer, Offer, PostOffer, Onboarding, Offboarding")
         sub_type?: string;
 
         @doc("Comma separated list of Data Types")
@@ -367,17 +367,14 @@ namespace API {
     @example("12345")
     id: string;
 
-    @example("pre_offer")
+    @example("workflow_user_journey, user")
     type: string;
     
-    @example("offer")
-    sub_type: string;
+    @example("pre_offer, offer, post_offer, onboarding, offboarding")
+    journey_type: string;
 
     @example("Start date")
     name: string;
-    
-    @example("start_date")
-    slug: string;
 
     @example("Datetime")
     data_type: string;
@@ -385,23 +382,27 @@ namespace API {
     @example(false)
     mandatory: boolean;
 
-    @example("")
-    default_value?: string;
-
-    @example("")
+    @example("salutation, nickname, title, university, current_location, employee_id, profile_photo_url, division, hire_type, company_code, relocation_type, job_profile_id")
     mapping?: string;
 
-    @example("")
+    @example("regexp, list_of_values_map, list, previous_date_time, future_date_time, workday_job_profile, workday_organization")
     validation_rule?: string;
 
-    @example("")
+    @doc("Required if validation_rule is regexp")
+    @example("^[a-zA-Z0-9]+$")
     regexp_pattern?: string;
     
+    @doc("Required if validation_rule is list")
     @example(#["a", "b", "c"])
     allowed_values: string[];
 
+    @doc("Required if validation_rule is list_of_values_map")
     @example("citadel_LegalEntityLOV")
     list_of_values_map_id: string;
+
+    @doc("Required if validation_rule is workday_organization")
+    @example("workday_organization_type")
+    workday_organization_type?: string;
   }
 
   model CustomFieldsObject {

@@ -301,7 +301,7 @@ paths:
                 type: string
                 description: Comma separated list of Sub Types
                 examples:
-                  - Offer
+                  - PreOffer, Offer, PostOffer, Onboarding, Offboarding
               data_type:
                 type: string
                 description: Comma separated list of Data Types
@@ -442,12 +442,12 @@ paths:
                 type: string
                 description: Comma separated list of title
                 examples:
-                  - Offer,Next Offer
+                  - Offer, Next Offer
               type:
                 type: string
                 description: Comma separated list of type
                 examples:
-                  - offer, pre-offer
+                  - pre_offer, offer, post_offer, onboarding, offboarding
               published:
                 type: boolean
                 examples:
@@ -540,9 +540,9 @@ paths:
                   - 64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9
               state:
                 type: string
-                description: Comma separated list of States
+                description: Comma separated list of states
                 examples:
-                  - draft, published
+                  - draft, needs_attention, pending_approval, approved, rejected, rescinded, user_pending, submitted, declined, completed
               custom_fields:
                 $ref: '#/components/schemas/CustomFieldsObject'
           explode: false
@@ -793,9 +793,8 @@ components:
       required:
         - id
         - type
-        - sub_type
+        - journey_type
         - name
-        - slug
         - data_type
         - mandatory
         - allowed_values
@@ -808,19 +807,15 @@ components:
         type:
           type: string
           examples:
-            - pre_offer
-        sub_type:
+            - workflow_user_journey, user
+        journey_type:
           type: string
           examples:
-            - offer
+            - pre_offer, offer, post_offer, onboarding, offboarding
         name:
           type: string
           examples:
             - Start date
-        slug:
-          type: string
-          examples:
-            - start_date
         data_type:
           type: string
           examples:
@@ -829,34 +824,38 @@ components:
           type: boolean
           examples:
             - false
-        default_value:
-          type: string
-          examples:
-            - ''
         mapping:
           type: string
           examples:
-            - ''
+            - salutation, nickname, title, university, current_location, employee_id, profile_photo_url, division, hire_type, company_code, relocation_type, job_profile_id
         validation_rule:
           type: string
           examples:
-            - ''
+            - regexp, list_of_values_map, list, previous_date_time, future_date_time, workday_job_profile, workday_organization
         regexp_pattern:
           type: string
+          description: Required if validation_rule is regexp
           examples:
-            - ''
+            - ^[a-zA-Z0-9]+$
         allowed_values:
           type: array
           items:
             type: string
+          description: Required if validation_rule is list
           examples:
             - - a
               - b
               - c
         list_of_values_map_id:
           type: string
+          description: Required if validation_rule is list_of_values_map
           examples:
             - citadel_LegalEntityLOV
+        workday_organization_type:
+          type: string
+          description: Required if validation_rule is workday_organization
+          examples:
+            - workday_organization_type
     CustomFieldsObject:
       type: object
       properties:
