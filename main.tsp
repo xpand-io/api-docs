@@ -545,6 +545,10 @@ namespace API {
     @example("Offer")
     title: string;
 
+    @example("pre_offer, offer, post_offer, onboarding, offboarding")
+    journey_type: string;
+
+    @example(true)
     published: boolean;
 
     @example("2025/01/01")
@@ -792,8 +796,11 @@ namespace API {
   }
 
   model UserJourney {
+    @example("123456898")
+    id: string; 
+
     @example("123456")
-    journey_id?: string;
+    journey_id: string;
 
     @example("pre_offer")
     journey_type?: string;
@@ -817,7 +824,7 @@ namespace API {
 
   model UserJourneyUpdate {
     @example("123456")
-    journey_id?: string;
+    journey_id: string;
 
     @example("draft")
     state?: "draft" | "needs_attention" | "pending_approval" | "approved" | "rejected" | "rescinded" | "user_pending" | "submitted" | "declined" | "completed";

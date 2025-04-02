@@ -1061,6 +1061,7 @@ components:
       required:
         - id
         - title
+        - journey_type
         - published
         - created_at
       properties:
@@ -1072,8 +1073,14 @@ components:
           type: string
           examples:
             - Offer
+        journey_type:
+          type: string
+          examples:
+            - pre_offer, offer, post_offer, onboarding, offboarding
         published:
           type: boolean
+          examples:
+            - true
         created_at:
           type: string
           examples:
@@ -1729,7 +1736,14 @@ components:
             - true
     UserJourney:
       type: object
+      required:
+        - id
+        - journey_id
       properties:
+        id:
+          type: string
+          examples:
+            - '123456898'
         journey_id:
           type: string
           examples:
