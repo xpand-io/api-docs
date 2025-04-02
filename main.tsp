@@ -7,11 +7,11 @@ using TypeSpec.OpenAPI;
 @service(#{ title: "Xpand API" })
 @info(#{ version: "2025-03" })
 
-@server("https://mphasis-staging.xpand.io", "Mphasis Staging")
-@server("https://citadel-staging.xpand.io", "Citadel Staging")
-@server("https://creditkarma-staging.xpand.io", "CK Staging")
-@server("https://demo-staging.xpand.io", "Demo Staging")
-@server("https://demo-uat.xpand.io", "Demo UAT")
+// @server("https://mphasis-staging.xpand.io", "Mphasis Staging")
+// @server("https://citadel-staging.xpand.io", "Citadel Staging")
+// @server("https://creditkarma-staging.xpand.io", "CK Staging")
+// @server("https://demo-staging.xpand.io", "Demo Staging")
+// @server("https://demo-uat.xpand.io", "Demo UAT")
 
 @useAuth(BearerAuth)
 
@@ -136,9 +136,9 @@ namespace API {
         @example("Offer, Next Offer")
         title?: string;
 
-        @doc("Comma separated list of type")
+        @doc("Comma separated list of journey types")
         @example("pre_offer, offer, post_offer, onboarding, offboarding")
-        type?: string;
+        journey_type?: string;
 
         @example(true)
         published?: boolean;
@@ -168,13 +168,21 @@ namespace API {
     @summary("List User Journeys")
     op list(
       @query filters?: {
-        @doc("Comma separated list of User Journey IDs")
-        @example("1234,123456")
-        id?: string;
-
         @doc("Comma separated list of User IDs")
         @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
         user_id?: string;
+
+        @doc("Comma separated list of Journey IDs")
+        @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
+        journey_id?: string;
+
+        @doc("Comma separated list of Office Location IDs")
+        @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
+        office_location_id?: string;
+
+        @doc("Comma separated list of journey types")
+        @example("pre_offer, offer, post_offer, onboarding, offboarding")
+        journey_type?: string;
 
         @doc("Comma separated list of states")
         @example("draft, needs_attention, pending_approval, approved, rejected, rescinded, user_pending, submitted, declined, completed")
@@ -211,7 +219,7 @@ namespace API {
 
     @summary("Update User Journey")
     @patch
-    op update(@path id: string, @body userJourney: UserJourney): {
+    op update(@path id: string, @body userJourney: UserJourneyUpdate): {
       @statusCode statusCode: 204;
       @body body: UserJourney;
     } | {
@@ -245,16 +253,16 @@ namespace API {
     @summary("Custom Fields")
     @route("v2/custom_fields")
     namespace CustomFields{
-      @summary("Index User Journeys")
+      @summary("Index Custom Fields")
       @get
       op listCustomFields( @query filters?: {
         @doc("Comma separated list of Custom Field IDs")
         @example("1234,123456")
         id?: string;
 
-        @doc("Comma separated list of Types")
+        @doc("Comma separated list of Journey Types")
         @example("Journey, User Journey")
-        type?: string;
+        journey_type?: string;
 
         @doc("Comma separated list of Sub Types")
         @example("PreOffer, Offer, PostOffer, Onboarding, Offboarding")
@@ -263,6 +271,10 @@ namespace API {
         @doc("Comma separated list of Data Types")
         @example("Datetime, String")
         data_type?: string;
+
+        @doc("Comma separated list of Active")
+        @example("true, false")
+        active?: string;
       },
       @query offset?: integer = 0,
       @query limit?: integer = 50,
@@ -367,9 +379,12 @@ namespace API {
     @example("12345")
     id: string;
 
-    @example("workflow_user_journey, user")
-    type: string;
+    @example("1234")
+    key: string;
     
+    @example("2025-01-01")
+    created_at: string;
+
     @example("pre_offer, offer, post_offer, onboarding, offboarding")
     journey_type: string;
 
@@ -381,6 +396,23 @@ namespace API {
 
     @example(false)
     mandatory: boolean;
+
+    @example(false)
+    deactivated?: boolean;
+
+    @doc("Used in Assignment Rules")
+    @example(false)
+    rule_settable?: boolean;
+
+    @doc("Used in placeholders")
+    @example(false)
+    placeholderable?: boolean;
+
+    @example(#["journey", "module", "child_module", "task", "communication", "report"])
+    allowed_rule_set_types: string[];
+
+    @example(#["journey", "communication", "html_editor_task"])
+    allowed_placeholder_type: string[];
 
     @example("salutation, nickname, title, university, current_location, employee_id, profile_photo_url, division, hire_type, company_code, relocation_type, job_profile_id")
     mapping?: string;
@@ -704,6 +736,47 @@ namespace API {
   model OfficeLocationId {
     @example("LOCATION-3-69")
     workday?: string;
+
+    @example("LOCATION-3-69")
+    id: string;
+
+    external_ids: {
+      @example("E-1234")
+      hris_id?: string;
+    };
+
+    @example("123 Main St")
+    address1?: string;
+
+    @example("Suite 200")
+    address2?: string;
+
+    @example("Building B")
+    address3?: string;
+
+    @example("New York")
+    city?: string;
+
+    @example("NY")
+    state?: string;
+
+    @example("Northeast")
+    region?: string;
+
+    @example("USA")
+    country?: string;
+
+    @example("10001")
+    postal_code?: string;
+
+    @example("NZT")
+    time_zone?: string;
+
+    @example(3.12332)
+    latitude?: float32;
+
+    @example(3.12332)
+    longitude?: float32;
   }
 
   model PhoneNumber {
@@ -719,14 +792,44 @@ namespace API {
   }
 
   model UserJourney {
+    @example("123456")
+    journey_id?: string;
+
     @example("pre_offer")
-    type: string;
+    journey_type?: string;
 
     @example("123456")
-    user_id: string;
+    user_id?: string;
+
+    @example("draft")
+    state?: "draft" | "needs_attention" | "pending_approval" | "approved" | "rejected" | "rescinded" | "user_pending" | "submitted" | "declined" | "completed";
+
+    @example("2025-01-01")
+    created_at?: string;
 
     office_location_id?: OfficeLocationId;
+    
+    @doc("Custom fields object for the user journey - we pass the key for any configured custom fields for this journey type.")
     custom_fields?: CustomFieldsObject;
+    
+    documents?: Document[];
+  }
+
+  model UserJourneyUpdate {
+    @example("123456")
+    journey_id?: string;
+
+    @example("draft")
+    state?: "draft" | "needs_attention" | "pending_approval" | "approved" | "rejected" | "rescinded" | "user_pending" | "submitted" | "declined" | "completed";
+
+    @example("2025-01-01")
+    created_at?: string;
+
+    office_location_id?: OfficeLocationId;
+    
+    @doc("Custom fields object for the user journey - we pass the key for any configured custom fields for this journey type.")
+    custom_fields?: CustomFieldsObject;
+    
     documents?: Document[];
   }
 
@@ -738,7 +841,7 @@ namespace API {
     user_id?: string;
 
     @example("draft")
-    state?: string;
+    state?: "draft" | "needs_attention" | "pending_approval" | "approved" | "rejected" | "rescinded" | "user_pending" | "submitted" | "declined" | "completed";
 
     custom_fields?: CustomFieldsObject;
   }

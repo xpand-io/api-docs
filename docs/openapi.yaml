@@ -279,7 +279,7 @@ paths:
   /api/v2/custom_fields:
     get:
       operationId: CustomFields_listCustomFields
-      summary: Index User Journeys
+      summary: Index Custom Fields
       parameters:
         - name: filters
           in: query
@@ -292,9 +292,9 @@ paths:
                 description: Comma separated list of Custom Field IDs
                 examples:
                   - 1234,123456
-              type:
+              journey_type:
                 type: string
-                description: Comma separated list of Types
+                description: Comma separated list of Journey Types
                 examples:
                   - Journey, User Journey
               sub_type:
@@ -307,6 +307,11 @@ paths:
                 description: Comma separated list of Data Types
                 examples:
                   - Datetime, String
+              active:
+                type: string
+                description: Comma separated list of Active
+                examples:
+                  - true, false
           explode: false
         - name: offset
           in: query
@@ -443,9 +448,9 @@ paths:
                 description: Comma separated list of title
                 examples:
                   - Offer, Next Offer
-              type:
+              journey_type:
                 type: string
-                description: Comma separated list of type
+                description: Comma separated list of journey types
                 examples:
                   - pre_offer, offer, post_offer, onboarding, offboarding
               published:
@@ -528,16 +533,26 @@ paths:
           schema:
             type: object
             properties:
-              id:
-                type: string
-                description: Comma separated list of User Journey IDs
-                examples:
-                  - 1234,123456
               user_id:
                 type: string
                 description: Comma separated list of User IDs
                 examples:
                   - 64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9
+              journey_id:
+                type: string
+                description: Comma separated list of Journey IDs
+                examples:
+                  - 64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9
+              office_location_id:
+                type: string
+                description: Comma separated list of Office Location IDs
+                examples:
+                  - 64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9
+              journey_type:
+                type: string
+                description: Comma separated list of journey types
+                examples:
+                  - pre_offer, offer, post_offer, onboarding, offboarding
               state:
                 type: string
                 description: Comma separated list of states
@@ -792,11 +807,14 @@ components:
       type: object
       required:
         - id
-        - type
+        - key
+        - created_at
         - journey_type
         - name
         - data_type
         - mandatory
+        - allowed_rule_set_types
+        - allowed_placeholder_type
         - allowed_values
         - list_of_values_map_id
       properties:
@@ -804,10 +822,14 @@ components:
           type: string
           examples:
             - '12345'
-        type:
+        key:
           type: string
           examples:
-            - workflow_user_journey, user
+            - '1234'
+        created_at:
+          type: string
+          examples:
+            - '2025-01-01'
         journey_type:
           type: string
           examples:
@@ -824,6 +846,39 @@ components:
           type: boolean
           examples:
             - false
+        deactivated:
+          type: boolean
+          examples:
+            - false
+        rule_settable:
+          type: boolean
+          description: Used in Assignment Rules
+          examples:
+            - false
+        placeholderable:
+          type: boolean
+          description: Used in placeholders
+          examples:
+            - false
+        allowed_rule_set_types:
+          type: array
+          items:
+            type: string
+          examples:
+            - - journey
+              - module
+              - child_module
+              - task
+              - communication
+              - report
+        allowed_placeholder_type:
+          type: array
+          items:
+            type: string
+          examples:
+            - - journey
+              - communication
+              - html_editor_task
         mapping:
           type: string
           examples:
@@ -1523,11 +1578,135 @@ components:
             - 64891c74d5ee1bb16dfdafd8
     OfficeLocationId:
       type: object
+      required:
+        - id
+        - external_ids
       properties:
         workday:
           type: string
           examples:
             - LOCATION-3-69
+        id:
+          type: string
+          examples:
+            - LOCATION-3-69
+        external_ids:
+          type: object
+          properties:
+            hris_id:
+              type: string
+              examples:
+                - 'E-1234'
+        address1:
+          type: string
+          examples:
+            - 123 Main St
+        address2:
+          type: string
+          examples:
+            - Suite 200
+        address3:
+          type: string
+          examples:
+            - Building B
+        city:
+          type: string
+          examples:
+            - New York
+        state:
+          type: string
+          examples:
+            - NY
+        region:
+          type: string
+          examples:
+            - Northeast
+        country:
+          type: string
+          examples:
+            - USA
+        postal_code:
+          type: string
+          examples:
+            - '10001'
+        time_zone:
+          type: string
+          examples:
+            - NZT
+        latitude:
+          type: number
+          format: float
+          examples:
+            - 3.12332
+        longitude:
+          type: number
+          format: float
+          examples:
+            - 3.12332
+    OfficeLocationIdUpdate:
+      type: object
+      properties:
+        workday:
+          type: string
+          examples:
+            - LOCATION-3-69
+        id:
+          type: string
+          examples:
+            - LOCATION-3-69
+        external_ids:
+          type: object
+          properties:
+            hris_id:
+              type: string
+              examples:
+                - 'E-1234'
+        address1:
+          type: string
+          examples:
+            - 123 Main St
+        address2:
+          type: string
+          examples:
+            - Suite 200
+        address3:
+          type: string
+          examples:
+            - Building B
+        city:
+          type: string
+          examples:
+            - New York
+        state:
+          type: string
+          examples:
+            - NY
+        region:
+          type: string
+          examples:
+            - Northeast
+        country:
+          type: string
+          examples:
+            - USA
+        postal_code:
+          type: string
+          examples:
+            - '10001'
+        time_zone:
+          type: string
+          examples:
+            - NZT
+        latitude:
+          type: number
+          format: float
+          examples:
+            - 3.12332
+        longitude:
+          type: number
+          format: float
+          examples:
+            - 3.12332
     PhoneNumber:
       type: object
       properties:
@@ -1550,11 +1729,12 @@ components:
             - true
     UserJourney:
       type: object
-      required:
-        - type
-        - user_id
       properties:
-        type:
+        journey_id:
+          type: string
+          examples:
+            - '123456'
+        journey_type:
           type: string
           examples:
             - pre_offer
@@ -1562,10 +1742,31 @@ components:
           type: string
           examples:
             - '123456'
+        state:
+          type: string
+          enum:
+            - draft
+            - needs_attention
+            - pending_approval
+            - approved
+            - rejected
+            - rescinded
+            - user_pending
+            - submitted
+            - declined
+            - completed
+          examples:
+            - draft
+        created_at:
+          type: string
+          examples:
+            - '2025-01-01'
         office_location_id:
           $ref: '#/components/schemas/OfficeLocationId'
         custom_fields:
-          $ref: '#/components/schemas/CustomFieldsObject'
+          allOf:
+            - $ref: '#/components/schemas/CustomFieldsObject'
+          description: Custom fields object for the user journey - we pass the key for any configured custom fields for this journey type.
         documents:
           type: array
           items:
@@ -1583,6 +1784,17 @@ components:
             - '1234'
         state:
           type: string
+          enum:
+            - draft
+            - needs_attention
+            - pending_approval
+            - approved
+            - rejected
+            - rescinded
+            - user_pending
+            - submitted
+            - declined
+            - completed
           examples:
             - draft
         custom_fields:
@@ -1590,18 +1802,35 @@ components:
     UserJourneyUpdate:
       type: object
       properties:
-        type:
-          type: string
-          examples:
-            - pre_offer
-        user_id:
+        journey_id:
           type: string
           examples:
             - '123456'
+        state:
+          type: string
+          enum:
+            - draft
+            - needs_attention
+            - pending_approval
+            - approved
+            - rejected
+            - rescinded
+            - user_pending
+            - submitted
+            - declined
+            - completed
+          examples:
+            - draft
+        created_at:
+          type: string
+          examples:
+            - '2025-01-01'
         office_location_id:
-          $ref: '#/components/schemas/OfficeLocationId'
+          $ref: '#/components/schemas/OfficeLocationIdUpdate'
         custom_fields:
-          $ref: '#/components/schemas/CustomFieldsObject'
+          allOf:
+            - $ref: '#/components/schemas/CustomFieldsObject'
+          description: Custom fields object for the user journey - we pass the key for any configured custom fields for this journey type.
         documents:
           type: array
           items:
@@ -2131,20 +2360,4 @@ components:
   securitySchemes:
     BearerAuth:
       type: http
-      scheme: bearer
-servers:
-  - url: https://demo-uat.xpand.io
-    description: Demo UAT
-    variables: {}
-  - url: https://demo-staging.xpand.io
-    description: Demo Staging
-    variables: {}
-  - url: https://creditkarma-staging.xpand.io
-    description: CK Staging
-    variables: {}
-  - url: https://citadel-staging.xpand.io
-    description: Citadel Staging
-    variables: {}
-  - url: https://mphasis-staging.xpand.io
-    description: Mphasis Staging
-    variables: {}
+      scheme: Bearer
