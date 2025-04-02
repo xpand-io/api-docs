@@ -1,11 +1,14 @@
 openapi: 3.1.0
 info:
   title: Xpand API
-  version: v2
+  version: 2025-03
 tags:
   - name: Users
   - name: Offers
   - name: References
+  - name: Journeys
+  - name: User Journeys
+  - name: Custom Fields
 paths:
   /api/v1/job_profiles:
     get:
@@ -156,12 +159,12 @@ paths:
                 type: string
                 description: Comma separated list of Xpand User IDs
                 examples:
-                  - john@example.com,jane@example.com
+                  - 64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9
               emails:
                 type: string
                 description: Comma separated list of User Emails
                 examples:
-                  - 64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9
+                  - john@example.com,jane@example.com
           explode: false
         - name: page
           in: query
@@ -273,6 +276,458 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UserRequestUpdate'
+  /api/v2/custom_fields:
+    get:
+      operationId: CustomFields_listCustomFields
+      summary: Index Custom Fields
+      parameters:
+        - name: filters
+          in: query
+          required: false
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Comma separated list of Custom Field IDs
+                examples:
+                  - 1234,123456
+              journey_type:
+                type: string
+                description: Comma separated list of Journey Types
+                examples:
+                  - Journey, User Journey
+              sub_type:
+                type: string
+                description: Comma separated list of Sub Types
+                examples:
+                  - PreOffer, Offer, PostOffer, Onboarding, Offboarding
+              data_type:
+                type: string
+                description: Comma separated list of Data Types
+                examples:
+                  - Datetime, String
+              active:
+                type: string
+                description: Comma separated list of Active
+                examples:
+                  - true, false
+          explode: false
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+          explode: false
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+          explode: false
+        - name: order_by
+          in: query
+          required: false
+          schema:
+            type: string
+            default: created_at
+          explode: false
+        - name: direction
+          in: query
+          required: false
+          schema:
+            type: string
+            default: asc
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomField'
+      tags:
+        - Custom Fields
+    post:
+      operationId: CustomFields_createCustomField
+      summary: Create a Custom Field
+      parameters: []
+      responses:
+        '201':
+          description: The request has succeeded and a new resource has been created as a result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomField'
+        '422':
+          description: Client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      tags:
+        - Custom Fields
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomField'
+  /api/v2/custom_fields/{id}:
+    get:
+      operationId: CustomFields_getCustomField
+      summary: Show a Custom Field
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomField'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+      tags:
+        - Custom Fields
+  /api/v2/custom_fields/{id}/activate:
+    patch:
+      operationId: CustomFields_activateCustomField
+      summary: Activate a Custom Field
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+      tags:
+        - Custom Fields
+  /api/v2/custom_fields/{id}/deactivate:
+    patch:
+      operationId: CustomFields_deactivateCustomField
+      summary: Deactivate a Custom Field
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+      tags:
+        - Custom Fields
+  /api/v2/journeys:
+    get:
+      operationId: Journeys_list
+      summary: List Journeys
+      parameters:
+        - name: filters
+          in: query
+          required: false
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Comma separated list of title
+                examples:
+                  - Offer, Next Offer
+              journey_type:
+                type: string
+                description: Comma separated list of journey types
+                examples:
+                  - pre_offer, offer, post_offer, onboarding, offboarding
+              published:
+                type: boolean
+                examples:
+                  - true
+          explode: false
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+          explode: false
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+          explode: false
+        - name: order_by
+          in: query
+          required: false
+          schema:
+            type: string
+            default: created_at
+          explode: false
+        - name: direction
+          in: query
+          required: false
+          schema:
+            type: string
+            default: asc
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Journey'
+      tags:
+        - Journeys
+  /api/v2/journeys/{id}:
+    get:
+      operationId: Journeys_get
+      summary: Fetch Journey
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Journey'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+      tags:
+        - Journeys
+  /api/v2/user_journeys:
+    get:
+      operationId: UserJourneys_list
+      summary: List User Journeys
+      parameters:
+        - name: filters
+          in: query
+          required: false
+          schema:
+            type: object
+            properties:
+              user_id:
+                type: string
+                description: Comma separated list of User IDs
+                examples:
+                  - 64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9
+              journey_id:
+                type: string
+                description: Comma separated list of Journey IDs
+                examples:
+                  - 64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9
+              office_location_id:
+                type: string
+                description: Comma separated list of Office Location IDs
+                examples:
+                  - 64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9
+              journey_type:
+                type: string
+                description: Comma separated list of journey types
+                examples:
+                  - pre_offer, offer, post_offer, onboarding, offboarding
+              state:
+                type: string
+                description: Comma separated list of states
+                examples:
+                  - draft, needs_attention, pending_approval, approved, rejected, rescinded, user_pending, submitted, declined, completed
+              custom_fields:
+                $ref: '#/components/schemas/CustomFieldsObject'
+          explode: false
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+          explode: false
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+          explode: false
+        - name: order_by
+          in: query
+          required: false
+          schema:
+            type: string
+            default: created_at
+          explode: false
+        - name: direction
+          in: query
+          required: false
+          schema:
+            type: string
+            default: asc
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserJourney'
+      tags:
+        - User Journeys
+    post:
+      operationId: UserJourneys_create
+      summary: Create User Journey
+      parameters: []
+      responses:
+        '201':
+          description: The request has succeeded and a new resource has been created as a result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserJourney'
+        '422':
+          description: Client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      tags:
+        - User Journeys
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserJourney'
+  /api/v2/user_journeys/{id}:
+    get:
+      operationId: UserJourneys_get
+      summary: Fetch User Journey
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserJourney'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+      tags:
+        - User Journeys
+    patch:
+      operationId: UserJourneys_update
+      summary: Update User Journey
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserJourney'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: Client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      tags:
+        - User Journeys
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserJourneyUpdate'
+  /api/v2/user_journeys/{id}/rescind:
+    patch:
+      operationId: UserJourneys_rescind
+      summary: Rescind User Journey
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: The request has succeeded and a new resource has been created as a result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserJourney'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: Client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+      tags:
+        - User Journeys
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rescind_reason:
+                  type: string
+security:
+  - BearerAuth: []
 components:
   schemas:
     Address:
@@ -348,6 +803,145 @@ components:
               examples:
                 - cba
           description: Responses provided in PDF form fields (only present when attachment is a PDF with form fields)
+    CustomField:
+      type: object
+      required:
+        - id
+        - key
+        - created_at
+        - journey_type
+        - name
+        - data_type
+        - mandatory
+        - allowed_rule_set_types
+        - allowed_placeholder_type
+        - allowed_values
+        - list_of_values_map_id
+      properties:
+        id:
+          type: string
+          examples:
+            - '12345'
+        key:
+          type: string
+          examples:
+            - '1234'
+        created_at:
+          type: string
+          examples:
+            - '2025-01-01'
+        journey_type:
+          type: string
+          examples:
+            - pre_offer, offer, post_offer, onboarding, offboarding
+        name:
+          type: string
+          examples:
+            - Start date
+        data_type:
+          type: string
+          examples:
+            - Datetime
+        mandatory:
+          type: boolean
+          examples:
+            - false
+        deactivated:
+          type: boolean
+          examples:
+            - false
+        rule_settable:
+          type: boolean
+          description: Used in Assignment Rules
+          examples:
+            - false
+        placeholderable:
+          type: boolean
+          description: Used in placeholders
+          examples:
+            - false
+        allowed_rule_set_types:
+          type: array
+          items:
+            type: string
+          examples:
+            - - journey
+              - module
+              - child_module
+              - task
+              - communication
+              - report
+        allowed_placeholder_type:
+          type: array
+          items:
+            type: string
+          examples:
+            - - journey
+              - communication
+              - html_editor_task
+        mapping:
+          type: string
+          examples:
+            - salutation, nickname, title, university, current_location, employee_id, profile_photo_url, division, hire_type, company_code, relocation_type, job_profile_id
+        validation_rule:
+          type: string
+          examples:
+            - regexp, list_of_values_map, list, previous_date_time, future_date_time, workday_job_profile, workday_organization
+        regexp_pattern:
+          type: string
+          description: Required if validation_rule is regexp
+          examples:
+            - ^[a-zA-Z0-9]+$
+        allowed_values:
+          type: array
+          items:
+            type: string
+          description: Required if validation_rule is list
+          examples:
+            - - a
+              - b
+              - c
+        list_of_values_map_id:
+          type: string
+          description: Required if validation_rule is list_of_values_map
+          examples:
+            - citadel_LegalEntityLOV
+        workday_organization_type:
+          type: string
+          description: Required if validation_rule is workday_organization
+          examples:
+            - workday_organization_type
+    CustomFieldsObject:
+      type: object
+      properties:
+        start_date:
+          type: string
+          examples:
+            - 1-2-2025
+        pay_rate:
+          type: string
+          examples:
+            - '1.2345'
+        recruiter:
+          type: string
+          examples:
+            - R-111
+        recruiting_coordinator:
+          type: string
+          examples:
+            - R-2222
+        recruiting_manager:
+          type: string
+          examples:
+            - R-333
+        hiring_manager:
+          type: string
+          examples:
+            - M-111
+        direct_manager:
+          type: string
+          examples:
+            - D-1234
     Document:
       type: object
       properties:
@@ -462,6 +1056,47 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Attachment'
+    Journey:
+      type: object
+      required:
+        - id
+        - title
+        - journey_type
+        - published
+        - created_at
+      properties:
+        id:
+          type: string
+          examples:
+            - '12345'
+        title:
+          type: string
+          examples:
+            - Offer
+        journey_type:
+          type: string
+          examples:
+            - pre_offer, offer, post_offer, onboarding, offboarding
+        published:
+          type: boolean
+          examples:
+            - true
+        created_at:
+          type: string
+          examples:
+            - 2025/01/01
+    NotFoundError:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - NOT_FOUND
+        message:
+          type: string
     OfferLetterRequest:
       type: object
       required:
@@ -948,6 +1583,137 @@ components:
             - $ref: '#/components/schemas/uuid'
           examples:
             - 64891c74d5ee1bb16dfdafd8
+    OfficeLocationId:
+      type: object
+      required:
+        - id
+        - external_ids
+      properties:
+        workday:
+          type: string
+          examples:
+            - LOCATION-3-69
+        id:
+          type: string
+          examples:
+            - LOCATION-3-69
+        external_ids:
+          type: object
+          properties:
+            hris_id:
+              type: string
+              examples:
+                - 'E-1234'
+        address1:
+          type: string
+          examples:
+            - 123 Main St
+        address2:
+          type: string
+          examples:
+            - Suite 200
+        address3:
+          type: string
+          examples:
+            - Building B
+        city:
+          type: string
+          examples:
+            - New York
+        state:
+          type: string
+          examples:
+            - NY
+        region:
+          type: string
+          examples:
+            - Northeast
+        country:
+          type: string
+          examples:
+            - USA
+        postal_code:
+          type: string
+          examples:
+            - '10001'
+        time_zone:
+          type: string
+          examples:
+            - NZT
+        latitude:
+          type: number
+          format: float
+          examples:
+            - 3.12332
+        longitude:
+          type: number
+          format: float
+          examples:
+            - 3.12332
+    OfficeLocationIdUpdate:
+      type: object
+      properties:
+        workday:
+          type: string
+          examples:
+            - LOCATION-3-69
+        id:
+          type: string
+          examples:
+            - LOCATION-3-69
+        external_ids:
+          type: object
+          properties:
+            hris_id:
+              type: string
+              examples:
+                - 'E-1234'
+        address1:
+          type: string
+          examples:
+            - 123 Main St
+        address2:
+          type: string
+          examples:
+            - Suite 200
+        address3:
+          type: string
+          examples:
+            - Building B
+        city:
+          type: string
+          examples:
+            - New York
+        state:
+          type: string
+          examples:
+            - NY
+        region:
+          type: string
+          examples:
+            - Northeast
+        country:
+          type: string
+          examples:
+            - USA
+        postal_code:
+          type: string
+          examples:
+            - '10001'
+        time_zone:
+          type: string
+          examples:
+            - NZT
+        latitude:
+          type: number
+          format: float
+          examples:
+            - 3.12332
+        longitude:
+          type: number
+          format: float
+          examples:
+            - 3.12332
     PhoneNumber:
       type: object
       properties:
@@ -968,6 +1734,121 @@ components:
           type: boolean
           examples:
             - true
+    UserJourney:
+      type: object
+      required:
+        - id
+        - journey_id
+      properties:
+        id:
+          type: string
+          examples:
+            - '123456898'
+        journey_id:
+          type: string
+          examples:
+            - '123456'
+        journey_type:
+          type: string
+          examples:
+            - pre_offer
+        user_id:
+          type: string
+          examples:
+            - '123456'
+        state:
+          type: string
+          enum:
+            - draft
+            - needs_attention
+            - pending_approval
+            - approved
+            - rejected
+            - rescinded
+            - user_pending
+            - submitted
+            - declined
+            - completed
+          examples:
+            - draft
+        created_at:
+          type: string
+          examples:
+            - '2025-01-01'
+        office_location_id:
+          $ref: '#/components/schemas/OfficeLocationId'
+        custom_fields:
+          allOf:
+            - $ref: '#/components/schemas/CustomFieldsObject'
+          description: Custom fields object for the user journey - we pass the key for any configured custom fields for this journey type.
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+    UserJourneyQueryData:
+      type: object
+      properties:
+        id:
+          type: string
+          examples:
+            - '12345'
+        user_id:
+          type: string
+          examples:
+            - '1234'
+        state:
+          type: string
+          enum:
+            - draft
+            - needs_attention
+            - pending_approval
+            - approved
+            - rejected
+            - rescinded
+            - user_pending
+            - submitted
+            - declined
+            - completed
+          examples:
+            - draft
+        custom_fields:
+          $ref: '#/components/schemas/CustomFieldsObject'
+    UserJourneyUpdate:
+      type: object
+      properties:
+        journey_id:
+          type: string
+          examples:
+            - '123456'
+        state:
+          type: string
+          enum:
+            - draft
+            - needs_attention
+            - pending_approval
+            - approved
+            - rejected
+            - rescinded
+            - user_pending
+            - submitted
+            - declined
+            - completed
+          examples:
+            - draft
+        created_at:
+          type: string
+          examples:
+            - '2025-01-01'
+        office_location_id:
+          $ref: '#/components/schemas/OfficeLocationIdUpdate'
+        custom_fields:
+          allOf:
+            - $ref: '#/components/schemas/CustomFieldsObject'
+          description: Custom fields object for the user journey - we pass the key for any configured custom fields for this journey type.
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
     UserRequest:
       type: object
       required:
@@ -1390,6 +2271,23 @@ components:
             - $ref: '#/components/schemas/uuid'
           examples:
             - 64891c74d5ee1bb16dfdafd8
+    ValidationError:
+      type: object
+      required:
+        - code
+        - message
+        - details
+      properties:
+        code:
+          type: string
+          enum:
+            - VALIDATION_ERROR
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: string
     WorkExperience:
       type: object
       properties:
@@ -1473,3 +2371,7 @@ components:
     uuid:
       type: string
       format: uuid
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: Bearer

@@ -5,27 +5,34 @@ using TypeSpec.Http;
 using TypeSpec.OpenAPI;
 
 @service(#{ title: "Xpand API" })
-@info(#{ version: "v2" })
-@route("/api/v1")
-namespace API {
-  @format("uuid")
-  scalar uuid extends string;
+@info(#{ version: "2025-03" })
 
-  @format("email")
-  scalar email extends string;
+// @server("https://mphasis-staging.xpand.io", "Mphasis Staging")
+// @server("https://citadel-staging.xpand.io", "Citadel Staging")
+// @server("https://creditkarma-staging.xpand.io", "CK Staging")
+// @server("https://demo-staging.xpand.io", "Demo Staging")
+// @server("https://demo-uat.xpand.io", "Demo UAT")
+
+@useAuth(BearerAuth)
+
+@route("/api")
+namespace API {
+  //
+  // Operations
+  //
 
   @tag("Users")
-  @route("/users")
+  @route("/v1/users")
   namespace Users {
     @summary("Search Users")
     op list(
       @query filter?: {
         @doc("Comma separated list of Xpand User IDs")
-        @example("john@example.com,jane@example.com")
+        @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
         ids?: string;
 
         @doc("Comma separated list of User Emails")
-        @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
+        @example("john@example.com,jane@example.com")
         emails?: string;
       },
       @query page?: integer = 1,
@@ -34,7 +41,6 @@ namespace API {
     };
 
     @summary("Create User")
-    @post
     op create(
       @body content: {
         data: {
@@ -58,7 +64,7 @@ namespace API {
   }
 
   @tag("Offers")
-  @route("/offer_letters")
+  @route("/v1/offer_letters")
   namespace Offers {
     @summary("Search Offer Letters")
     op list(
@@ -94,7 +100,6 @@ namespace API {
     };
 
     @summary("Create/Update Offer Letter")
-    @post
     op create(
       @body content: {
         data: {
@@ -113,13 +118,211 @@ namespace API {
   @tag("References")
   namespace References {
     @summary("Fetch Job Profiles")
-    @route("/job_profiles")
+    @route("/v1/job_profiles")
     op job_profiles(): void;
 
     @summary("Fetch Office Locations")
-    @route("/office_locations")
+    @route("/v1/office_locations")
     op office_locations(): void;
   }
+
+  @tag("Journeys")
+  @route("/v2/journeys")
+  namespace Journeys {
+    @summary("List Journeys")
+    op list(
+      @query filters?: {
+        @doc("Comma separated list of title")
+        @example("Offer, Next Offer")
+        title?: string;
+
+        @doc("Comma separated list of journey types")
+        @example("pre_offer, offer, post_offer, onboarding, offboarding")
+        journey_type?: string;
+
+        @example(true)
+        published?: boolean;
+      },
+      @query offset?: integer = 0,
+      @query limit?: integer = 50,
+      @query order_by?: string = "created_at",
+      @query direction?: string = "asc",
+    ): {
+      @statusCode statusCode: 200;
+      @body body: Journey[];
+    };
+
+    @summary("Fetch Journey")
+    op get(@path id: string): {
+      @statusCode statusCode: 200;
+      @body body: Journey;
+    } | {
+      @statusCode statusCode: 404;
+      @body error: NotFoundError;
+    };
+  }
+
+  @tag("User Journeys")
+  @route("/v2/user_journeys")
+  namespace UserJourneys {
+    @summary("List User Journeys")
+    op list(
+      @query filters?: {
+        @doc("Comma separated list of User IDs")
+        @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
+        user_id?: string;
+
+        @doc("Comma separated list of Journey IDs")
+        @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
+        journey_id?: string;
+
+        @doc("Comma separated list of Office Location IDs")
+        @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
+        office_location_id?: string;
+
+        @doc("Comma separated list of journey types")
+        @example("pre_offer, offer, post_offer, onboarding, offboarding")
+        journey_type?: string;
+
+        @doc("Comma separated list of states")
+        @example("draft, needs_attention, pending_approval, approved, rejected, rescinded, user_pending, submitted, declined, completed")
+        state?: string;
+
+        custom_fields?: CustomFieldsObject;
+      },
+      @query offset?: integer = 0,
+      @query limit?: integer = 50,
+      @query order_by?: string = "created_at",
+      @query direction?: string = "asc",
+    ): {
+      @statusCode statusCode: 200;
+      @body body: UserJourney[];
+    };
+
+    @summary("Fetch User Journey")
+    op get(@path id: string): {
+      @statusCode statusCode: 200;
+      @body body: UserJourney;
+    } | {
+      @statusCode statusCode: 404;
+      @body error: NotFoundError;
+    };
+
+    @summary("Create User Journey")
+    op create(@body userJourney: UserJourney): {
+      @statusCode statusCode: 201;
+      @body body: UserJourney;
+    } | {
+      @statusCode statusCode: 422;
+      @body error: ValidationError;
+    };
+
+    @summary("Update User Journey")
+    @patch
+    op update(@path id: string, @body userJourney: UserJourneyUpdate): {
+      @statusCode statusCode: 204;
+      @body body: UserJourney;
+    } | {
+      @statusCode statusCode: 404;
+      @body error: NotFoundError;
+    } | {
+      @statusCode statusCode: 422;
+      @body error: ValidationError;
+    };
+
+    @route("{id}/rescind")
+    @summary("Rescind User Journey")
+    @patch
+    op rescind(@path id: string,
+      @body body: {
+        rescind_reason: string;
+      },
+    ): {
+      @statusCode statusCode: 201;
+      @body body: UserJourney;
+    } | {
+      @statusCode statusCode: 404;
+      @body error: NotFoundError;
+    } | {
+      @statusCode statusCode: 422;
+      @body error: ValidationError;
+    };
+  }
+
+  @tag("Custom Fields")
+    @summary("Custom Fields")
+    @route("v2/custom_fields")
+    namespace CustomFields{
+      @summary("Index Custom Fields")
+      @get
+      op listCustomFields( @query filters?: {
+        @doc("Comma separated list of Custom Field IDs")
+        @example("1234,123456")
+        id?: string;
+
+        @doc("Comma separated list of Journey Types")
+        @example("Journey, User Journey")
+        journey_type?: string;
+
+        @doc("Comma separated list of Sub Types")
+        @example("PreOffer, Offer, PostOffer, Onboarding, Offboarding")
+        sub_type?: string;
+
+        @doc("Comma separated list of Data Types")
+        @example("Datetime, String")
+        data_type?: string;
+
+        @doc("Comma separated list of Active")
+        @example("true, false")
+        active?: string;
+      },
+      @query offset?: integer = 0,
+      @query limit?: integer = 50,
+      @query order_by?: string = "created_at",
+      @query direction?: string = "asc",
+      ): | {
+        @statusCode statusCode: 200;
+        @body customFields: CustomField[];
+      };
+
+      @summary("Show a Custom Field")
+      @get
+      op getCustomField(@path id: string): {
+        @statusCode statusCode: 200;
+        @body customField: CustomField;
+      } | {
+        @statusCode statusCode: 404;
+        @body error: NotFoundError;
+      };
+
+      @summary("Create a Custom Field")
+      @post
+      op createCustomField(@body customField: CustomField): {
+        @statusCode statusCode: 201;
+        @body newCustomField: CustomField;
+      } | {
+        @statusCode statusCode: 422;
+        @body error: ValidationError;
+      };
+
+      @route("{id}/activate")
+      @summary("Activate a Custom Field")
+      @patch
+      op activateCustomField(@path id: string): {
+        @statusCode statusCode: 200;
+      };
+
+      @route("{id}/deactivate")
+      @summary("Deactivate a Custom Field")
+      @patch
+      op deactivateCustomField(@path id: string): {
+        @statusCode statusCode: 200;
+      };
+    }
+
+  //
+  // Models
+  //
 
   model Address {
     @example("31 St, 34 West")
@@ -170,6 +373,91 @@ namespace API {
       @example("cba")
       field_name_2?: string;
     };
+  }
+
+  model CustomField {
+    @example("12345")
+    id: string;
+
+    @example("1234")
+    key: string;
+    
+    @example("2025-01-01")
+    created_at: string;
+
+    @example("pre_offer, offer, post_offer, onboarding, offboarding")
+    journey_type: string;
+
+    @example("Start date")
+    name: string;
+
+    @example("Datetime")
+    data_type: string;
+
+    @example(false)
+    mandatory: boolean;
+
+    @example(false)
+    deactivated?: boolean;
+
+    @doc("Used in Assignment Rules")
+    @example(false)
+    rule_settable?: boolean;
+
+    @doc("Used in placeholders")
+    @example(false)
+    placeholderable?: boolean;
+
+    @example(#["journey", "module", "child_module", "task", "communication", "report"])
+    allowed_rule_set_types: string[];
+
+    @example(#["journey", "communication", "html_editor_task"])
+    allowed_placeholder_type: string[];
+
+    @example("salutation, nickname, title, university, current_location, employee_id, profile_photo_url, division, hire_type, company_code, relocation_type, job_profile_id")
+    mapping?: string;
+
+    @example("regexp, list_of_values_map, list, previous_date_time, future_date_time, workday_job_profile, workday_organization")
+    validation_rule?: string;
+
+    @doc("Required if validation_rule is regexp")
+    @example("^[a-zA-Z0-9]+$")
+    regexp_pattern?: string;
+    
+    @doc("Required if validation_rule is list")
+    @example(#["a", "b", "c"])
+    allowed_values: string[];
+
+    @doc("Required if validation_rule is list_of_values_map")
+    @example("citadel_LegalEntityLOV")
+    list_of_values_map_id: string;
+
+    @doc("Required if validation_rule is workday_organization")
+    @example("workday_organization_type")
+    workday_organization_type?: string;
+  }
+
+  model CustomFieldsObject {
+    @example("1-2-2025")
+    start_date?: string;
+
+    @example("1.2345")
+    pay_rate?: string;
+
+    @example("R-111")
+    recruiter?: string;
+
+    @example("R-2222")
+    recruiting_coordinator?: string;
+
+    @example("R-333")
+    recruiting_manager?: string;
+
+    @example("M-111")
+    hiring_manager?: string;
+
+    @example("D-1234")
+    direct_manager?: string;
   }
 
   model Document {
@@ -248,6 +536,23 @@ namespace API {
 
     address?: Address;
     attachments?: Attachment[];
+  }
+
+  model Journey {
+    @example("12345")
+    id: string;
+
+    @example("Offer")
+    title: string;
+
+    @example("pre_offer, offer, post_offer, onboarding, offboarding")
+    journey_type: string;
+
+    @example(true)
+    published: boolean;
+
+    @example("2025/01/01")
+    created_at: string;
   }
 
   model OfferLetterRequest {
@@ -432,6 +737,52 @@ namespace API {
     id: uuid;
   }
 
+  model OfficeLocationId {
+    @example("LOCATION-3-69")
+    workday?: string;
+
+    @example("LOCATION-3-69")
+    id: string;
+
+    external_ids: {
+      @example("E-1234")
+      hris_id?: string;
+    };
+
+    @example("123 Main St")
+    address1?: string;
+
+    @example("Suite 200")
+    address2?: string;
+
+    @example("Building B")
+    address3?: string;
+
+    @example("New York")
+    city?: string;
+
+    @example("NY")
+    state?: string;
+
+    @example("Northeast")
+    region?: string;
+
+    @example("USA")
+    country?: string;
+
+    @example("10001")
+    postal_code?: string;
+
+    @example("NZT")
+    time_zone?: string;
+
+    @example(3.12332)
+    latitude?: float32;
+
+    @example(3.12332)
+    longitude?: float32;
+  }
+
   model PhoneNumber {
     @doc("E.164 Format")
     @example("+14044580998")
@@ -442,6 +793,64 @@ namespace API {
 
     @example(true)
     primary?: boolean;
+  }
+
+  model UserJourney {
+    @example("123456898")
+    id: string; 
+
+    @example("123456")
+    journey_id: string;
+
+    @example("pre_offer")
+    journey_type?: string;
+
+    @example("123456")
+    user_id?: string;
+
+    @example("draft")
+    state?: "draft" | "needs_attention" | "pending_approval" | "approved" | "rejected" | "rescinded" | "user_pending" | "submitted" | "declined" | "completed";
+
+    @example("2025-01-01")
+    created_at?: string;
+
+    office_location_id?: OfficeLocationId;
+    
+    @doc("Custom fields object for the user journey - we pass the key for any configured custom fields for this journey type.")
+    custom_fields?: CustomFieldsObject;
+    
+    documents?: Document[];
+  }
+
+  model UserJourneyUpdate {
+    @example("123456")
+    journey_id: string;
+
+    @example("draft")
+    state?: "draft" | "needs_attention" | "pending_approval" | "approved" | "rejected" | "rescinded" | "user_pending" | "submitted" | "declined" | "completed";
+
+    @example("2025-01-01")
+    created_at?: string;
+
+    office_location_id?: OfficeLocationId;
+    
+    @doc("Custom fields object for the user journey - we pass the key for any configured custom fields for this journey type.")
+    custom_fields?: CustomFieldsObject;
+    
+    documents?: Document[];
+  }
+
+  model UserJourneyQueryData {
+    @example("12345")
+    id?: string;
+
+    @example("1234")
+    user_id?: string;
+
+    @example("draft")
+    state?: "draft" | "needs_attention" | "pending_approval" | "approved" | "rejected" | "rescinded" | "user_pending" | "submitted" | "declined" | "completed";
+
+    custom_fields?: CustomFieldsObject;
   }
 
   model UserRequest {
@@ -650,4 +1059,31 @@ namespace API {
     address?: Address;
     attachments?: Attachment[];
   }
+
+  //
+  // Errors
+  //
+
+  @error
+  model NotFoundError {
+    code: "NOT_FOUND";
+    message: string;
+  }
+
+  @error
+  model ValidationError {
+    code: "VALIDATION_ERROR";
+    message: string;
+    details: string[];
+  }
+
+  //
+  // Scalars
+  //
+
+  @format("uuid")
+  scalar uuid extends string;
+
+  @format("email")
+  scalar email extends string;
 }
