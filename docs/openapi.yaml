@@ -156,12 +156,12 @@ paths:
                 type: string
                 description: Comma separated list of Xpand User IDs
                 examples:
-                  - john@example.com,jane@example.com
+                  - 64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9
               emails:
                 type: string
                 description: Comma separated list of User Emails
                 examples:
-                  - 64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9
+                  - john@example.com,jane@example.com
           explode: false
         - name: page
           in: query
@@ -222,7 +222,7 @@ paths:
                 - data
   /api/v1/users/{id}:
     get:
-      operationId: Users_read
+      operationId: Users_show
       summary: Fetch User
       parameters:
         - name: id
@@ -272,7 +272,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserRequestUpdate'
+              $ref: '#/components/schemas/UserRequest'
 components:
   schemas:
     Address:
@@ -981,153 +981,6 @@ components:
         - external_ids
         - office_location_id
         - recruiter_ids
-      properties:
-        email:
-          allOf:
-            - $ref: '#/components/schemas/email'
-          description: 'Must be a valid email address. Must be unique for each user. Non case-sensitive. Regex validation: ^(?!...)[a-zA-Z0-9][\w-.]@[A-Za-z\d-]+(.[A-Za-z\d-]+)*.[A-Za-z]+$'
-          examples:
-            - daniel@personal.com
-        work_email:
-          allOf:
-            - $ref: '#/components/schemas/email'
-          description: 'Must be a valid email address. Must be unique for each user. Non case-sensitive. Regex validation: ^(?!...)[a-zA-Z0-9][\w-.]@[A-Za-z\d-]+(.[A-Za-z\d-]+)*.[A-Za-z]+$'
-          examples:
-            - daniel@company.com
-        first_name:
-          type: string
-          description: Must not contain numbers or any of the following special characters !@#$%^&*()
-          examples:
-            - Daniel
-        last_name:
-          type: string
-          description: Must not contain numbers or any of the following special characters !@#$%^&*()
-          examples:
-            - Smith
-        middle_name:
-          type: string
-          description: Must not contain numbers or any of the following special characters !@#$%^&*()
-          examples:
-            - Jones
-        start_date:
-          type: string
-          format: date
-          description: 'Format: YYYY-MM-DD. Can be present, or future dates only.'
-          examples:
-            - '2023-09-08'
-        employee_type:
-          type: string
-          description: See reference values here for allowed employee type values.
-          examples:
-            - Regular
-        candidate_status:
-          type: string
-          description: See reference values here for allowed candidate status values.
-          examples:
-            - offer_accepted
-        legal_entity:
-          type: string
-          description: See reference values here for existing legal entity values.
-          examples:
-            - Xpand Limited
-        cost_center_id:
-          type: string
-          description: See reference values here for existing cost center values.
-          examples:
-            - Cost Center
-        relocation_type:
-          type: string
-          description: Allowes the relocation type values.
-          examples:
-            - global_relocation
-        blocked:
-          type: boolean
-          description: Disable or enable a user account in Xpand.
-          examples:
-            - false
-        reason_blocked:
-          type: string
-          description: A brief description of why the user why the user account is being disabled in Xpand
-          examples:
-            - Inactive in ATS System
-        external_ids:
-          type: object
-          properties:
-            ats_id:
-              type: string
-              examples:
-                - A-1234
-            hris_id:
-              type: string
-              examples:
-                - 'E-1234'
-          description: This is the collection of unique id of the Applicant Tracking System (ATS) and employee id of the Human Resource Information Systems (HRIS)
-        office_location_id:
-          type: object
-          properties:
-            workday:
-              type: string
-              examples:
-                - LOCATION-3-69
-          description: "JSON where key is name of external service, e.g. {'HRIS_ID': 'NEWYORK'. There must be an office location in Xpand with a matching employee id. See reference values here for existing office location external ids"
-        recruiter_ids:
-          type: object
-          properties:
-            recruiter:
-              type: object
-              properties:
-                hris_id:
-                  type: string
-                  examples:
-                    - R-1111
-            recruiting_coordinator:
-              type: object
-              properties:
-                hris_id:
-                  type: string
-                  examples:
-                    - R-2222
-            recruiting_manager:
-              type: object
-              properties:
-                hris_id:
-                  type: string
-                  examples:
-                    - R-3333
-          description: "JSON where key is name of external service, e.g. {:recruiter=>{'HRIS_SYS'=>'12345'}, recruiting_manager=>{'HRIS_SYS'=>'56789'}} (There must be a recruiter in Xpand or HRIS_SYS(Ex: workday) with a matching employee id)"
-        manager_ids:
-          type: object
-          properties:
-            hris_id:
-              type: array
-              items:
-                type: string
-              examples:
-                - - M-1111
-                  - M-2222
-          description: "JSON where key is name of external service, e.g. {'HRIS_SYS': ['123456', '45678']} (There must be a manager in Xpand or HRIS with a matching employee id)"
-        documents:
-          type: array
-          items:
-            $ref: '#/components/schemas/Document'
-        educations:
-          type: array
-          items:
-            $ref: '#/components/schemas/Education'
-        work_experiences:
-          type: array
-          items:
-            $ref: '#/components/schemas/WorkExperience'
-        addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/Address'
-        phone_numbers:
-          type: array
-          items:
-            $ref: '#/components/schemas/PhoneNumber'
-    UserRequestUpdate:
-      type: object
       properties:
         email:
           allOf:

@@ -8,11 +8,9 @@ using TypeSpec.OpenAPI;
 @info(#{ version: "v2" })
 @route("/api/v1")
 namespace API {
-  @format("uuid")
-  scalar uuid extends string;
-
-  @format("email")
-  scalar email extends string;
+  //
+  // Operations
+  //
 
   @tag("Users")
   @route("/users")
@@ -21,11 +19,11 @@ namespace API {
     op list(
       @query filter?: {
         @doc("Comma separated list of Xpand User IDs")
-        @example("john@example.com,jane@example.com")
+        @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
         ids?: string;
 
         @doc("Comma separated list of User Emails")
-        @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
+        @example("john@example.com,jane@example.com")
         emails?: string;
       },
       @query page?: integer = 1,
@@ -33,8 +31,12 @@ namespace API {
       data: UserResponseFull[];
     };
 
+    @summary("Fetch User")
+    op show(@path id: uuid): {
+      data: UserResponseFull;
+    };
+
     @summary("Create User")
-    @post
     op create(
       @body content: {
         data: {
@@ -43,11 +45,6 @@ namespace API {
       },
     ): {
       data: UserResponseSimple;
-    };
-
-    @summary("Fetch User")
-    op read(@path id: uuid): {
-      data: UserResponseFull;
     };
 
     @summary("Update User")
@@ -94,7 +91,6 @@ namespace API {
     };
 
     @summary("Create/Update Offer Letter")
-    @post
     op create(
       @body content: {
         data: {
@@ -120,6 +116,10 @@ namespace API {
     @route("/office_locations")
     op office_locations(): void;
   }
+
+  //
+  // Models
+  //
 
   model Address {
     @example("31 St, 34 West")
@@ -651,3 +651,13 @@ namespace API {
     attachments?: Attachment[];
   }
 }
+
+//
+// Scalars
+//
+
+@format("uuid")
+scalar uuid extends string;
+
+@format("email")
+scalar email extends string;
