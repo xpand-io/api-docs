@@ -189,7 +189,7 @@ namespace API {
 
     @route("/{id}/deactivate")
     @summary("Deactivate Custom Field")
-    @doc("Deactivates a custom field. This will not delete the custom field, but will make it inactive.")
+    @doc("Deactivates a custom field. This will not delete the custom field, but will make it inactive. Once deactivated it cannot be used in the Create User Journey API")
     @patch
     op deactivate(@path id: string): {
       @statusCode statusCode: 200;
