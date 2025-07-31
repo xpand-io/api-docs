@@ -304,7 +304,7 @@ paths:
                   - 1234,123456
               sub_type:
                 type: string
-                description: Comma separated list of Journey Types
+                description: Comma separated list of Transition Types
                 examples:
                   - pre_offer, offer, post_offer, onboarding, offboarding
               data_type:
@@ -458,9 +458,9 @@ paths:
                 description: Comma separated list of title
                 examples:
                   - Offer, Next Offer
-              journey_type:
+              transition_type:
                 type: string
-                description: Comma separated list of journey types
+                description: Comma separated list of transition types
                 examples:
                   - pre_offer, offer, post_offer, onboarding, offboarding
               published:
@@ -560,9 +560,9 @@ paths:
                 description: Comma separated list of Office Location IDs
                 examples:
                   - 64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9
-              journey_type:
+              transition_type:
                 type: string
-                description: Comma separated list of journey types
+                description: Comma separated list of transition types
                 examples:
                   - pre_offer, offer, post_offer, onboarding, offboarding
               state:
@@ -821,7 +821,7 @@ components:
       type: object
       required:
         - id
-        - journey_type
+        - transition_type
         - name
         - key
         - data_type
@@ -836,7 +836,7 @@ components:
           type: string
           examples:
             - '12345'
-        journey_type:
+        transition_type:
           type: string
           examples:
             - offer
@@ -928,7 +928,7 @@ components:
     CustomFieldCreate:
       type: object
       required:
-        - journey_type
+        - transition_type
         - name
         - key
         - data_type
@@ -939,7 +939,7 @@ components:
         - allowed_rule_set_types
         - allowed_placeholder_type
       properties:
-        journey_type:
+        transition_type:
           type: string
           examples:
             - offer
@@ -1171,7 +1171,7 @@ components:
       required:
         - id
         - title
-        - journey_type
+        - transition_type
         - publishing_state
         - created_at
       properties:
@@ -1183,7 +1183,7 @@ components:
           type: string
           examples:
             - Offer
-        journey_type:
+        transition_type:
           type: string
           examples:
             - offer
@@ -1794,7 +1794,7 @@ components:
           type: string
           examples:
             - '123456'
-        journey_type:
+        transition_type:
           type: string
           examples:
             - pre_offer
@@ -1816,7 +1816,7 @@ components:
         custom_field_values:
           allOf:
             - $ref: '#/components/schemas/CustomFieldsValueObject'
-          description: Custom fields object for the user journey - we pass the key for any configured custom fields for this journey type.
+          description: Custom fields object for the user journey - we pass the key for any configured custom fields for this transition type.
     UserJourneyCreate:
       type: object
       required:
@@ -1826,7 +1826,7 @@ components:
           type: string
           examples:
             - '123456'
-        journey_type:
+        transition_type:
           type: string
           examples:
             - pre_offer
@@ -1848,7 +1848,7 @@ components:
         custom_fields:
           allOf:
             - $ref: '#/components/schemas/CustomFieldsValueObject'
-          description: Custom fields object for the user journey - we pass the key for any configured custom fields for this journey type.
+          description: Custom fields object for the user journey - we pass the key for any configured custom fields for this transition type.
         documents:
           type: array
           items:
@@ -1907,7 +1907,7 @@ components:
         custom_fields:
           allOf:
             - $ref: '#/components/schemas/CustomFieldsValueObject'
-          description: Custom fields object for the user journey - we pass the key for any configured custom fields for this journey type.
+          description: Custom fields object for the user journey - we pass the key for any configured custom fields for this transition type.
         documents:
           type: array
           items:
