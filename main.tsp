@@ -138,7 +138,7 @@ namespace API {
         @example("1234,123456")
         id?: string;
 
-        @doc("Comma separated list of Journey Types")
+        @doc("Comma separated list of Transition Types")
         @example("pre_offer, offer, post_offer, onboarding, offboarding")
         sub_type?: string;
 
@@ -207,9 +207,9 @@ namespace API {
         @example("Offer, Next Offer")
         title?: string;
 
-        @doc("Comma separated list of journey types")
+        @doc("Comma separated list of transition types")
         @example("pre_offer, offer, post_offer, onboarding, offboarding")
-        journey_type?: string;
+        transition_type?: string;
 
         @example(true)
         published?: boolean;
@@ -253,9 +253,9 @@ namespace API {
         @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
         office_location_id?: string;
 
-        @doc("Comma separated list of journey types")
+        @doc("Comma separated list of transition types")
         @example("pre_offer, offer, post_offer, onboarding, offboarding")
-        journey_type?: string;
+        transition_type?: string;
 
         @doc("Comma separated list of states")
         @example("draft, needs_attention, pending_approval, approved, rejected, rescinded, user_pending, submitted, declined, completed")
@@ -386,7 +386,7 @@ namespace API {
     id: string;
 
     @example("offer")
-    journey_type: string;
+    transition_type: string;
 
     @example("Start date")
     name: string;
@@ -451,7 +451,7 @@ namespace API {
   }
   model CustomFieldCreate {
     @example("offer")
-    journey_type: string;
+    transition_type: string;
 
     @example("Start date")
     name: string;
@@ -615,7 +615,7 @@ namespace API {
     title: string;
 
     @example("offer")
-    journey_type: string;
+    transition_type: string;
 
     @example("unpublished, published, draft")
     publishing_state: string;
@@ -872,7 +872,7 @@ namespace API {
     journey_id: string;
 
     @example("pre_offer")
-    journey_type?: string;
+    transition_type?: string;
 
     @example("123456")
     user_id?: string;
@@ -885,7 +885,7 @@ namespace API {
 
     office_location?: OfficeLocationId;
 
-    @doc("Custom fields object for the user journey - we pass the key for any configured custom fields for this journey type.")
+    @doc("Custom fields object for the user journey - we pass the key for any configured custom fields for this transition type.")
     custom_field_values?: CustomFieldsValueObject;
   }
 
@@ -894,7 +894,7 @@ namespace API {
     journey_id: string;
 
     @example("pre_offer")
-    journey_type?: string;
+    transition_type?: string;
 
     @example("123456")
     user_id?: string;
@@ -907,7 +907,7 @@ namespace API {
 
     office_location_id?: OfficeLocationId;
 
-    @doc("Custom fields object for the user journey - we pass the key for any configured custom fields for this journey type.")
+    @doc("Custom fields object for the user journey - we pass the key for any configured custom fields for this transition type.")
     custom_fields?: CustomFieldsValueObject;
 
     documents?: Document[];
@@ -925,7 +925,7 @@ namespace API {
 
     office_location_id?: OfficeLocationId;
 
-    @doc("Custom fields object for the user journey - we pass the key for any configured custom fields for this journey type.")
+    @doc("Custom fields object for the user journey - we pass the key for any configured custom fields for this transition type.")
     custom_fields?: CustomFieldsValueObject;
 
     documents?: Document[];
