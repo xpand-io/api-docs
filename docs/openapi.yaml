@@ -284,7 +284,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserRequest'
+              $ref: '#/components/schemas/UserRequestUpdate'
   /api/v2/custom_fields:
     get:
       operationId: CustomFields_list
@@ -302,9 +302,9 @@ paths:
                 description: Comma separated list of Custom Field IDs
                 examples:
                   - 1234,123456
-              sub_type:
+              transition_type:
                 type: string
-                description: Comma separated list of Journey Types
+                description: Comma separated list of Transition Types
                 examples:
                   - pre_offer, offer, post_offer, onboarding, offboarding
               data_type:
@@ -429,7 +429,7 @@ paths:
     patch:
       operationId: CustomFields_deactivate
       summary: Deactivate Custom Field
-      description: Deactivates a custom field. This will not delete the custom field, but will make it inactive.
+      description: Deactivates a custom field. This will not delete the custom field, but will make it inactive. Once deactivated it cannot be used in the Create User Journey API
       parameters:
         - name: id
           in: path
@@ -458,9 +458,9 @@ paths:
                 description: Comma separated list of title
                 examples:
                   - Offer, Next Offer
-              journey_type:
+              transition_type:
                 type: string
-                description: Comma separated list of journey types
+                description: Comma separated list of transition types
                 examples:
                   - pre_offer, offer, post_offer, onboarding, offboarding
               published:
@@ -560,9 +560,9 @@ paths:
                 description: Comma separated list of Office Location IDs
                 examples:
                   - 64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9
-              journey_type:
+              transition_type:
                 type: string
-                description: Comma separated list of journey types
+                description: Comma separated list of transition types
                 examples:
                   - pre_offer, offer, post_offer, onboarding, offboarding
               state:
@@ -821,7 +821,7 @@ components:
       type: object
       required:
         - id
-        - journey_type
+        - transition_type
         - name
         - key
         - data_type
@@ -836,7 +836,7 @@ components:
           type: string
           examples:
             - '12345'
-        journey_type:
+        transition_type:
           type: string
           examples:
             - offer
@@ -928,7 +928,7 @@ components:
     CustomFieldCreate:
       type: object
       required:
-        - journey_type
+        - transition_type
         - name
         - key
         - data_type
@@ -939,7 +939,7 @@ components:
         - allowed_rule_set_types
         - allowed_placeholder_type
       properties:
-        journey_type:
+        transition_type:
           type: string
           examples:
             - offer
@@ -1035,6 +1035,25 @@ components:
         - value
         - name
         - key
+      properties:
+        id:
+          type: string
+          examples:
+            - '1234'
+        value:
+          type: string
+          examples:
+            - custom field value
+        name:
+          type: string
+          examples:
+            - custom field name
+        key:
+          type: string
+          examples:
+            - '1234'
+    CustomFieldsValueObjectUpdate:
+      type: object
       properties:
         id:
           type: string
@@ -1171,7 +1190,7 @@ components:
       required:
         - id
         - title
-        - journey_type
+        - transition_type
         - publishing_state
         - created_at
       properties:
@@ -1183,7 +1202,7 @@ components:
           type: string
           examples:
             - Offer
-        journey_type:
+        transition_type:
           type: string
           examples:
             - offer
@@ -1760,6 +1779,70 @@ components:
           format: float
           examples:
             - 3.12332
+    OfficeLocationIdUpdate:
+      type: object
+      properties:
+        workday:
+          type: string
+          examples:
+            - LOCATION-3-69
+        id:
+          type: string
+          examples:
+            - LOCATION-3-69
+        external_ids:
+          type: object
+          properties:
+            hris_id:
+              type: string
+              examples:
+                - 'E-1234'
+        address1:
+          type: string
+          examples:
+            - 123 Main St
+        address2:
+          type: string
+          examples:
+            - Suite 200
+        address3:
+          type: string
+          examples:
+            - Building B
+        city:
+          type: string
+          examples:
+            - New York
+        state:
+          type: string
+          examples:
+            - NY
+        region:
+          type: string
+          examples:
+            - Northeast
+        country:
+          type: string
+          examples:
+            - USA
+        postal_code:
+          type: string
+          examples:
+            - '10001'
+        time_zone:
+          type: string
+          examples:
+            - NZT
+        latitude:
+          type: number
+          format: float
+          examples:
+            - 3.12332
+        longitude:
+          type: number
+          format: float
+          examples:
+            - 3.12332
     PhoneNumber:
       type: object
       properties:
@@ -1794,7 +1877,7 @@ components:
           type: string
           examples:
             - '123456'
-        journey_type:
+        transition_type:
           type: string
           examples:
             - pre_offer
@@ -1816,7 +1899,7 @@ components:
         custom_field_values:
           allOf:
             - $ref: '#/components/schemas/CustomFieldsValueObject'
-          description: Custom fields object for the user journey - we pass the key for any configured custom fields for this journey type.
+          description: Custom fields object for the user journey - we pass the key for any configured custom fields for this transition type.
     UserJourneyCreate:
       type: object
       required:
@@ -1826,7 +1909,7 @@ components:
           type: string
           examples:
             - '123456'
-        journey_type:
+        transition_type:
           type: string
           examples:
             - pre_offer
@@ -1848,7 +1931,7 @@ components:
         custom_fields:
           allOf:
             - $ref: '#/components/schemas/CustomFieldsValueObject'
-          description: Custom fields object for the user journey - we pass the key for any configured custom fields for this journey type.
+          description: Custom fields object for the user journey - we pass the key for any configured custom fields for this transition type.
         documents:
           type: array
           items:
@@ -1886,8 +1969,6 @@ components:
         - completed
     UserJourneyUpdate:
       type: object
-      required:
-        - journey_id
       properties:
         journey_id:
           type: string
@@ -1903,11 +1984,11 @@ components:
           examples:
             - '2025-01-01'
         office_location_id:
-          $ref: '#/components/schemas/OfficeLocationId'
+          $ref: '#/components/schemas/OfficeLocationIdUpdate'
         custom_fields:
           allOf:
-            - $ref: '#/components/schemas/CustomFieldsValueObject'
-          description: Custom fields object for the user journey - we pass the key for any configured custom fields for this journey type.
+            - $ref: '#/components/schemas/CustomFieldsValueObjectUpdate'
+          description: Custom fields object for the user journey - we pass the key for any configured custom fields for this transition type.
         documents:
           type: array
           items:
