@@ -48,7 +48,7 @@ namespace API {
     };
 
     @summary("Update User")
-    @patch
+    @patch(#{ implicitOptionality: true })
     op update(@path id: uuid, @body content: UserRequest): {
       data: UserResponseSimple;
     };
