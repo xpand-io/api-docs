@@ -140,7 +140,7 @@ namespace API {
 
         @doc("Comma separated list of Transition Types")
         @example("pre_offer, offer, post_offer, onboarding, offboarding")
-        sub_type?: string;
+        transition_type?: string;
 
         @doc("Comma separated list of Data Types")
         @example("string, integer, big_decimal, array, hash, time, date, boolean")

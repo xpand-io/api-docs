@@ -302,7 +302,7 @@ paths:
                 description: Comma separated list of Custom Field IDs
                 examples:
                   - 1234,123456
-              sub_type:
+              transition_type:
                 type: string
                 description: Comma separated list of Transition Types
                 examples:
@@ -429,7 +429,7 @@ paths:
     patch:
       operationId: CustomFields_deactivate
       summary: Deactivate Custom Field
-      description: Deactivates a custom field. This will not delete the custom field, but will make it inactive.
+      description: Deactivates a custom field. This will not delete the custom field, but will make it inactive. Once deactivated it cannot be used in the Create User Journey API
       parameters:
         - name: id
           in: path
