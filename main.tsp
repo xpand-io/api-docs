@@ -5,17 +5,19 @@ using TypeSpec.Http;
 using TypeSpec.OpenAPI;
 
 @service(#{ title: "Xpand API" })
-@info(#{ version: "v2" })
-@route("/api/v1")
+@info(#{ version: "2025-03" })
+@useAuth(BearerAuth)
+@route("/api")
 namespace API {
   //
   // Operations
   //
 
   @tag("Users")
-  @route("/users")
+  @route("/v1/users")
   namespace Users {
     @summary("Search Users")
+    @doc("Search Users - Users are the people who are part of the Xpand system.")
     op list(
       @query filter?: {
         @doc("Comma separated list of Xpand User IDs")
@@ -32,11 +34,13 @@ namespace API {
     };
 
     @summary("Fetch User")
+    @doc("Fetch a User")
     op show(@path id: uuid): {
       data: UserResponseFull;
     };
 
     @summary("Create User")
+    @doc("Create a User")
     op create(
       @body content: {
         data: {
@@ -48,6 +52,7 @@ namespace API {
     };
 
     @summary("Update User")
+    @doc("Update a User")
     @patch(#{ implicitOptionality: true })
     op update(@path id: uuid, @body content: UserRequest): {
       data: UserResponseSimple;
@@ -55,9 +60,10 @@ namespace API {
   }
 
   @tag("Offers")
-  @route("/offer_letters")
+  @route("/v1/offer_letters")
   namespace Offers {
     @summary("Search Offer Letters")
+    @doc("Search Offer Letters - Offer Letters are the letters that are sent to candidates.")
     op list(
       @query filters?: {
         @doc("Comma separated list of Xpand Offer IDs")
@@ -91,6 +97,7 @@ namespace API {
     };
 
     @summary("Create/Update Offer Letter")
+    @doc("Create/Update Offer Letter - Create or update an offer letter.")
     op create(
       @body content: {
         data: {
@@ -102,6 +109,7 @@ namespace API {
     };
 
     @summary("Rescind Offer Letter")
+    @doc("Rescind an offer letter.")
     @delete
     op delete(@path id: uuid): void;
   }
@@ -109,12 +117,213 @@ namespace API {
   @tag("References")
   namespace References {
     @summary("Fetch Job Profiles")
-    @route("/job_profiles")
+    @doc("Fetch a Job Profile")
+    @route("/v1/job_profiles")
     op job_profiles(): void;
 
     @summary("Fetch Office Locations")
-    @route("/office_locations")
+    @doc("Fetch Office Locations")
+    @route("/v1/office_locations")
     op office_locations(): void;
+  }
+
+  @tag("Custom Fields")
+  @route("/v2/custom_fields")
+  namespace CustomFields {
+    @summary("Search Custom Fields")
+    @doc("Lists custom fields that can be used in user journeys or forms. Custom fields help capture metadata unique to your organization.")
+    op list(
+      @query filters?: {
+        @doc("Comma separated list of Custom Field IDs")
+        @example("1234,123456")
+        id?: string;
+
+        @doc("Comma separated list of Transition Types")
+        @example("pre_offer, offer, post_offer, onboarding, offboarding")
+        transition_type?: string;
+
+        @doc("Comma separated list of Data Types")
+        @example("string, integer, big_decimal, array, hash, time, date, boolean")
+        data_type?: string;
+
+        @doc("Comma separated list of Active")
+        @example("true, false")
+        active?: string;
+      },
+      @query offset?: integer = 0,
+      @query limit?: integer = 50,
+      @query order_by?: string = "created_at",
+      @query direction?: string = "asc",
+    ): {
+      @statusCode statusCode: 200;
+      @body customFields: CustomField[];
+    };
+
+    @summary("Fetch Custom Field")
+    @doc("Fetch a Custom Field")
+    op show(@path id: string): {
+      @statusCode statusCode: 200;
+      @body customField: CustomField;
+    } | {
+      @statusCode statusCode: 404;
+      @body error: NotFoundError;
+    };
+
+    @summary("Create Custom Field")
+    @doc("Creates a new custom field that can be used in user journeys or forms.")
+    op create(@body customField: CustomFieldCreate): {
+      @statusCode statusCode: 201;
+      @body newCustomField: CustomField;
+    } | {
+      @statusCode statusCode: 422;
+      @body error: ValidationError;
+    };
+
+    @route("/{id}/activate")
+    @summary("Activate Custom Field")
+    @doc("Activates a custom field.")
+    @patch
+    op activate(@path id: string): {
+      @statusCode statusCode: 200;
+    };
+
+    @route("/{id}/deactivate")
+    @summary("Deactivate Custom Field")
+    @doc("Deactivates a custom field. This will not delete the custom field, but will make it inactive. Once deactivated it cannot be used in the Create User Journey API")
+    @patch
+    op deactivate(@path id: string): {
+      @statusCode statusCode: 200;
+    };
+  }
+
+  @tag("Journeys")
+  @route("/v2/journeys")
+  namespace Journeys {
+    @summary("Search Journeys")
+    @doc("Search Journeys - Journeys are the templates that can be used to create user journeys.")
+    op list(
+      @query filters?: {
+        @doc("Comma separated list of title")
+        @example("Offer, Next Offer")
+        title?: string;
+
+        @doc("Comma separated list of transition types")
+        @example("pre_offer, offer, post_offer, onboarding, offboarding")
+        transition_type?: string;
+
+        @example(true)
+        published?: boolean;
+      },
+      @query offset?: integer = 0,
+      @query limit?: integer = 50,
+      @query order_by?: string = "created_at",
+      @query direction?: string = "asc",
+    ): {
+      @statusCode statusCode: 200;
+      @body body: Journey[];
+    };
+
+    @summary("Fetch Journey")
+    @doc("Fetch a Journey")
+    op show(@path id: string): {
+      @statusCode statusCode: 200;
+      @body body: Journey;
+    } | {
+      @statusCode statusCode: 404;
+      @body error: NotFoundError;
+    };
+  }
+
+  @tag("User Journeys")
+  @route("/v2/user_journeys")
+  namespace UserJourneys {
+    @summary("Search User Journeys")
+    @doc("Search User Journeys - User Journeys are the journeys that are assigned to a user.")
+    op list(
+      @query filters?: {
+        @doc("Comma separated list of User IDs")
+        @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
+        user_id?: string;
+
+        @doc("Comma separated list of Journey IDs")
+        @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
+        journey_id?: string;
+
+        @doc("Comma separated list of Office Location IDs")
+        @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
+        office_location_id?: string;
+
+        @doc("Comma separated list of transition types")
+        @example("pre_offer, offer, post_offer, onboarding, offboarding")
+        transition_type?: string;
+
+        @doc("Comma separated list of states")
+        @example("draft, needs_attention, pending_approval, approved, rejected, rescinded, user_pending, submitted, declined, completed")
+        state?: string;
+
+        custom_fields?: CustomFieldsValueObject;
+      },
+      @query offset?: integer = 0,
+      @query limit?: integer = 50,
+      @query order_by?: string = "created_at",
+      @query direction?: string = "asc",
+    ): {
+      @statusCode statusCode: 200;
+      @body body: UserJourney[];
+    };
+
+    @summary("Fetch User Journey")
+    @doc("Fetch a User Journey")
+    op show(@path id: string): {
+      @statusCode statusCode: 200;
+      @body body: UserJourney;
+    } | {
+      @statusCode statusCode: 404;
+      @body error: NotFoundError;
+    };
+
+    @summary("Create User Journey")
+    @doc("Create a User Journey")
+    op create(@body userJourney: UserJourneyCreate): {
+      @statusCode statusCode: 201;
+      @body body: UserJourney;
+    } | {
+      @statusCode statusCode: 422;
+      @body error: ValidationError;
+    };
+
+    @summary("Update User Journey")
+    @doc("Update a User Journey")
+    @patch(#{ implicitOptionality: true })
+    op update(@path id: string, @body userJourney: UserJourneyUpdate): {
+      @statusCode statusCode: 200;
+      @body body: UserJourney;
+    } | {
+      @statusCode statusCode: 404;
+      @body error: NotFoundError;
+    } | {
+      @statusCode statusCode: 422;
+      @body error: ValidationError;
+    };
+
+    @route("/{id}/rescind")
+    @doc("Rescind User Journey")
+    @summary("Rescind User Journey")
+    @delete
+    op rescind(
+      @path id: string,
+      @body body: {
+        rescind_reason: string;
+      },
+    ): {
+      @statusCode statusCode: 204;
+    } | {
+      @statusCode statusCode: 404;
+      @body error: NotFoundError;
+    } | {
+      @statusCode statusCode: 422;
+      @body error: ValidationError;
+    };
   }
 
   //
@@ -170,6 +379,154 @@ namespace API {
       @example("cba")
       field_name_2?: string;
     };
+  }
+
+  model CustomField {
+    @example("12345")
+    id: string;
+
+    @example("offer")
+    transition_type: string;
+
+    @example("Start date")
+    name: string;
+
+    @example("1234")
+    key: string;
+
+    @example("Datetime")
+    data_type: string;
+
+    @example(false)
+    mandatory: boolean;
+
+    @example("salutation, nickname, title, university, current_location, employee_id, profile_photo_url, division, hire_type, company_code, relocation_type, job_profile_id")
+    mapping?: string;
+
+    @example("regexp, list_of_values_map, list, previous_date_time, future_date_time, workday_job_profile, workday_organization")
+    validation_rule?: string;
+
+    @doc("Required if validation_rule is regexp")
+    @example("^[a-zA-Z0-9]+$")
+    regexp_pattern?: string;
+
+    @doc("Required if validation_rule is list")
+    @example(#["a", "b", "c"])
+    allowed_values: string[];
+
+    @doc("Required if validation_rule is list_of_values_map")
+    @example("LegalEntityLOV - refer to References API for more details")
+    list_of_values_map_id: string;
+
+    @example("2025-01-01")
+    created_at: string;
+
+    @example(false)
+    deactivated?: boolean;
+
+    @doc("Used in Assignment Rules")
+    @example(false)
+    rule_settable?: boolean;
+
+    @doc("Used in placeholders")
+    @example(false)
+    placeholderable?: boolean;
+
+    @example(#[
+      "journey",
+      "module",
+      "child_module",
+      "task",
+      "communication",
+      "report"
+    ])
+    allowed_rule_set_types: string[];
+
+    @example(#["journey", "communication", "html_editor_task"])
+    allowed_placeholder_type: string[];
+
+    @doc("Required if validation_rule is workday_organization")
+    @example("Supervisory, Pay_Group, Cost_Center, Company, Cost_Center_Hierarchy, Location_Hierarchy, External_Payroll_Company, Company_Hierarchy")
+    workday_organization_type?: string;
+  }
+  model CustomFieldCreate {
+    @example("offer")
+    transition_type: string;
+
+    @example("Start date")
+    name: string;
+
+    @example("1234")
+    key: string;
+
+    @example("Datetime")
+    data_type: string;
+
+    @example(false)
+    mandatory: boolean;
+
+    @example("salutation, nickname, title, university, current_location, employee_id, profile_photo_url, division, hire_type, company_code, relocation_type, job_profile_id")
+    mapping?: string;
+
+    @example("regexp, list_of_values_map, list, previous_date_time, future_date_time, workday_job_profile, workday_organization")
+    validation_rule?: string;
+
+    @doc("Required if validation_rule is regexp")
+    @example("^[a-zA-Z0-9]+$")
+    regexp_pattern?: string;
+
+    @doc("Required if validation_rule is list")
+    @example(#["a", "b", "c"])
+    allowed_values: string[];
+
+    @doc("Required if validation_rule is list_of_values_map")
+    @example("LegalEntityLOV - refer to References API for more details")
+    list_of_values_map_id: string;
+
+    @example("2025-01-01")
+    created_at: string;
+
+    @example(false)
+    deactivated?: boolean;
+
+    @doc("Used in Assignment Rules")
+    @example(false)
+    rule_settable?: boolean;
+
+    @doc("Used in placeholders")
+    @example(false)
+    placeholderable?: boolean;
+
+    @example(#[
+      "journey",
+      "module",
+      "child_module",
+      "task",
+      "communication",
+      "report"
+    ])
+    allowed_rule_set_types: string[];
+
+    @example(#["journey", "communication", "html_editor_task"])
+    allowed_placeholder_type: string[];
+
+    @doc("Required if validation_rule is workday_organization")
+    @example("Supervisory, Pay_Group, Cost_Center, Company, Cost_Center_Hierarchy, Location_Hierarchy, External_Payroll_Company, Company_Hierarchy")
+    workday_organization_type?: string;
+  }
+
+  model CustomFieldsValueObject {
+    @example("1234")
+    id: string;
+
+    @example("custom field value")
+    value: string;
+
+    @example("custom field name")
+    name: string;
+
+    @example("1234")
+    key: string;
   }
 
   model Document {
@@ -248,6 +605,23 @@ namespace API {
 
     address?: Address;
     attachments?: Attachment[];
+  }
+
+  model Journey {
+    @example("12345")
+    id: string;
+
+    @example("Offer")
+    title: string;
+
+    @example("offer")
+    transition_type: string;
+
+    @example("unpublished, published, draft")
+    publishing_state: string;
+
+    @example("2025/01/01")
+    created_at: string;
   }
 
   model OfferLetterRequest {
@@ -432,6 +806,52 @@ namespace API {
     id: uuid;
   }
 
+  model OfficeLocationId {
+    @example("LOCATION-3-69")
+    workday?: string;
+
+    @example("LOCATION-3-69")
+    id: string;
+
+    external_ids: {
+      @example("E-1234")
+      hris_id?: string;
+    };
+
+    @example("123 Main St")
+    address1?: string;
+
+    @example("Suite 200")
+    address2?: string;
+
+    @example("Building B")
+    address3?: string;
+
+    @example("New York")
+    city?: string;
+
+    @example("NY")
+    state?: string;
+
+    @example("Northeast")
+    region?: string;
+
+    @example("USA")
+    country?: string;
+
+    @example("10001")
+    postal_code?: string;
+
+    @example("NZT")
+    time_zone?: string;
+
+    @example(3.12332)
+    latitude?: float32;
+
+    @example(3.12332)
+    longitude?: float32;
+  }
+
   model PhoneNumber {
     @doc("E.164 Format")
     @example("+14044580998")
@@ -442,6 +862,86 @@ namespace API {
 
     @example(true)
     primary?: boolean;
+  }
+
+  model UserJourney {
+    @example("123456898")
+    id: string;
+
+    @example("123456")
+    journey_id: string;
+
+    @example("pre_offer")
+    transition_type?: string;
+
+    @example("123456")
+    user_id?: string;
+
+    @example(UserJourneyState.approved)
+    state?: UserJourneyState;
+
+    @example("2025-01-01")
+    created_at?: string;
+
+    office_location?: OfficeLocationId;
+
+    @doc("Custom fields object for the user journey - we pass the key for any configured custom fields for this transition type.")
+    custom_field_values?: CustomFieldsValueObject;
+  }
+
+  model UserJourneyCreate {
+    @example("123456")
+    journey_id: string;
+
+    @example("pre_offer")
+    transition_type?: string;
+
+    @example("123456")
+    user_id?: string;
+
+    @example(UserJourneyState.approved)
+    state?: UserJourneyState;
+
+    @example("2025-01-01")
+    created_at?: string;
+
+    office_location_id?: OfficeLocationId;
+
+    @doc("Custom fields object for the user journey - we pass the key for any configured custom fields for this transition type.")
+    custom_fields?: CustomFieldsValueObject;
+
+    documents?: Document[];
+  }
+
+  model UserJourneyUpdate {
+    @example("123456")
+    journey_id: string;
+
+    @example(UserJourneyState.approved)
+    state?: UserJourneyState;
+
+    @example("2025-01-01")
+    created_at?: string;
+
+    office_location_id?: OfficeLocationId;
+
+    @doc("Custom fields object for the user journey - we pass the key for any configured custom fields for this transition type.")
+    custom_fields?: CustomFieldsValueObject;
+
+    documents?: Document[];
+  }
+
+  model UserJourneyQueryData {
+    @example("12345")
+    id?: string;
+
+    @example("1234")
+    user_id?: string;
+
+    @example(UserJourneyState.draft)
+    state?: UserJourneyState;
+
+    custom_fields?: CustomFieldsValueObject;
   }
 
   model UserRequest {
@@ -650,6 +1150,23 @@ namespace API {
     address?: Address;
     attachments?: Attachment[];
   }
+
+  //
+  // Enums
+  //
+
+  enum UserJourneyState {
+    draft: "draft",
+    needs_attention: "needs_attention",
+    pending_approval: "pending_approval",
+    approved: "approved",
+    rejected: "rejected",
+    rescinded: "rescinded",
+    user_pending: "user_pending",
+    submitted: "submitted",
+    declined: "declined",
+    completed: "completed",
+  }
 }
 
 //
@@ -661,3 +1178,20 @@ scalar uuid extends string;
 
 @format("email")
 scalar email extends string;
+
+//
+// Errors
+//
+
+@error
+model NotFoundError {
+  code: "NOT_FOUND";
+  message: string;
+}
+
+@error
+model ValidationError {
+  code: "VALIDATION_ERROR";
+  message: string;
+  details: string[];
+}
