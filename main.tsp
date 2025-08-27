@@ -58,62 +58,6 @@ namespace API {
       data: UserResponseSimple;
     };
   }
-
-  @tag("Offers")
-  @route("/v1/offer_letters")
-  namespace Offers {
-    @summary("Search Offer Letters")
-    @doc("Search Offer Letters - Offer Letters are the letters that are sent to candidates.")
-    op list(
-      @query filters?: {
-        @doc("Comma separated list of Xpand Offer IDs")
-        @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
-        ids?: string;
-
-        @doc("Comma separated list of Client Offer IDs")
-        @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
-        offer_ids?: string;
-
-        @doc("Comma separated list of Xpand User IDs")
-        @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
-        user_ids?: string;
-
-        @doc("Comma separated list of Offer Statuses")
-        // @example("pending_initiation,pending_approval")
-        statuses?: (
-          | "pending_initiation"
-          | "pending_approval"
-          | "admin_approved"
-          | "admin_rejected"
-          | "candidate_pending"
-          | "candidate_accepted"
-          | "candidate_declined"
-          | "rescinded"
-          | "voided")[];
-      },
-      @query page?: integer = 1,
-    ): {
-      data: OfferLetterResponseFull[];
-    };
-
-    @summary("Create/Update Offer Letter")
-    @doc("Create/Update Offer Letter - Create or update an offer letter.")
-    op create(
-      @body content: {
-        data: {
-          attributes: OfferLetterRequest;
-        };
-      },
-    ): {
-      data: OfferLetterResponseSimple;
-    };
-
-    @summary("Rescind Offer Letter")
-    @doc("Rescind an offer letter.")
-    @delete
-    op delete(@path id: uuid): void;
-  }
-
   @tag("References")
   namespace References {
     @summary("Fetch Job Profiles")
