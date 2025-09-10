@@ -362,7 +362,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typespec/compiler@npm:^1.3.0":
+"@typespec/compiler@npm:^1.4.0":
   version: 1.4.0
   resolution: "@typespec/compiler@npm:1.4.0"
   dependencies:
@@ -390,7 +390,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typespec/http@npm:^1.3.0":
+"@typespec/http@npm:^1.4.0":
   version: 1.4.0
   resolution: "@typespec/http@npm:1.4.0"
   peerDependencies:
@@ -403,7 +403,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typespec/openapi3@npm:^1.3.0":
+"@typespec/openapi3@npm:^1.4.0":
   version: 1.4.0
   resolution: "@typespec/openapi3@npm:1.4.0"
   dependencies:
@@ -430,7 +430,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typespec/openapi@npm:^1.3.0":
+"@typespec/openapi@npm:^1.4.0":
   version: 1.4.0
   resolution: "@typespec/openapi@npm:1.4.0"
   peerDependencies:
@@ -440,22 +440,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typespec/rest@npm:^0.73.0":
-  version: 0.73.0
-  resolution: "@typespec/rest@npm:0.73.0"
+"@typespec/rest@npm:^0.74.0":
+  version: 0.74.0
+  resolution: "@typespec/rest@npm:0.74.0"
   peerDependencies:
-    "@typespec/compiler": ^1.3.0
-    "@typespec/http": ^1.3.0
-  checksum: 10c0/766863db0657d7208fcd454ee828ad17496050ba4d9bfe82135a057d651aa5267d33caa554bf5e2552d3d1c6b4981fa36d360326bbb356cbc33cbb10b0182f72
+    "@typespec/compiler": ^1.4.0
+    "@typespec/http": ^1.4.0
+  checksum: 10c0/a8f9fd7fc288fb48e698c72aa0d92eb4a6f9dc4561abbeb225b52f2b6d6bd701ff0dd5c0b6ece53b97278000ca3864fd427a0768939eccf3974987aa221ecd53
   languageName: node
   linkType: hard
 
-"@typespec/versioning@npm:^0.73.0":
-  version: 0.73.0
-  resolution: "@typespec/versioning@npm:0.73.0"
+"@typespec/versioning@npm:^0.74.0":
+  version: 0.74.0
+  resolution: "@typespec/versioning@npm:0.74.0"
   peerDependencies:
-    "@typespec/compiler": ^1.3.0
-  checksum: 10c0/3b1745928a6d7e44a8573d34b286f4eff4d1816579227365bf5b9044331326aaa449c35a167d0a68a9891cab5af0100873d37ae994cc715df4c805f1d196d57d
+    "@typespec/compiler": ^1.4.0
+  checksum: 10c0/23bd2be9674fd59ae5c3562597f36574189fc095c6116f1bb896bd3b853859230c7f5a97e9e2ec80ed8c8958135f62277136aa176f9da2f458f764e227c136f6
   languageName: node
   linkType: hard
 
@@ -1104,12 +1104,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "xpand@workspace:."
   dependencies:
-    "@typespec/compiler": "npm:^1.3.0"
-    "@typespec/http": "npm:^1.3.0"
-    "@typespec/openapi": "npm:^1.3.0"
-    "@typespec/openapi3": "npm:^1.3.0"
-    "@typespec/rest": "npm:^0.73.0"
-    "@typespec/versioning": "npm:^0.73.0"
+    "@typespec/compiler": "npm:^1.4.0"
+    "@typespec/http": "npm:^1.4.0"
+    "@typespec/openapi": "npm:^1.4.0"
+    "@typespec/openapi3": "npm:^1.4.0"
+    "@typespec/rest": "npm:^0.74.0"
+    "@typespec/versioning": "npm:^0.74.0"
   languageName: unknown
   linkType: soft
 

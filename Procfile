@@ -1,2 +1,2 @@
-compiler: yarn tsp compile . --watch
-server: npx http-server docs -p 8080
+compiler: yarn compile --watch
+server: yarn preview
