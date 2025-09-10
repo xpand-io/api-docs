@@ -4,11 +4,11 @@ info:
   version: 2025-03
 tags:
   - name: Users
-  - name: Offers
-  - name: References
-  - name: Custom Fields
   - name: Journeys
   - name: User Journeys
+  - name: Custom Fields
+  - name: References
+  - name: Offers (Deprecated)
 paths:
   /api/v1/job_profiles:
     get:
@@ -86,7 +86,8 @@ paths:
                 required:
                   - data
       tags:
-        - Offers
+        - Offers (Deprecated)
+      deprecated: true
     post:
       operationId: Offers_create
       summary: Create/Update Offer Letter
@@ -105,7 +106,7 @@ paths:
                 required:
                   - data
       tags:
-        - Offers
+        - Offers (Deprecated)
       requestBody:
         required: true
         content:
@@ -122,6 +123,7 @@ paths:
                     - attributes
               required:
                 - data
+      deprecated: true
   /api/v1/offer_letters/{id}:
     delete:
       operationId: Offers_delete
@@ -137,7 +139,8 @@ paths:
         '204':
           description: 'There is no content to send for this request, but the headers may be useful. '
       tags:
-        - Offers
+        - Offers (Deprecated)
+      deprecated: true
   /api/v1/office_locations:
     get:
       operationId: References_office_locations

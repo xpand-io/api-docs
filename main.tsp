@@ -59,143 +59,6 @@ namespace API {
     };
   }
 
-  @tag("Offers")
-  @route("/v1/offer_letters")
-  namespace Offers {
-    @summary("Search Offer Letters")
-    @doc("Search Offer Letters - Offer Letters are the letters that are sent to candidates.")
-    op list(
-      @query filters?: {
-        @doc("Comma separated list of Xpand Offer IDs")
-        @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
-        ids?: string;
-
-        @doc("Comma separated list of Client Offer IDs")
-        @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
-        offer_ids?: string;
-
-        @doc("Comma separated list of Xpand User IDs")
-        @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
-        user_ids?: string;
-
-        @doc("Comma separated list of Offer Statuses")
-        // @example("pending_initiation,pending_approval")
-        statuses?: (
-          | "pending_initiation"
-          | "pending_approval"
-          | "admin_approved"
-          | "admin_rejected"
-          | "candidate_pending"
-          | "candidate_accepted"
-          | "candidate_declined"
-          | "rescinded"
-          | "voided")[];
-      },
-      @query page?: integer = 1,
-    ): {
-      data: OfferLetterResponseFull[];
-    };
-
-    @summary("Create/Update Offer Letter")
-    @doc("Create/Update Offer Letter - Create or update an offer letter.")
-    op create(
-      @body content: {
-        data: {
-          attributes: OfferLetterRequest;
-        };
-      },
-    ): {
-      data: OfferLetterResponseSimple;
-    };
-
-    @summary("Rescind Offer Letter")
-    @doc("Rescind an offer letter.")
-    @delete
-    op delete(@path id: uuid): void;
-  }
-
-  @tag("References")
-  namespace References {
-    @summary("Fetch Job Profiles")
-    @doc("Fetch a Job Profile")
-    @route("/v1/job_profiles")
-    op job_profiles(): void;
-
-    @summary("Fetch Office Locations")
-    @doc("Fetch Office Locations")
-    @route("/v1/office_locations")
-    op office_locations(): void;
-  }
-
-  @tag("Custom Fields")
-  @route("/v2/custom_fields")
-  namespace CustomFields {
-    @summary("Search Custom Fields")
-    @doc("Lists custom fields that can be used in user journeys or forms. Custom fields help capture metadata unique to your organization.")
-    op list(
-      @query filters?: {
-        @doc("Comma separated list of Custom Field IDs")
-        @example("1234,123456")
-        id?: string;
-
-        @doc("Comma separated list of Transition Types")
-        @example("pre_offer, offer, post_offer, onboarding, offboarding")
-        transition_type?: string;
-
-        @doc("Comma separated list of Data Types")
-        @example("string, integer, big_decimal, array, hash, time, date, boolean")
-        data_type?: string;
-
-        @doc("Comma separated list of Active")
-        @example("true, false")
-        active?: string;
-      },
-      @query offset?: integer = 0,
-      @query limit?: integer = 50,
-      @query order_by?: string = "created_at",
-      @query direction?: string = "asc",
-    ): {
-      @statusCode statusCode: 200;
-      @body customFields: CustomField[];
-    };
-
-    @summary("Fetch Custom Field")
-    @doc("Fetch a Custom Field")
-    op show(@path id: string): {
-      @statusCode statusCode: 200;
-      @body customField: CustomField;
-    } | {
-      @statusCode statusCode: 404;
-      @body error: NotFoundError;
-    };
-
-    @summary("Create Custom Field")
-    @doc("Creates a new custom field that can be used in user journeys or forms.")
-    op create(@body customField: CustomFieldCreate): {
-      @statusCode statusCode: 201;
-      @body newCustomField: CustomField;
-    } | {
-      @statusCode statusCode: 422;
-      @body error: ValidationError;
-    };
-
-    @route("/{id}/activate")
-    @summary("Activate Custom Field")
-    @doc("Activates a custom field.")
-    @patch
-    op activate(@path id: string): {
-      @statusCode statusCode: 200;
-    };
-
-    @route("/{id}/deactivate")
-    @summary("Deactivate Custom Field")
-    @doc("Deactivates a custom field. This will not delete the custom field, but will make it inactive. Once deactivated it cannot be used in the Create User Journey API")
-    @patch
-    op deactivate(@path id: string): {
-      @statusCode statusCode: 200;
-    };
-  }
-
   @tag("Journeys")
   @route("/v2/journeys")
   namespace Journeys {
@@ -324,6 +187,144 @@ namespace API {
       @statusCode statusCode: 422;
       @body error: ValidationError;
     };
+  }
+
+  @tag("Custom Fields")
+  @route("/v2/custom_fields")
+  namespace CustomFields {
+    @summary("Search Custom Fields")
+    @doc("Lists custom fields that can be used in user journeys or forms. Custom fields help capture metadata unique to your organization.")
+    op list(
+      @query filters?: {
+        @doc("Comma separated list of Custom Field IDs")
+        @example("1234,123456")
+        id?: string;
+
+        @doc("Comma separated list of Transition Types")
+        @example("pre_offer, offer, post_offer, onboarding, offboarding")
+        transition_type?: string;
+
+        @doc("Comma separated list of Data Types")
+        @example("string, integer, big_decimal, array, hash, time, date, boolean")
+        data_type?: string;
+
+        @doc("Comma separated list of Active")
+        @example("true, false")
+        active?: string;
+      },
+      @query offset?: integer = 0,
+      @query limit?: integer = 50,
+      @query order_by?: string = "created_at",
+      @query direction?: string = "asc",
+    ): {
+      @statusCode statusCode: 200;
+      @body customFields: CustomField[];
+    };
+
+    @summary("Fetch Custom Field")
+    @doc("Fetch a Custom Field")
+    op show(@path id: string): {
+      @statusCode statusCode: 200;
+      @body customField: CustomField;
+    } | {
+      @statusCode statusCode: 404;
+      @body error: NotFoundError;
+    };
+
+    @summary("Create Custom Field")
+    @doc("Creates a new custom field that can be used in user journeys or forms.")
+    op create(@body customField: CustomFieldCreate): {
+      @statusCode statusCode: 201;
+      @body newCustomField: CustomField;
+    } | {
+      @statusCode statusCode: 422;
+      @body error: ValidationError;
+    };
+
+    @route("/{id}/activate")
+    @summary("Activate Custom Field")
+    @doc("Activates a custom field.")
+    @patch
+    op activate(@path id: string): {
+      @statusCode statusCode: 200;
+    };
+
+    @route("/{id}/deactivate")
+    @summary("Deactivate Custom Field")
+    @doc("Deactivates a custom field. This will not delete the custom field, but will make it inactive. Once deactivated it cannot be used in the Create User Journey API")
+    @patch
+    op deactivate(@path id: string): {
+      @statusCode statusCode: 200;
+    };
+  }
+
+  @tag("References")
+  namespace References {
+    @summary("Fetch Job Profiles")
+    @doc("Fetch a Job Profile")
+    @route("/v1/job_profiles")
+    op job_profiles(): void;
+
+    @summary("Fetch Office Locations")
+    @doc("Fetch Office Locations")
+    @route("/v1/office_locations")
+    op office_locations(): void;
+  }
+
+  #deprecated "Use Journeys"
+  @tag("Offers (Deprecated)")
+  @route("/v1/offer_letters")
+  namespace Offers {
+    @summary("Search Offer Letters")
+    @doc("Search Offer Letters - Offer Letters are the letters that are sent to candidates.")
+    op list(
+      @query filters?: {
+        @doc("Comma separated list of Xpand Offer IDs")
+        @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
+        ids?: string;
+
+        @doc("Comma separated list of Client Offer IDs")
+        @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
+        offer_ids?: string;
+
+        @doc("Comma separated list of Xpand User IDs")
+        @example("64891c74d5ee1bb16dfdafd8,64891e2ad5ee1bb16dfdafd9")
+        user_ids?: string;
+
+        @doc("Comma separated list of Offer Statuses")
+        // @example("pending_initiation,pending_approval")
+        statuses?: (
+          | "pending_initiation"
+          | "pending_approval"
+          | "admin_approved"
+          | "admin_rejected"
+          | "candidate_pending"
+          | "candidate_accepted"
+          | "candidate_declined"
+          | "rescinded"
+          | "voided")[];
+      },
+      @query page?: integer = 1,
+    ): {
+      data: OfferLetterResponseFull[];
+    };
+
+    @summary("Create/Update Offer Letter")
+    @doc("Create/Update Offer Letter - Create or update an offer letter.")
+    op create(
+      @body content: {
+        data: {
+          attributes: OfferLetterRequest;
+        };
+      },
+    ): {
+      data: OfferLetterResponseSimple;
+    };
+
+    @summary("Rescind Offer Letter")
+    @doc("Rescind an offer letter.")
+    @delete
+    op delete(@path id: uuid): void;
   }
 
   //
