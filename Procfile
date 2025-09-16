@@ -1,2 +1,2 @@
-compiler: yarn compile --watch
-server: yarn preview
+compiler: pnpm compile --watch
+server: pnpm preview

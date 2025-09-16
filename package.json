@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "type": "module",
   "private": true,
-  "packageManager": "yarn@4.9.2",
   "scripts": {
     "format": "tsp format main.tsp",
     "compile": "tsp compile main.tsp",

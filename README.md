@@ -1,12 +1,12 @@
 # API Documentation
 
-* https://xpand-io.github.io/api-docs/
-* https://github.com/xpand-io/api-docs/wiki
+- https://xpand-io.github.io/api-docs/
+- https://github.com/xpand-io/api-docs/wiki
 
 ## Development
 
 ```shell
-yarn install
+pnpm install
 overmind s # or foreman/hivemind/etc
 open http://localhost:8080
 ```
