@@ -704,6 +704,34 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UserJourneyUpdate'
+  /api/v2/user_journeys/{id}/tasks:
+    get:
+      operationId: UserJourneys_tasks
+      summary: Fetch Tasks for User Journey
+      description: Returns all tasks for a specific User Journey ordered by position
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of tasks for the user journey
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+      tags:
+        - User Journeys
   /api/v2/user_journeys/{id}/rescind:
     delete:
       operationId: UserJourneys_rescind
