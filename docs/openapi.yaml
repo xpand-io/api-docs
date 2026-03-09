@@ -82,7 +82,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/OfferLetterResponseFull'
+                      $ref: '#/components/schemas/Responses.OfferLetterList'
                 required:
                   - data
       tags:
@@ -102,7 +102,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/OfferLetterResponseSimple'
+                    $ref: '#/components/schemas/Responses.OfferLetterCreate'
                 required:
                   - data
       tags:
@@ -118,7 +118,7 @@ paths:
                   type: object
                   properties:
                     attributes:
-                      $ref: '#/components/schemas/OfferLetterRequest'
+                      $ref: '#/components/schemas/Requests.OfferLetterUpsert'
                   required:
                     - attributes
               required:
@@ -193,7 +193,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/UserResponseFull'
+                      $ref: '#/components/schemas/Responses.UserList'
                 required:
                   - data
       tags:
@@ -212,7 +212,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/UserResponseSimple'
+                    $ref: '#/components/schemas/Responses.UserCreate'
                 required:
                   - data
       tags:
@@ -228,7 +228,7 @@ paths:
                   type: object
                   properties:
                     attributes:
-                      $ref: '#/components/schemas/UserRequest'
+                      $ref: '#/components/schemas/Requests.UserUpsert'
                   required:
                     - attributes
               required:
@@ -253,7 +253,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/UserResponseFull'
+                    $ref: '#/components/schemas/Responses.UserShow'
                 required:
                   - data
       tags:
@@ -277,7 +277,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/UserResponseSimple'
+                    $ref: '#/components/schemas/Responses.UserUpdate'
                 required:
                   - data
       tags:
@@ -287,7 +287,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserRequestUpdate'
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    attributes:
+                      $ref: '#/components/schemas/Requests.UserUpsertUpdate'
   /api/v2/custom_fields:
     get:
       operationId: CustomFields_list
@@ -357,7 +363,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CustomField'
+                  $ref: '#/components/schemas/Responses.CustomFieldList'
       tags:
         - Custom Fields
     post:
@@ -371,13 +377,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomField'
+                $ref: '#/components/schemas/Responses.CustomFieldCreate'
         '422':
           description: Client error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidationError'
+                $ref: '#/components/schemas/Errors.ValidationError'
       tags:
         - Custom Fields
       requestBody:
@@ -385,7 +391,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CustomFieldCreate'
+              $ref: '#/components/schemas/Requests.CustomFieldCreate'
   /api/v2/custom_fields/{id}:
     get:
       operationId: CustomFields_show
@@ -403,13 +409,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomField'
+                $ref: '#/components/schemas/Responses.CustomFieldShow'
         '404':
           description: The server cannot find the requested resource.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NotFoundError'
+                $ref: '#/components/schemas/Errors.NotFoundError'
       tags:
         - Custom Fields
   /api/v2/custom_fields/{id}/activate:
@@ -507,7 +513,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/JourneyList'
+                  $ref: '#/components/schemas/Responses.JourneyList'
       tags:
         - Journeys
   /api/v2/journeys/{id}:
@@ -527,13 +533,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JourneyShow'
+                $ref: '#/components/schemas/Responses.JourneyShow'
         '404':
           description: The server cannot find the requested resource.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NotFoundError'
+                $ref: '#/components/schemas/Errors.NotFoundError'
       tags:
         - Journeys
   /api/v2/user_journeys:
@@ -617,7 +623,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UserJourney'
+                  $ref: '#/components/schemas/Responses.UserJourneyList'
       tags:
         - User Journeys
     post:
@@ -631,13 +637,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserJourney'
+                $ref: '#/components/schemas/Responses.UserJourneyCreate'
         '422':
           description: Client error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidationError'
+                $ref: '#/components/schemas/Errors.ValidationError'
       tags:
         - User Journeys
       requestBody:
@@ -645,7 +651,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserJourneyCreate'
+              $ref: '#/components/schemas/Requests.UserJourneyCreate'
   /api/v2/user_journeys/{id}:
     get:
       operationId: UserJourneys_show
@@ -663,13 +669,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserJourney'
+                $ref: '#/components/schemas/Responses.UserJourneyShow'
         '404':
           description: The server cannot find the requested resource.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NotFoundError'
+                $ref: '#/components/schemas/Errors.NotFoundError'
       tags:
         - User Journeys
     patch:
@@ -688,19 +694,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserJourney'
+                $ref: '#/components/schemas/Responses.UserJourneyUpdate'
         '404':
           description: The server cannot find the requested resource.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NotFoundError'
+                $ref: '#/components/schemas/Errors.NotFoundError'
         '422':
           description: Client error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidationError'
+                $ref: '#/components/schemas/Errors.ValidationError'
       tags:
         - User Journeys
       requestBody:
@@ -708,7 +714,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserJourneyUpdate'
+              $ref: '#/components/schemas/Requests.UserJourneyUpdate'
   /api/v2/user_journeys/{id}/rescind:
     delete:
       operationId: UserJourneys_rescind
@@ -728,13 +734,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NotFoundError'
+                $ref: '#/components/schemas/Errors.NotFoundError'
         '422':
           description: Client error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidationError'
+                $ref: '#/components/schemas/Errors.ValidationError'
       tags:
         - User Journeys
       requestBody:
@@ -752,7 +758,89 @@ security:
   - BearerAuth: []
 components:
   schemas:
-    Address:
+    Base64:
+      type: string
+      format: Base64
+      examples:
+        - WW91J3JlIGEgY3VyaW91cyBmZWxsb3cgOy0p
+    Date:
+      type: string
+      format: YYYY-MM-DD
+      examples:
+        - '2026-01-01'
+    DateTime:
+      type: string
+      format: iso8601
+      examples:
+        - '2026-02-01T01:02:03Z'
+    Email:
+      type: string
+      format: email
+      examples:
+        - testing@example.com
+    Enums.JourneyPublishingState:
+      type: string
+      enum:
+        - unpublished
+        - published
+        - draft
+      examples:
+        - published
+    Enums.JourneyTransitionType:
+      type: string
+      enum:
+        - pre_offer
+        - offer
+        - post_offer
+        - onboarding
+        - offboarding
+      examples:
+        - pre_offer
+    Enums.UserJourneyState:
+      type: string
+      enum:
+        - draft
+        - needs_attention
+        - pending_approval
+        - approved
+        - rejected
+        - rescinded
+        - user_pending
+        - submitted
+        - declined
+        - completed
+      examples:
+        - approved
+    Errors.NotFoundError:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - NOT_FOUND
+        message:
+          type: string
+    Errors.ValidationError:
+      type: object
+      required:
+        - code
+        - message
+        - details
+      properties:
+        code:
+          type: string
+          enum:
+            - VALIDATION_ERROR
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: string
+    Models.Address:
       type: object
       required:
         - city
@@ -796,7 +884,7 @@ components:
           $ref: '#/components/schemas/Date'
         end_date:
           $ref: '#/components/schemas/Date'
-    Attachment:
+    Models.Attachment:
       type: object
       properties:
         file_name:
@@ -817,227 +905,7 @@ components:
               examples:
                 - cba
           description: Responses provided in PDF form fields (only present when attachment is a PDF with form fields)
-    Base64:
-      type: string
-      format: Base64
-      examples:
-        - WW91J3JlIGEgY3VyaW91cyBmZWxsb3cgOy0p
-    CustomField:
-      type: object
-      required:
-        - id
-        - transition_type
-        - name
-        - key
-        - data_type
-        - mandatory
-        - allowed_values
-        - list_of_values_map_id
-        - created_at
-        - allowed_rule_set_types
-        - allowed_placeholder_type
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        transition_type:
-          $ref: '#/components/schemas/JourneyTransitionType'
-        name:
-          type: string
-          examples:
-            - Start date
-        key:
-          type: string
-          examples:
-            - '1234'
-        data_type:
-          type: string
-          examples:
-            - Datetime
-        mandatory:
-          type: boolean
-          examples:
-            - false
-        mapping:
-          type: string
-          examples:
-            - salutation, nickname, title, university, current_location, employee_id, profile_photo_url, division, hire_type, company_code, relocation_type, job_profile_id
-        validation_rule:
-          type: string
-          examples:
-            - regexp, list_of_values_map, list, previous_date_time, future_date_time, workday_job_profile, workday_organization
-        regexp_pattern:
-          type: string
-          description: Required if validation_rule is regexp
-          examples:
-            - ^[a-zA-Z0-9]+$
-        allowed_values:
-          type: array
-          items:
-            type: string
-          description: Required if validation_rule is list
-          examples:
-            - - a
-              - b
-              - c
-        list_of_values_map_id:
-          type: string
-          description: Required if validation_rule is list_of_values_map
-          examples:
-            - LegalEntityLOV - refer to References API for more details
-        created_at:
-          type: string
-          examples:
-            - '2025-01-01'
-        deactivated:
-          type: boolean
-          examples:
-            - false
-        rule_settable:
-          type: boolean
-          description: Used in Assignment Rules
-          examples:
-            - false
-        placeholderable:
-          type: boolean
-          description: Used in placeholders
-          examples:
-            - false
-        allowed_rule_set_types:
-          type: array
-          items:
-            type: string
-          examples:
-            - - journey
-              - module
-              - child_module
-              - task
-              - communication
-              - report
-        allowed_placeholder_type:
-          type: array
-          items:
-            type: string
-          examples:
-            - - journey
-              - communication
-              - html_editor_task
-        workday_organization_type:
-          type: string
-          description: Required if validation_rule is workday_organization
-          examples:
-            - Supervisory, Pay_Group, Cost_Center, Company, Cost_Center_Hierarchy, Location_Hierarchy, External_Payroll_Company, Company_Hierarchy
-    CustomFieldCreate:
-      type: object
-      required:
-        - transition_type
-        - name
-        - key
-        - data_type
-        - mandatory
-        - allowed_values
-        - list_of_values_map_id
-        - created_at
-        - allowed_rule_set_types
-        - allowed_placeholder_type
-      properties:
-        transition_type:
-          $ref: '#/components/schemas/JourneyTransitionType'
-        name:
-          type: string
-          examples:
-            - Start date
-        key:
-          type: string
-          examples:
-            - '1234'
-        data_type:
-          type: string
-          examples:
-            - Datetime
-        mandatory:
-          type: boolean
-          examples:
-            - false
-        mapping:
-          type: string
-          examples:
-            - salutation, nickname, title, university, current_location, employee_id, profile_photo_url, division, hire_type, company_code, relocation_type, job_profile_id
-        validation_rule:
-          type: string
-          examples:
-            - regexp, list_of_values_map, list, previous_date_time, future_date_time, workday_job_profile, workday_organization
-        regexp_pattern:
-          type: string
-          description: Required if validation_rule is regexp
-          examples:
-            - ^[a-zA-Z0-9]+$
-        allowed_values:
-          type: array
-          items:
-            type: string
-          description: Required if validation_rule is list
-          examples:
-            - - a
-              - b
-              - c
-        list_of_values_map_id:
-          type: string
-          description: Required if validation_rule is list_of_values_map
-          examples:
-            - LegalEntityLOV - refer to References API for more details
-        created_at:
-          type: string
-          examples:
-            - '2025-01-01'
-        deactivated:
-          type: boolean
-          examples:
-            - false
-        rule_settable:
-          type: boolean
-          description: Used in Assignment Rules
-          examples:
-            - false
-        placeholderable:
-          type: boolean
-          description: Used in placeholders
-          examples:
-            - false
-        allowed_rule_set_types:
-          type: array
-          items:
-            type: string
-          examples:
-            - - journey
-              - module
-              - child_module
-              - task
-              - communication
-              - report
-        allowed_placeholder_type:
-          type: array
-          items:
-            type: string
-          examples:
-            - - journey
-              - communication
-              - html_editor_task
-        workday_organization_type:
-          type: string
-          description: Required if validation_rule is workday_organization
-          examples:
-            - Supervisory, Pay_Group, Cost_Center, Company, Cost_Center_Hierarchy, Location_Hierarchy, External_Payroll_Company, Company_Hierarchy
-    Date:
-      type: string
-      format: YYYY-MM-DD
-      examples:
-        - '2026-01-01'
-    DateTime:
-      type: string
-      format: iso8601
-      examples:
-        - '2026-02-01T01:02:03Z'
-    Document:
+    Models.Document:
       type: object
       properties:
         document_type:
@@ -1079,8 +947,8 @@ components:
         attachments:
           type: array
           items:
-            $ref: '#/components/schemas/Attachment'
-    Education:
+            $ref: '#/components/schemas/Models.Attachment'
+    Models.Education:
       type: object
       properties:
         school_name:
@@ -1131,547 +999,12 @@ components:
         end_date:
           $ref: '#/components/schemas/Date'
         address:
-          $ref: '#/components/schemas/Address'
+          $ref: '#/components/schemas/Models.Address'
         attachments:
           type: array
           items:
-            $ref: '#/components/schemas/Attachment'
-    Email:
-      type: string
-      format: email
-      examples:
-        - testing@example.com
-    JourneyList:
-      type: object
-      required:
-        - id
-        - transition_type
-        - publishing_state
-        - title
-        - created_at
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        transition_type:
-          $ref: '#/components/schemas/JourneyTransitionType'
-        publishing_state:
-          $ref: '#/components/schemas/JourneyPublishingState'
-        title:
-          type: string
-        created_at:
-          $ref: '#/components/schemas/DateTime'
-    JourneyPublishingState:
-      type: string
-      enum:
-        - unpublished
-        - published
-        - draft
-      examples:
-        - published
-    JourneyShow:
-      type: object
-      required:
-        - id
-        - transition_type
-        - publishing_state
-        - title
-        - created_at
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        transition_type:
-          $ref: '#/components/schemas/JourneyTransitionType'
-        publishing_state:
-          $ref: '#/components/schemas/JourneyPublishingState'
-        title:
-          type: string
-        created_at:
-          $ref: '#/components/schemas/DateTime'
-    JourneyTransitionType:
-      type: string
-      enum:
-        - pre_offer
-        - offer
-        - post_offer
-        - onboarding
-        - offboarding
-      examples:
-        - pre_offer
-    NotFoundError:
-      type: object
-      required:
-        - code
-        - message
-      properties:
-        code:
-          type: string
-          enum:
-            - NOT_FOUND
-        message:
-          type: string
-    OfferLetterRequest:
-      type: object
-      required:
-        - user_id
-        - offer_id
-        - job_application_id
-        - office_location_id
-        - start_date
-      properties:
-        user_id:
-          allOf:
-            - $ref: '#/components/schemas/UUID'
-          description: Unique ID of the user
-        offer_id:
-          type: string
-          description: Unique ID of the Offer
-          examples:
-            - O3112-333
-        job_application_id:
-          type: string
-          description: Unique ID of the Job Application
-          examples:
-            - J-O3112
-        office_location_id:
-          type: object
-          properties:
-            workday:
-              type: string
-              examples:
-                - LOCATION-3-69
-          description: "JSON where key is name of external service, e.g. {'HRIS_ID': 'NEWYORK'. There must be an office location in Xpand with a matching employee id. See reference values here for existing office location external ids"
-        start_date:
-          allOf:
-            - $ref: '#/components/schemas/Date'
-          description: Start date of the new hire
-        legal_entity:
-          type: string
-          description: See reference values here for existing legal entity values.
-          examples:
-            - Xpand Limited
-        job_title:
-          type: string
-          description: Job Title of the offer
-          examples:
-            - Steamboat Captain
-        currency:
-          type: string
-          description: ISO 4217 Currency Code
-          examples:
-            - USD
-        base_salary:
-          type: integer
-          description: Basic Salary
-          examples:
-            - 45000
-        end_date:
-          allOf:
-            - $ref: '#/components/schemas/Date'
-          description: End date of the new hire
-        induction_date:
-          allOf:
-            - $ref: '#/components/schemas/Date'
-          description: Induction Date
-        expiration_date:
-          allOf:
-            - $ref: '#/components/schemas/Date'
-          description: Expiration date of an offer
-        offer_dispositioned:
-          type: string
-          description: dispositioning the offer
-          examples:
-            - 'Y'
-        campus:
-          type: string
-          examples:
-            - 'Y'
-        compensation:
-          type: integer
-          description: Total compensation of the offer (Base + Bonus + Allowes)
-          examples:
-            - 100000
-        non_compete_duration:
-          type: integer
-          examples:
-            - 0
-        supplemental_non_compete_duration:
-          type: integer
-          examples:
-            - 1
-        flsa_status:
-          type: string
-          description: Exempt/Non-Exempt NY/CA wage forms
-          examples:
-            - Exempt
-        respond_by_date:
-          allOf:
-            - $ref: '#/components/schemas/Date'
-          description: Date by when action to be taken on offer
-        attorney_only:
-          type: boolean
-          examples:
-            - true
-        confidential:
-          type: boolean
-          examples:
-            - true
-        regulated:
-          type: boolean
-          examples:
-            - true
-        regulated_status:
-          type: string
-          examples:
-            - Active
-        smcr:
-          type: boolean
-          description: identify if someone is Senior Manager
-          examples:
-            - true
-        job_profile_id:
-          type: string
-          examples:
-            - Job Family
-        business_unit_id:
-          type: string
-          examples:
-            - Business Unit
-        department_code:
-          type: string
-          examples:
-            - Department Code
-        position_type:
-          type: string
-          examples:
-            - Position Type
-        pay_rate:
-          type: string
-          examples:
-            - Pay Rate
-        job_level:
-          type: string
-          examples:
-            - Level 1
-        cost_center_id:
-          type: string
-          examples:
-            - Cost Center
-        time_type:
-          type: string
-          examples:
-            - Full Time
-        employee_type:
-          type: string
-          examples:
-            - Regular
-        job_code:
-          type: string
-          examples:
-            - Engineer
-        target_salary:
-          type: integer
-          examples:
-            - 10000
-        max_salary:
-          type: integer
-          examples:
-            - 100000
-        rsu:
-          type: integer
-          examples:
-            - 5000
-        annual_bonus_percent:
-          type: integer
-          examples:
-            - 10
-        signing_bonus_amount:
-          type: integer
-          examples:
-            - 7000
-        commission_amount:
-          type: integer
-          examples:
-            - 3000
-        car_allowance:
-          type: integer
-          examples:
-            - 1000
-        relocation:
-          type: boolean
-          examples:
-            - true
-        relocation_flex_allowance:
-          type: integer
-          examples:
-            - 2000
-        work_from_home:
-          type: boolean
-          examples:
-            - false
-        immigration:
-          type: boolean
-          examples:
-            - false
-        visa_sponsorship_notes:
-          type: string
-          examples:
-            - Clear
-        urgent:
-          type: boolean
-          examples:
-            - false
-        is_exempt:
-          type: boolean
-          examples:
-            - false
-        notes:
-          type: string
-          examples:
-            - Ready to send the offer
-        documents:
-          type: array
-          items:
-            $ref: '#/components/schemas/Document'
-    OfferLetterResponseFull:
-      type: object
-      required:
-        - id
-        - user_id
-        - offer_id
-        - job_application_id
-        - office_location_id
-        - start_date
-      properties:
-        id:
-          allOf:
-            - $ref: '#/components/schemas/UUID'
-          examples:
-            - 64891c74d5ee1bb16dfdafd8
-        user_id:
-          allOf:
-            - $ref: '#/components/schemas/UUID'
-          description: Unique ID of the user
-        offer_id:
-          type: string
-          description: Unique ID of the Offer
-          examples:
-            - O3112-333
-        job_application_id:
-          type: string
-          description: Unique ID of the Job Application
-          examples:
-            - J-O3112
-        office_location_id:
-          type: object
-          properties:
-            workday:
-              type: string
-              examples:
-                - LOCATION-3-69
-          description: "JSON where key is name of external service, e.g. {'HRIS_ID': 'NEWYORK'. There must be an office location in Xpand with a matching employee id. See reference values here for existing office location external ids"
-        start_date:
-          allOf:
-            - $ref: '#/components/schemas/Date'
-          description: Start date of the new hire
-        legal_entity:
-          type: string
-          description: See reference values here for existing legal entity values.
-          examples:
-            - Xpand Limited
-        job_title:
-          type: string
-          description: Job Title of the offer
-          examples:
-            - Steamboat Captain
-        currency:
-          type: string
-          description: ISO 4217 Currency Code
-          examples:
-            - USD
-        base_salary:
-          type: integer
-          description: Basic Salary
-          examples:
-            - 45000
-        end_date:
-          allOf:
-            - $ref: '#/components/schemas/Date'
-          description: End date of the new hire
-        induction_date:
-          allOf:
-            - $ref: '#/components/schemas/Date'
-          description: Induction Date
-        expiration_date:
-          allOf:
-            - $ref: '#/components/schemas/Date'
-          description: Expiration date of an offer
-        offer_dispositioned:
-          type: string
-          description: dispositioning the offer
-          examples:
-            - 'Y'
-        campus:
-          type: string
-          examples:
-            - 'Y'
-        compensation:
-          type: integer
-          description: Total compensation of the offer (Base + Bonus + Allowes)
-          examples:
-            - 100000
-        non_compete_duration:
-          type: integer
-          examples:
-            - 0
-        supplemental_non_compete_duration:
-          type: integer
-          examples:
-            - 1
-        flsa_status:
-          type: string
-          description: Exempt/Non-Exempt NY/CA wage forms
-          examples:
-            - Exempt
-        respond_by_date:
-          allOf:
-            - $ref: '#/components/schemas/Date'
-          description: Date by when action to be taken on offer
-        attorney_only:
-          type: boolean
-          examples:
-            - true
-        confidential:
-          type: boolean
-          examples:
-            - true
-        regulated:
-          type: boolean
-          examples:
-            - true
-        regulated_status:
-          type: string
-          examples:
-            - Active
-        smcr:
-          type: boolean
-          description: identify if someone is Senior Manager
-          examples:
-            - true
-        job_profile_id:
-          type: string
-          examples:
-            - Job Family
-        business_unit_id:
-          type: string
-          examples:
-            - Business Unit
-        department_code:
-          type: string
-          examples:
-            - Department Code
-        position_type:
-          type: string
-          examples:
-            - Position Type
-        pay_rate:
-          type: string
-          examples:
-            - Pay Rate
-        job_level:
-          type: string
-          examples:
-            - Level 1
-        cost_center_id:
-          type: string
-          examples:
-            - Cost Center
-        time_type:
-          type: string
-          examples:
-            - Full Time
-        employee_type:
-          type: string
-          examples:
-            - Regular
-        job_code:
-          type: string
-          examples:
-            - Engineer
-        target_salary:
-          type: integer
-          examples:
-            - 10000
-        max_salary:
-          type: integer
-          examples:
-            - 100000
-        rsu:
-          type: integer
-          examples:
-            - 5000
-        annual_bonus_percent:
-          type: integer
-          examples:
-            - 10
-        signing_bonus_amount:
-          type: integer
-          examples:
-            - 7000
-        commission_amount:
-          type: integer
-          examples:
-            - 3000
-        car_allowance:
-          type: integer
-          examples:
-            - 1000
-        relocation:
-          type: boolean
-          examples:
-            - true
-        relocation_flex_allowance:
-          type: integer
-          examples:
-            - 2000
-        work_from_home:
-          type: boolean
-          examples:
-            - false
-        immigration:
-          type: boolean
-          examples:
-            - false
-        visa_sponsorship_notes:
-          type: string
-          examples:
-            - Clear
-        urgent:
-          type: boolean
-          examples:
-            - false
-        is_exempt:
-          type: boolean
-          examples:
-            - false
-        notes:
-          type: string
-          examples:
-            - Ready to send the offer
-        documents:
-          type: array
-          items:
-            $ref: '#/components/schemas/Document'
-    OfferLetterResponseSimple:
-      type: object
-      required:
-        - id
-      properties:
-        id:
-          allOf:
-            - $ref: '#/components/schemas/UUID'
-          examples:
-            - 64891c74d5ee1bb16dfdafd8
-    OfficeLocation:
+            $ref: '#/components/schemas/Models.Attachment'
+    Models.OfficeLocation:
       type: object
       required:
         - id
@@ -1733,7 +1066,7 @@ components:
           format: float
           examples:
             - 3.12332
-    PhoneNumber:
+    Models.PhoneNumber:
       type: object
       properties:
         number:
@@ -1753,68 +1086,398 @@ components:
           type: boolean
           examples:
             - true
-    UUID:
-      type: string
-      format: uuid
-      examples:
-        - 69ae0e64b02bfe73a44ca479
-    UserJourney:
+    Models.WorkExperience:
+      type: object
+      properties:
+        employer:
+          type: string
+          examples:
+            - Employer
+        employee_id:
+          type: string
+          examples:
+            - 'E1234'
+        current:
+          type: boolean
+          examples:
+            - true
+        job_title:
+          type: string
+          examples:
+            - Engineer
+        department:
+          type: string
+          examples:
+            - Department
+        employment_type:
+          type: string
+          examples:
+            - Regular
+        reason_for_leaving:
+          type: string
+          examples:
+            - Change in technology
+        salary:
+          type: integer
+          examples:
+            - 10000
+        manager_name:
+          type: string
+          examples:
+            - Manager 1
+        manager_phone:
+          type: string
+          examples:
+            - '+14044578776'
+        manager_email:
+          $ref: '#/components/schemas/Email'
+        hr_name:
+          type: string
+          examples:
+            - HR 1
+        hr_phone:
+          type: string
+          examples:
+            - '+14044578777'
+        hr_email:
+          $ref: '#/components/schemas/Email'
+        start_date:
+          $ref: '#/components/schemas/Date'
+        end_date:
+          $ref: '#/components/schemas/Date'
+        address:
+          $ref: '#/components/schemas/Models.Address'
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Models.Attachment'
+    Requests.CustomFieldCreate:
       type: object
       required:
-        - id
-        - journey_id
-        - user_id
         - transition_type
-        - state
+        - name
+        - key
+        - data_type
+        - mandatory
+        - allowed_values
+        - list_of_values_map_id
         - created_at
-        - expiration_date
-        - office_location
-        - custom_field_values
+        - allowed_rule_set_types
+        - allowed_placeholder_type
       properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        journey_id:
-          $ref: '#/components/schemas/UUID'
-        user_id:
-          $ref: '#/components/schemas/UUID'
         transition_type:
-          $ref: '#/components/schemas/JourneyTransitionType'
-        state:
-          $ref: '#/components/schemas/UserJourneyState'
+          $ref: '#/components/schemas/Enums.JourneyTransitionType'
+        name:
+          type: string
+          examples:
+            - Start date
+        key:
+          type: string
+          examples:
+            - '1234'
+        data_type:
+          type: string
+          examples:
+            - Datetime
+        mandatory:
+          type: boolean
+          examples:
+            - false
+        mapping:
+          type: string
+          examples:
+            - salutation, nickname, title, university, current_location, employee_id, profile_photo_url, division, hire_type, company_code, relocation_type, job_profile_id
+        validation_rule:
+          type: string
+          examples:
+            - regexp, list_of_values_map, list, previous_date_time, future_date_time, workday_job_profile, workday_organization
+        regexp_pattern:
+          type: string
+          description: Required if validation_rule is regexp
+          examples:
+            - ^[a-zA-Z0-9]+$
+        allowed_values:
+          type: array
+          items:
+            type: string
+          description: Required if validation_rule is list
+          examples:
+            - - a
+              - b
+              - c
+        list_of_values_map_id:
+          type: string
+          description: Required if validation_rule is list_of_values_map
+          examples:
+            - LegalEntityLOV - refer to References API for more details
         created_at:
-          $ref: '#/components/schemas/Date'
-        expiration_date:
-          $ref: '#/components/schemas/Date'
-        office_location:
-          anyOf:
-            - $ref: '#/components/schemas/OfficeLocation'
-            - type: 'null'
-        custom_field_values:
+          type: string
+          examples:
+            - '2025-01-01'
+        deactivated:
+          type: boolean
+          examples:
+            - false
+        rule_settable:
+          type: boolean
+          description: Used in Assignment Rules
+          examples:
+            - false
+        placeholderable:
+          type: boolean
+          description: Used in placeholders
+          examples:
+            - false
+        allowed_rule_set_types:
           type: array
           items:
-            type: object
-            properties:
-              id:
-                type: string
-                examples:
-                  - '1234'
-              value:
-                type: string
-                examples:
-                  - custom field value
-              name:
-                type: string
-                examples:
-                  - custom field name
-              key:
-                type: string
-                examples:
-                  - '1234'
-    UserJourneyCreate:
+            type: string
+          examples:
+            - - journey
+              - module
+              - child_module
+              - task
+              - communication
+              - report
+        allowed_placeholder_type:
+          type: array
+          items:
+            type: string
+          examples:
+            - - journey
+              - communication
+              - html_editor_task
+        workday_organization_type:
+          type: string
+          description: Required if validation_rule is workday_organization
+          examples:
+            - Supervisory, Pay_Group, Cost_Center, Company, Cost_Center_Hierarchy, Location_Hierarchy, External_Payroll_Company, Company_Hierarchy
+    Requests.OfferLetterUpsert:
+      type: object
+      required:
+        - user_id
+        - offer_id
+        - job_application_id
+        - office_location_id
+        - start_date
+      properties:
+        user_id:
+          $ref: '#/components/schemas/UUID'
+        offer_id:
+          type: string
+          description: Unique ID of the Offer
+          examples:
+            - O3112-333
+        job_application_id:
+          type: string
+          description: Unique ID of the Job Application
+          examples:
+            - J-O3112
+        office_location_id:
+          type: object
+          properties:
+            workday:
+              type: string
+              examples:
+                - LOCATION-3-69
+          description: "JSON where key is name of external service, e.g. {'HRIS_ID': 'NEWYORK'. There must be an office location in Xpand with a matching employee id. See reference values here for existing office location external ids"
+        start_date:
+          allOf:
+            - $ref: '#/components/schemas/Date'
+          description: Start date of the new hire
+        legal_entity:
+          type: string
+          description: See reference values here for existing legal entity values.
+          examples:
+            - Xpand Limited
+        job_title:
+          type: string
+          description: Job Title of the offer
+          examples:
+            - Steamboat Captain
+        currency:
+          type: string
+          description: ISO 4217 Currency Code
+          examples:
+            - USD
+        base_salary:
+          type: integer
+          description: Basic Salary
+          examples:
+            - 45000
+        end_date:
+          allOf:
+            - $ref: '#/components/schemas/Date'
+          description: End date of the new hire
+        induction_date:
+          allOf:
+            - $ref: '#/components/schemas/Date'
+          description: Induction Date
+        expiration_date:
+          allOf:
+            - $ref: '#/components/schemas/Date'
+          description: Expiration date of an offer
+        offer_dispositioned:
+          type: string
+          description: dispositioning the offer
+          examples:
+            - 'Y'
+        campus:
+          type: string
+          examples:
+            - 'Y'
+        compensation:
+          type: integer
+          description: Total compensation of the offer (Base + Bonus + Allowes)
+          examples:
+            - 100000
+        non_compete_duration:
+          type: integer
+          examples:
+            - 0
+        supplemental_non_compete_duration:
+          type: integer
+          examples:
+            - 1
+        flsa_status:
+          type: string
+          description: Exempt/Non-Exempt NY/CA wage forms
+          examples:
+            - Exempt
+        respond_by_date:
+          allOf:
+            - $ref: '#/components/schemas/Date'
+          description: Date by when action to be taken on offer
+        attorney_only:
+          type: boolean
+          examples:
+            - true
+        confidential:
+          type: boolean
+          examples:
+            - true
+        regulated:
+          type: boolean
+          examples:
+            - true
+        regulated_status:
+          type: string
+          examples:
+            - Active
+        smcr:
+          type: boolean
+          description: identify if someone is Senior Manager
+          examples:
+            - true
+        job_profile_id:
+          type: string
+          examples:
+            - Job Family
+        business_unit_id:
+          type: string
+          examples:
+            - Business Unit
+        department_code:
+          type: string
+          examples:
+            - Department Code
+        position_type:
+          type: string
+          examples:
+            - Position Type
+        pay_rate:
+          type: string
+          examples:
+            - Pay Rate
+        job_level:
+          type: string
+          examples:
+            - Level 1
+        cost_center_id:
+          type: string
+          examples:
+            - Cost Center
+        time_type:
+          type: string
+          examples:
+            - Full Time
+        employee_type:
+          type: string
+          examples:
+            - Regular
+        job_code:
+          type: string
+          examples:
+            - Engineer
+        target_salary:
+          type: integer
+          examples:
+            - 10000
+        max_salary:
+          type: integer
+          examples:
+            - 100000
+        rsu:
+          type: integer
+          examples:
+            - 5000
+        annual_bonus_percent:
+          type: integer
+          examples:
+            - 10
+        signing_bonus_amount:
+          type: integer
+          examples:
+            - 7000
+        commission_amount:
+          type: integer
+          examples:
+            - 3000
+        car_allowance:
+          type: integer
+          examples:
+            - 1000
+        relocation:
+          type: boolean
+          examples:
+            - true
+        relocation_flex_allowance:
+          type: integer
+          examples:
+            - 2000
+        work_from_home:
+          type: boolean
+          examples:
+            - false
+        immigration:
+          type: boolean
+          examples:
+            - false
+        visa_sponsorship_notes:
+          type: string
+          examples:
+            - Clear
+        urgent:
+          type: boolean
+          examples:
+            - false
+        is_exempt:
+          type: boolean
+          examples:
+            - false
+        notes:
+          type: string
+          examples:
+            - Ready to send the offer
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Models.Document'
+    Requests.UserJourneyCreate:
       type: object
       properties:
         transition_type:
-          $ref: '#/components/schemas/JourneyTransitionType'
+          $ref: '#/components/schemas/Enums.JourneyTransitionType'
         user_id:
           anyOf:
             - $ref: '#/components/schemas/UUID'
@@ -1825,7 +1488,7 @@ components:
                   examples:
                     - LOCATION-3-69
         state:
-          $ref: '#/components/schemas/UserJourneyState'
+          $ref: '#/components/schemas/Enums.UserJourneyState'
         expiration_date:
           $ref: '#/components/schemas/Date'
         office_location_id:
@@ -1876,26 +1539,11 @@ components:
                         - abc.pdf
                     file_content_base64:
                       $ref: '#/components/schemas/Base64'
-    UserJourneyState:
-      type: string
-      enum:
-        - draft
-        - needs_attention
-        - pending_approval
-        - approved
-        - rejected
-        - rescinded
-        - user_pending
-        - submitted
-        - declined
-        - completed
-      examples:
-        - approved
-    UserJourneyUpdate:
+    Requests.UserJourneyUpdate:
       type: object
       properties:
         state:
-          $ref: '#/components/schemas/UserJourneyState'
+          $ref: '#/components/schemas/Enums.UserJourneyState'
         expiration_date:
           $ref: '#/components/schemas/Date'
         office_location_id:
@@ -1946,7 +1594,7 @@ components:
                         - abc.pdf
                     file_content_base64:
                       $ref: '#/components/schemas/Base64'
-    UserRequest:
+    Requests.UserUpsert:
       type: object
       required:
         - email
@@ -2081,24 +1729,24 @@ components:
         documents:
           type: array
           items:
-            $ref: '#/components/schemas/Document'
+            $ref: '#/components/schemas/Models.Document'
         educations:
           type: array
           items:
-            $ref: '#/components/schemas/Education'
+            $ref: '#/components/schemas/Models.Education'
         work_experiences:
           type: array
           items:
-            $ref: '#/components/schemas/WorkExperience'
+            $ref: '#/components/schemas/Models.WorkExperience'
         addresses:
           type: array
           items:
-            $ref: '#/components/schemas/Address'
+            $ref: '#/components/schemas/Models.Address'
         phone_numbers:
           type: array
           items:
-            $ref: '#/components/schemas/PhoneNumber'
-    UserRequestUpdate:
+            $ref: '#/components/schemas/Models.PhoneNumber'
+    Requests.UserUpsertUpdate:
       type: object
       properties:
         email:
@@ -2222,24 +1870,820 @@ components:
         documents:
           type: array
           items:
-            $ref: '#/components/schemas/Document'
+            $ref: '#/components/schemas/Models.Document'
         educations:
           type: array
           items:
-            $ref: '#/components/schemas/Education'
+            $ref: '#/components/schemas/Models.Education'
         work_experiences:
           type: array
           items:
-            $ref: '#/components/schemas/WorkExperience'
+            $ref: '#/components/schemas/Models.WorkExperience'
         addresses:
           type: array
           items:
-            $ref: '#/components/schemas/Address'
+            $ref: '#/components/schemas/Models.Address'
         phone_numbers:
           type: array
           items:
-            $ref: '#/components/schemas/PhoneNumber'
-    UserResponseFull:
+            $ref: '#/components/schemas/Models.PhoneNumber'
+    Responses.CustomFieldCreate:
+      type: object
+      required:
+        - id
+        - transition_type
+        - name
+        - key
+        - data_type
+        - mandatory
+        - allowed_values
+        - list_of_values_map_id
+        - created_at
+        - allowed_rule_set_types
+        - allowed_placeholder_type
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        transition_type:
+          $ref: '#/components/schemas/Enums.JourneyTransitionType'
+        name:
+          type: string
+          examples:
+            - Start date
+        key:
+          type: string
+          examples:
+            - '1234'
+        data_type:
+          type: string
+          examples:
+            - Datetime
+        mandatory:
+          type: boolean
+          examples:
+            - false
+        mapping:
+          type: string
+          examples:
+            - salutation, nickname, title, university, current_location, employee_id, profile_photo_url, division, hire_type, company_code, relocation_type, job_profile_id
+        validation_rule:
+          type: string
+          examples:
+            - regexp, list_of_values_map, list, previous_date_time, future_date_time, workday_job_profile, workday_organization
+        regexp_pattern:
+          type: string
+          description: Required if validation_rule is regexp
+          examples:
+            - ^[a-zA-Z0-9]+$
+        allowed_values:
+          type: array
+          items:
+            type: string
+          description: Required if validation_rule is list
+          examples:
+            - - a
+              - b
+              - c
+        list_of_values_map_id:
+          type: string
+          description: Required if validation_rule is list_of_values_map
+          examples:
+            - LegalEntityLOV - refer to References API for more details
+        created_at:
+          type: string
+          examples:
+            - '2025-01-01'
+        deactivated:
+          type: boolean
+          examples:
+            - false
+        rule_settable:
+          type: boolean
+          description: Used in Assignment Rules
+          examples:
+            - false
+        placeholderable:
+          type: boolean
+          description: Used in placeholders
+          examples:
+            - false
+        allowed_rule_set_types:
+          type: array
+          items:
+            type: string
+          examples:
+            - - journey
+              - module
+              - child_module
+              - task
+              - communication
+              - report
+        allowed_placeholder_type:
+          type: array
+          items:
+            type: string
+          examples:
+            - - journey
+              - communication
+              - html_editor_task
+        workday_organization_type:
+          type: string
+          description: Required if validation_rule is workday_organization
+          examples:
+            - Supervisory, Pay_Group, Cost_Center, Company, Cost_Center_Hierarchy, Location_Hierarchy, External_Payroll_Company, Company_Hierarchy
+    Responses.CustomFieldList:
+      type: object
+      required:
+        - id
+        - transition_type
+        - name
+        - key
+        - data_type
+        - mandatory
+        - allowed_values
+        - list_of_values_map_id
+        - created_at
+        - allowed_rule_set_types
+        - allowed_placeholder_type
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        transition_type:
+          $ref: '#/components/schemas/Enums.JourneyTransitionType'
+        name:
+          type: string
+          examples:
+            - Start date
+        key:
+          type: string
+          examples:
+            - '1234'
+        data_type:
+          type: string
+          examples:
+            - Datetime
+        mandatory:
+          type: boolean
+          examples:
+            - false
+        mapping:
+          type: string
+          examples:
+            - salutation, nickname, title, university, current_location, employee_id, profile_photo_url, division, hire_type, company_code, relocation_type, job_profile_id
+        validation_rule:
+          type: string
+          examples:
+            - regexp, list_of_values_map, list, previous_date_time, future_date_time, workday_job_profile, workday_organization
+        regexp_pattern:
+          type: string
+          description: Required if validation_rule is regexp
+          examples:
+            - ^[a-zA-Z0-9]+$
+        allowed_values:
+          type: array
+          items:
+            type: string
+          description: Required if validation_rule is list
+          examples:
+            - - a
+              - b
+              - c
+        list_of_values_map_id:
+          type: string
+          description: Required if validation_rule is list_of_values_map
+          examples:
+            - LegalEntityLOV - refer to References API for more details
+        created_at:
+          type: string
+          examples:
+            - '2025-01-01'
+        deactivated:
+          type: boolean
+          examples:
+            - false
+        rule_settable:
+          type: boolean
+          description: Used in Assignment Rules
+          examples:
+            - false
+        placeholderable:
+          type: boolean
+          description: Used in placeholders
+          examples:
+            - false
+        allowed_rule_set_types:
+          type: array
+          items:
+            type: string
+          examples:
+            - - journey
+              - module
+              - child_module
+              - task
+              - communication
+              - report
+        allowed_placeholder_type:
+          type: array
+          items:
+            type: string
+          examples:
+            - - journey
+              - communication
+              - html_editor_task
+        workday_organization_type:
+          type: string
+          description: Required if validation_rule is workday_organization
+          examples:
+            - Supervisory, Pay_Group, Cost_Center, Company, Cost_Center_Hierarchy, Location_Hierarchy, External_Payroll_Company, Company_Hierarchy
+    Responses.CustomFieldShow:
+      type: object
+      required:
+        - id
+        - transition_type
+        - name
+        - key
+        - data_type
+        - mandatory
+        - allowed_values
+        - list_of_values_map_id
+        - created_at
+        - allowed_rule_set_types
+        - allowed_placeholder_type
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        transition_type:
+          $ref: '#/components/schemas/Enums.JourneyTransitionType'
+        name:
+          type: string
+          examples:
+            - Start date
+        key:
+          type: string
+          examples:
+            - '1234'
+        data_type:
+          type: string
+          examples:
+            - Datetime
+        mandatory:
+          type: boolean
+          examples:
+            - false
+        mapping:
+          type: string
+          examples:
+            - salutation, nickname, title, university, current_location, employee_id, profile_photo_url, division, hire_type, company_code, relocation_type, job_profile_id
+        validation_rule:
+          type: string
+          examples:
+            - regexp, list_of_values_map, list, previous_date_time, future_date_time, workday_job_profile, workday_organization
+        regexp_pattern:
+          type: string
+          description: Required if validation_rule is regexp
+          examples:
+            - ^[a-zA-Z0-9]+$
+        allowed_values:
+          type: array
+          items:
+            type: string
+          description: Required if validation_rule is list
+          examples:
+            - - a
+              - b
+              - c
+        list_of_values_map_id:
+          type: string
+          description: Required if validation_rule is list_of_values_map
+          examples:
+            - LegalEntityLOV - refer to References API for more details
+        created_at:
+          type: string
+          examples:
+            - '2025-01-01'
+        deactivated:
+          type: boolean
+          examples:
+            - false
+        rule_settable:
+          type: boolean
+          description: Used in Assignment Rules
+          examples:
+            - false
+        placeholderable:
+          type: boolean
+          description: Used in placeholders
+          examples:
+            - false
+        allowed_rule_set_types:
+          type: array
+          items:
+            type: string
+          examples:
+            - - journey
+              - module
+              - child_module
+              - task
+              - communication
+              - report
+        allowed_placeholder_type:
+          type: array
+          items:
+            type: string
+          examples:
+            - - journey
+              - communication
+              - html_editor_task
+        workday_organization_type:
+          type: string
+          description: Required if validation_rule is workday_organization
+          examples:
+            - Supervisory, Pay_Group, Cost_Center, Company, Cost_Center_Hierarchy, Location_Hierarchy, External_Payroll_Company, Company_Hierarchy
+    Responses.JourneyList:
+      type: object
+      required:
+        - id
+        - transition_type
+        - publishing_state
+        - title
+        - created_at
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        transition_type:
+          $ref: '#/components/schemas/Enums.JourneyTransitionType'
+        publishing_state:
+          $ref: '#/components/schemas/Enums.JourneyPublishingState'
+        title:
+          type: string
+        created_at:
+          $ref: '#/components/schemas/DateTime'
+    Responses.JourneyShow:
+      type: object
+      required:
+        - id
+        - transition_type
+        - publishing_state
+        - title
+        - created_at
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        transition_type:
+          $ref: '#/components/schemas/Enums.JourneyTransitionType'
+        publishing_state:
+          $ref: '#/components/schemas/Enums.JourneyPublishingState'
+        title:
+          type: string
+        created_at:
+          $ref: '#/components/schemas/DateTime'
+    Responses.OfferLetterCreate:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+    Responses.OfferLetterList:
+      type: object
+      required:
+        - id
+        - user_id
+        - offer_id
+        - job_application_id
+        - office_location_id
+        - start_date
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        user_id:
+          $ref: '#/components/schemas/UUID'
+        offer_id:
+          type: string
+          description: Unique ID of the Offer
+          examples:
+            - O3112-333
+        job_application_id:
+          type: string
+          description: Unique ID of the Job Application
+          examples:
+            - J-O3112
+        office_location_id:
+          type: object
+          properties:
+            workday:
+              type: string
+              examples:
+                - LOCATION-3-69
+          description: "JSON where key is name of external service, e.g. {'HRIS_ID': 'NEWYORK'. There must be an office location in Xpand with a matching employee id. See reference values here for existing office location external ids"
+        start_date:
+          allOf:
+            - $ref: '#/components/schemas/Date'
+          description: Start date of the new hire
+        legal_entity:
+          type: string
+          description: See reference values here for existing legal entity values.
+          examples:
+            - Xpand Limited
+        job_title:
+          type: string
+          description: Job Title of the offer
+          examples:
+            - Steamboat Captain
+        currency:
+          type: string
+          description: ISO 4217 Currency Code
+          examples:
+            - USD
+        base_salary:
+          type: integer
+          description: Basic Salary
+          examples:
+            - 45000
+        end_date:
+          allOf:
+            - $ref: '#/components/schemas/Date'
+          description: End date of the new hire
+        induction_date:
+          allOf:
+            - $ref: '#/components/schemas/Date'
+          description: Induction Date
+        expiration_date:
+          allOf:
+            - $ref: '#/components/schemas/Date'
+          description: Expiration date of an offer
+        offer_dispositioned:
+          type: string
+          description: dispositioning the offer
+          examples:
+            - 'Y'
+        campus:
+          type: string
+          examples:
+            - 'Y'
+        compensation:
+          type: integer
+          description: Total compensation of the offer (Base + Bonus + Allowes)
+          examples:
+            - 100000
+        non_compete_duration:
+          type: integer
+          examples:
+            - 0
+        supplemental_non_compete_duration:
+          type: integer
+          examples:
+            - 1
+        flsa_status:
+          type: string
+          description: Exempt/Non-Exempt NY/CA wage forms
+          examples:
+            - Exempt
+        respond_by_date:
+          allOf:
+            - $ref: '#/components/schemas/Date'
+          description: Date by when action to be taken on offer
+        attorney_only:
+          type: boolean
+          examples:
+            - true
+        confidential:
+          type: boolean
+          examples:
+            - true
+        regulated:
+          type: boolean
+          examples:
+            - true
+        regulated_status:
+          type: string
+          examples:
+            - Active
+        smcr:
+          type: boolean
+          description: identify if someone is Senior Manager
+          examples:
+            - true
+        job_profile_id:
+          type: string
+          examples:
+            - Job Family
+        business_unit_id:
+          type: string
+          examples:
+            - Business Unit
+        department_code:
+          type: string
+          examples:
+            - Department Code
+        position_type:
+          type: string
+          examples:
+            - Position Type
+        pay_rate:
+          type: string
+          examples:
+            - Pay Rate
+        job_level:
+          type: string
+          examples:
+            - Level 1
+        cost_center_id:
+          type: string
+          examples:
+            - Cost Center
+        time_type:
+          type: string
+          examples:
+            - Full Time
+        employee_type:
+          type: string
+          examples:
+            - Regular
+        job_code:
+          type: string
+          examples:
+            - Engineer
+        target_salary:
+          type: integer
+          examples:
+            - 10000
+        max_salary:
+          type: integer
+          examples:
+            - 100000
+        rsu:
+          type: integer
+          examples:
+            - 5000
+        annual_bonus_percent:
+          type: integer
+          examples:
+            - 10
+        signing_bonus_amount:
+          type: integer
+          examples:
+            - 7000
+        commission_amount:
+          type: integer
+          examples:
+            - 3000
+        car_allowance:
+          type: integer
+          examples:
+            - 1000
+        relocation:
+          type: boolean
+          examples:
+            - true
+        relocation_flex_allowance:
+          type: integer
+          examples:
+            - 2000
+        work_from_home:
+          type: boolean
+          examples:
+            - false
+        immigration:
+          type: boolean
+          examples:
+            - false
+        visa_sponsorship_notes:
+          type: string
+          examples:
+            - Clear
+        urgent:
+          type: boolean
+          examples:
+            - false
+        is_exempt:
+          type: boolean
+          examples:
+            - false
+        notes:
+          type: string
+          examples:
+            - Ready to send the offer
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Models.Document'
+    Responses.UserCreate:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+    Responses.UserJourneyCreate:
+      type: object
+      required:
+        - id
+        - journey_id
+        - user_id
+        - transition_type
+        - state
+        - created_at
+        - expiration_date
+        - office_location
+        - custom_field_values
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        journey_id:
+          $ref: '#/components/schemas/UUID'
+        user_id:
+          $ref: '#/components/schemas/UUID'
+        transition_type:
+          $ref: '#/components/schemas/Enums.JourneyTransitionType'
+        state:
+          $ref: '#/components/schemas/Enums.UserJourneyState'
+        created_at:
+          $ref: '#/components/schemas/Date'
+        expiration_date:
+          $ref: '#/components/schemas/Date'
+        office_location:
+          anyOf:
+            - $ref: '#/components/schemas/Models.OfficeLocation'
+            - type: 'null'
+        custom_field_values:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                examples:
+                  - '1234'
+              value:
+                type: string
+                examples:
+                  - custom field value
+              name:
+                type: string
+                examples:
+                  - custom field name
+              key:
+                type: string
+                examples:
+                  - '1234'
+    Responses.UserJourneyList:
+      type: object
+      required:
+        - id
+        - journey_id
+        - user_id
+        - transition_type
+        - state
+        - created_at
+        - expiration_date
+        - office_location
+        - custom_field_values
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        journey_id:
+          $ref: '#/components/schemas/UUID'
+        user_id:
+          $ref: '#/components/schemas/UUID'
+        transition_type:
+          $ref: '#/components/schemas/Enums.JourneyTransitionType'
+        state:
+          $ref: '#/components/schemas/Enums.UserJourneyState'
+        created_at:
+          $ref: '#/components/schemas/Date'
+        expiration_date:
+          $ref: '#/components/schemas/Date'
+        office_location:
+          anyOf:
+            - $ref: '#/components/schemas/Models.OfficeLocation'
+            - type: 'null'
+        custom_field_values:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                examples:
+                  - '1234'
+              value:
+                type: string
+                examples:
+                  - custom field value
+              name:
+                type: string
+                examples:
+                  - custom field name
+              key:
+                type: string
+                examples:
+                  - '1234'
+    Responses.UserJourneyShow:
+      type: object
+      required:
+        - id
+        - journey_id
+        - user_id
+        - transition_type
+        - state
+        - created_at
+        - expiration_date
+        - office_location
+        - custom_field_values
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        journey_id:
+          $ref: '#/components/schemas/UUID'
+        user_id:
+          $ref: '#/components/schemas/UUID'
+        transition_type:
+          $ref: '#/components/schemas/Enums.JourneyTransitionType'
+        state:
+          $ref: '#/components/schemas/Enums.UserJourneyState'
+        created_at:
+          $ref: '#/components/schemas/Date'
+        expiration_date:
+          $ref: '#/components/schemas/Date'
+        office_location:
+          anyOf:
+            - $ref: '#/components/schemas/Models.OfficeLocation'
+            - type: 'null'
+        custom_field_values:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                examples:
+                  - '1234'
+              value:
+                type: string
+                examples:
+                  - custom field value
+              name:
+                type: string
+                examples:
+                  - custom field name
+              key:
+                type: string
+                examples:
+                  - '1234'
+    Responses.UserJourneyUpdate:
+      type: object
+      required:
+        - id
+        - journey_id
+        - user_id
+        - transition_type
+        - state
+        - created_at
+        - expiration_date
+        - office_location
+        - custom_field_values
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        journey_id:
+          $ref: '#/components/schemas/UUID'
+        user_id:
+          $ref: '#/components/schemas/UUID'
+        transition_type:
+          $ref: '#/components/schemas/Enums.JourneyTransitionType'
+        state:
+          $ref: '#/components/schemas/Enums.UserJourneyState'
+        created_at:
+          $ref: '#/components/schemas/Date'
+        expiration_date:
+          $ref: '#/components/schemas/Date'
+        office_location:
+          anyOf:
+            - $ref: '#/components/schemas/Models.OfficeLocation'
+            - type: 'null'
+        custom_field_values:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                examples:
+                  - '1234'
+              value:
+                type: string
+                examples:
+                  - custom field value
+              name:
+                type: string
+                examples:
+                  - custom field name
+              key:
+                type: string
+                examples:
+                  - '1234'
+    Responses.UserList:
       type: object
       required:
         - id
@@ -2252,10 +2696,7 @@ components:
         - recruiter_ids
       properties:
         id:
-          allOf:
-            - $ref: '#/components/schemas/UUID'
-          examples:
-            - 64891c74d5ee1bb16dfdafd8
+          $ref: '#/components/schemas/UUID'
         first_name:
           type: string
           examples:
@@ -2323,115 +2764,133 @@ components:
         documents:
           type: array
           items:
-            $ref: '#/components/schemas/Document'
+            $ref: '#/components/schemas/Models.Document'
         educations:
           type: array
           items:
-            $ref: '#/components/schemas/Education'
+            $ref: '#/components/schemas/Models.Education'
         work_experiences:
           type: array
           items:
-            $ref: '#/components/schemas/WorkExperience'
+            $ref: '#/components/schemas/Models.WorkExperience'
         addresses:
           type: array
           items:
-            $ref: '#/components/schemas/Address'
+            $ref: '#/components/schemas/Models.Address'
         phone_numbers:
           type: array
           items:
-            $ref: '#/components/schemas/PhoneNumber'
-    UserResponseSimple:
+            $ref: '#/components/schemas/Models.PhoneNumber'
+    Responses.UserShow:
+      type: object
+      required:
+        - id
+        - first_name
+        - last_name
+        - email
+        - start_date
+        - external_ids
+        - office_location_id
+        - recruiter_ids
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        first_name:
+          type: string
+          examples:
+            - John
+        last_name:
+          type: string
+          examples:
+            - Doe
+        email:
+          $ref: '#/components/schemas/Email'
+        start_date:
+          $ref: '#/components/schemas/Date'
+        external_ids:
+          type: object
+          properties:
+            ats_id:
+              type: string
+              examples:
+                - A-1234
+            hris_id:
+              type: string
+              examples:
+                - 'E-1234'
+        office_location_id:
+          type: object
+          properties:
+            workday:
+              type: string
+              examples:
+                - LOCATION-3-69
+        recruiter_ids:
+          type: object
+          properties:
+            recruiter:
+              type: object
+              properties:
+                hris_id:
+                  type: string
+                  examples:
+                    - R-1111
+            recruiting_coordinator:
+              type: object
+              properties:
+                hris_id:
+                  type: string
+                  examples:
+                    - R-2222
+            recruiting_manager:
+              type: object
+              properties:
+                hris_id:
+                  type: string
+                  examples:
+                    - R-3333
+        manager_ids:
+          type: object
+          properties:
+            hris_id:
+              type: array
+              items:
+                type: string
+              examples:
+                - - M-1111
+                  - M-2222
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Models.Document'
+        educations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Models.Education'
+        work_experiences:
+          type: array
+          items:
+            $ref: '#/components/schemas/Models.WorkExperience'
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Models.Address'
+        phone_numbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Models.PhoneNumber'
+    Responses.UserUpdate:
       type: object
       required:
         - id
       properties:
         id:
-          allOf:
-            - $ref: '#/components/schemas/UUID'
-          examples:
-            - 64891c74d5ee1bb16dfdafd8
-    ValidationError:
-      type: object
-      required:
-        - code
-        - message
-        - details
-      properties:
-        code:
-          type: string
-          enum:
-            - VALIDATION_ERROR
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: string
-    WorkExperience:
-      type: object
-      properties:
-        employer:
-          type: string
-          examples:
-            - Employer
-        employee_id:
-          type: string
-          examples:
-            - 'E1234'
-        current:
-          type: boolean
-          examples:
-            - true
-        job_title:
-          type: string
-          examples:
-            - Engineer
-        department:
-          type: string
-          examples:
-            - Department
-        employment_type:
-          type: string
-          examples:
-            - Regular
-        reason_for_leaving:
-          type: string
-          examples:
-            - Change in technology
-        salary:
-          type: integer
-          examples:
-            - 10000
-        manager_name:
-          type: string
-          examples:
-            - Manager 1
-        manager_phone:
-          type: string
-          examples:
-            - '+14044578776'
-        manager_email:
-          $ref: '#/components/schemas/Email'
-        hr_name:
-          type: string
-          examples:
-            - HR 1
-        hr_phone:
-          type: string
-          examples:
-            - '+14044578777'
-        hr_email:
-          $ref: '#/components/schemas/Email'
-        start_date:
-          $ref: '#/components/schemas/Date'
-        end_date:
-          $ref: '#/components/schemas/Date'
-        address:
-          $ref: '#/components/schemas/Address'
-        attachments:
-          type: array
-          items:
-            $ref: '#/components/schemas/Attachment'
+          $ref: '#/components/schemas/UUID'
+    UUID:
+      type: string
+      format: uuid
+      examples:
+        - 69ae0e64b02bfe73a44ca479
   securitySchemes:
     BearerAuth:
       type: http

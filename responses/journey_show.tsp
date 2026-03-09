@@ -1,7 +1,5 @@
-model JourneyShow {
-  id: UUID;
-  transition_type: JourneyTransitionType;
-  publishing_state: JourneyPublishingState;
-  title: string;
-  created_at: DateTime;
+namespace Responses {
+  model JourneyShow {
+    ...Models.Journey;
+  }
 }

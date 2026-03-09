@@ -33,32 +33,39 @@ namespace API {
       },
       @query page?: integer = 1,
     ): {
-      data: UserResponseFull[];
+      data: Responses.UserList[];
     };
 
     @summary("Fetch User")
     @doc("Fetch a User")
     op show(@path id: UUID): {
-      data: UserResponseFull;
+      data: Responses.UserShow;
     };
 
     @summary("Create User")
     @doc("Create a User")
     op create(
-      @body content: {
+      @body body: {
         data: {
-          attributes: UserRequest;
+          attributes: Requests.UserUpsert;
         };
       },
     ): {
-      data: UserResponseSimple;
+      data: Responses.UserCreate;
     };
 
     @summary("Update User")
     @doc("Update a User")
     @patch(#{ implicitOptionality: true })
-    op update(@path id: UUID, @body content: UserRequest): {
-      data: UserResponseSimple;
+    op update(
+      @path id: UUID,
+      @body body: {
+        data: {
+          attributes: Requests.UserUpsert;
+        };
+      },
+    ): {
+      data: Responses.UserUpdate;
     };
   }
 
@@ -86,17 +93,17 @@ namespace API {
       @query direction?: string = "asc",
     ): {
       @statusCode statusCode: 200;
-      @body body: JourneyList[];
+      @body body: Responses.JourneyList[];
     };
 
     @summary("Fetch Journey")
     @doc("Fetch a Journey")
     op show(@path id: UUID): {
       @statusCode statusCode: 200;
-      @body body: JourneyShow;
+      @body body: Responses.JourneyShow;
     } | {
       @statusCode statusCode: 404;
-      @body error: NotFoundError;
+      @body error: Errors.NotFoundError;
     };
   }
 
@@ -138,41 +145,41 @@ namespace API {
       @query direction?: string = "asc",
     ): {
       @statusCode statusCode: 200;
-      @body body: UserJourney[];
+      @body body: Responses.UserJourneyList[];
     };
 
     @summary("Fetch User Journey")
     @doc("Fetch a User Journey")
     op show(@path id: UUID): {
       @statusCode statusCode: 200;
-      @body body: UserJourney;
+      @body body: Responses.UserJourneyShow;
     } | {
       @statusCode statusCode: 404;
-      @body error: NotFoundError;
+      @body error: Errors.NotFoundError;
     };
 
     @summary("Create User Journey")
     @doc("Create a User Journey")
-    op create(@body userJourney: UserJourneyCreate): {
+    op create(@body body: Requests.UserJourneyCreate): {
       @statusCode statusCode: 201;
-      @body body: UserJourney;
+      @body body: Responses.UserJourneyCreate;
     } | {
       @statusCode statusCode: 422;
-      @body error: ValidationError;
+      @body error: Errors.ValidationError;
     };
 
     @summary("Update User Journey")
     @doc("Update a User Journey")
     @patch(#{ implicitOptionality: true })
-    op update(@path id: UUID, @body userJourney: UserJourneyUpdate): {
+    op update(@path id: UUID, @body body: Requests.UserJourneyUpdate): {
       @statusCode statusCode: 200;
-      @body body: UserJourney;
+      @body body: Responses.UserJourneyUpdate;
     } | {
       @statusCode statusCode: 404;
-      @body error: NotFoundError;
+      @body error: Errors.NotFoundError;
     } | {
       @statusCode statusCode: 422;
-      @body error: ValidationError;
+      @body error: Errors.ValidationError;
     };
 
     @route("/{id}/rescind")
@@ -188,10 +195,10 @@ namespace API {
       @statusCode statusCode: 204;
     } | {
       @statusCode statusCode: 404;
-      @body error: NotFoundError;
+      @body error: Errors.NotFoundError;
     } | {
       @statusCode statusCode: 422;
-      @body error: ValidationError;
+      @body error: Errors.ValidationError;
     };
   }
 
@@ -224,27 +231,27 @@ namespace API {
       @query direction?: string = "asc",
     ): {
       @statusCode statusCode: 200;
-      @body customFields: CustomField[];
+      @body body: Responses.CustomFieldList[];
     };
 
     @summary("Fetch Custom Field")
     @doc("Fetch a Custom Field")
     op show(@path id: UUID): {
       @statusCode statusCode: 200;
-      @body customField: CustomField;
+      @body body: Responses.CustomFieldShow;
     } | {
       @statusCode statusCode: 404;
-      @body error: NotFoundError;
+      @body error: Errors.NotFoundError;
     };
 
     @summary("Create Custom Field")
     @doc("Creates a new custom field that can be used in user journeys or forms.")
-    op create(@body customField: CustomFieldCreate): {
+    op create(@body body: Requests.CustomFieldCreate): {
       @statusCode statusCode: 201;
-      @body newCustomField: CustomField;
+      @body body: Responses.CustomFieldCreate;
     } | {
       @statusCode statusCode: 422;
-      @body error: ValidationError;
+      @body error: Errors.ValidationError;
     };
 
     @route("/{id}/activate")
@@ -312,19 +319,19 @@ namespace API {
       },
       @query page?: integer = 1,
     ): {
-      data: OfferLetterResponseFull[];
+      data: Responses.OfferLetterList[];
     };
 
     @summary("Create/Update Offer Letter")
     @doc("Create/Update Offer Letter - Create or update an offer letter.")
     op create(
-      @body content: {
+      @body body: {
         data: {
-          attributes: OfferLetterRequest;
+          attributes: Requests.OfferLetterUpsert;
         };
       },
     ): {
-      data: OfferLetterResponseSimple;
+      data: Responses.OfferLetterCreate;
     };
 
     @summary("Rescind Offer Letter")
