@@ -25,9 +25,6 @@ model Address {
   @example(true)
   permanent?: boolean;
 
-  @example(plainDate.fromISO("2021-10-23"))
-  start_date?: plainDate;
-
-  @example(plainDate.fromISO("2023-10-23"))
-  end_date?: plainDate;
+  start_date?: Date;
+  end_date?: Date;
 }

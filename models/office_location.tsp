@@ -1,13 +1,8 @@
-model OfficeLocationId {
-  @example("LOCATION-3-69")
-  workday?: string;
-
-  @example("LOCATION-3-69")
-  id: string;
-
-  external_ids: {
-    @example("E-1234")
-    hris_id?: string;
+model OfficeLocation {
+  id: UUID;
+  external_ids?: {
+    @example("LOCATION-3-69")
+    workday?: string;
   };
 
   @example("123 Main St")
@@ -20,7 +15,7 @@ model OfficeLocationId {
   address3?: string;
 
   @example("New York")
-  city?: string;
+  city: string;
 
   @example("NY")
   state?: string;
@@ -29,7 +24,7 @@ model OfficeLocationId {
   region?: string;
 
   @example("USA")
-  country?: string;
+  country: string;
 
   @example("10001")
   postal_code?: string;

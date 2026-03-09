@@ -23,8 +23,7 @@ model Education {
   @example("IT")
   specialization?: string;
 
-  @example(plainDate.fromISO("2021-10-23"))
-  graduation_date?: plainDate;
+  graduation_date?: Date;
 
   @example("A")
   grade?: string;
@@ -32,12 +31,8 @@ model Education {
   @example("Jon Doe")
   name_while_attending?: string;
 
-  @example(plainDate.fromISO("2021-10-23"))
-  start_date?: plainDate;
-
-  @example(plainDate.fromISO("2023-10-23"))
-  end_date?: plainDate;
-
+  start_date?: Date;
+  end_date?: Date;
   address?: Address;
   attachments?: Attachment[];
 }

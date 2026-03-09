@@ -1,6 +1,6 @@
 model UserResponseFull {
   @example("64891c74d5ee1bb16dfdafd8")
-  id: uuid;
+  id: UUID;
 
   @example("John")
   first_name: string;
@@ -8,12 +8,8 @@ model UserResponseFull {
   @example("Doe")
   last_name: string;
 
-  @example("john@example.com")
-  email: email;
-
-  @example(plainDate.fromISO("2023-10-23"))
-  start_date: plainDate;
-
+  email: Email;
+  start_date: Date;
   external_ids: {
     @example("A-1234")
     ats_id?: string;

@@ -1,11 +1,9 @@
 model UserRequest {
   @doc("Must be a valid email address. Must be unique for each user. Non case-sensitive. Regex validation: ^(?!...)[a-zA-Z0-9][\\w-.]@[A-Za-z\\d-]+(.[A-Za-z\\d-]+)*.[A-Za-z]+$")
-  @example("daniel@personal.com")
-  email: email;
+  email: Email;
 
   @doc("Must be a valid email address. Must be unique for each user. Non case-sensitive. Regex validation: ^(?!...)[a-zA-Z0-9][\\w-.]@[A-Za-z\\d-]+(.[A-Za-z\\d-]+)*.[A-Za-z]+$")
-  @example("daniel@company.com")
-  work_email?: email;
+  work_email?: Email;
 
   @doc("Must not contain numbers or any of the following special characters !@#$%^&*()")
   @example("Daniel")
@@ -20,8 +18,7 @@ model UserRequest {
   middle_name?: string;
 
   @doc("Format: YYYY-MM-DD. Can be present, or future dates only.")
-  @example(plainDate.fromISO("2023-09-08"))
-  start_date: plainDate;
+  start_date: Date;
 
   @doc("See reference values here for allowed employee type values.")
   @example("Regular")

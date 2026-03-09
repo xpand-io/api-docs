@@ -1,7 +1,6 @@
 model OfferLetterRequest {
   @doc("Unique ID of the user")
-  @example("64892208d5ee1bb16dfdafda")
-  user_id: uuid;
+  user_id: UUID;
 
   @doc("Unique ID of the Offer")
   @example("O3112-333")
@@ -18,8 +17,7 @@ model OfferLetterRequest {
   };
 
   @doc("Start date of the new hire")
-  @example(plainDate.fromISO("2023-10-23"))
-  start_date: plainDate;
+  start_date: Date;
 
   @doc("See reference values here for existing legal entity values.")
   @example("Xpand Limited")
@@ -38,16 +36,13 @@ model OfferLetterRequest {
   base_salary?: integer;
 
   @doc("End date of the new hire")
-  @example(plainDate.fromISO("2023-10-23"))
-  end_date?: plainDate;
+  end_date?: Date;
 
   @doc("Induction Date")
-  @example(plainDate.fromISO("2023-10-23"))
-  induction_date?: plainDate;
+  induction_date?: Date;
 
   @doc("Expiration date of an offer")
-  @example(plainDate.fromISO("2023-10-23"))
-  expiration_date?: plainDate;
+  expiration_date?: Date;
 
   @doc("dispositioning the offer")
   @example("Y")
@@ -71,8 +66,7 @@ model OfferLetterRequest {
   flsa_status?: string;
 
   @doc("Date by when action to be taken on offer")
-  @example(plainDate.fromISO("2023-10-23"))
-  respond_by_date?: plainDate;
+  respond_by_date?: Date;
 
   @example(true)
   attorney_only?: boolean;

@@ -29,8 +29,7 @@ model WorkExperience {
   @example("+14044578776")
   manager_phone?: string;
 
-  @example("manager@xpand.io")
-  manager_email?: email;
+  manager_email?: Email;
 
   @example("HR 1")
   hr_name?: string;
@@ -38,15 +37,9 @@ model WorkExperience {
   @example("+14044578777")
   hr_phone?: string;
 
-  @example("hr@xpand.io")
-  hr_email?: email;
-
-  @example(plainDate.fromISO("2021-10-23"))
-  start_date?: plainDate;
-
-  @example(plainDate.fromISO("2023-10-23"))
-  end_date?: plainDate;
-
+  hr_email?: Email;
+  start_date?: Date;
+  end_date?: Date;
   address?: Address;
   attachments?: Attachment[];
 }

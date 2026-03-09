@@ -38,7 +38,7 @@ namespace API {
 
     @summary("Fetch User")
     @doc("Fetch a User")
-    op show(@path id: uuid): {
+    op show(@path id: UUID): {
       data: UserResponseFull;
     };
 
@@ -57,7 +57,7 @@ namespace API {
     @summary("Update User")
     @doc("Update a User")
     @patch(#{ implicitOptionality: true })
-    op update(@path id: uuid, @body content: UserRequest): {
+    op update(@path id: UUID, @body content: UserRequest): {
       data: UserResponseSimple;
     };
   }
@@ -86,14 +86,14 @@ namespace API {
       @query direction?: string = "asc",
     ): {
       @statusCode statusCode: 200;
-      @body body: Journey[];
+      @body body: JourneyList[];
     };
 
     @summary("Fetch Journey")
     @doc("Fetch a Journey")
-    op show(@path id: string): {
+    op show(@path id: UUID): {
       @statusCode statusCode: 200;
-      @body body: Journey;
+      @body body: JourneyShow;
     } | {
       @statusCode statusCode: 404;
       @body error: NotFoundError;
@@ -127,7 +127,10 @@ namespace API {
         @example("draft, needs_attention, pending_approval, approved, rejected, rescinded, user_pending, submitted, declined, completed")
         state?: string;
 
-        custom_fields?: CustomFieldsValueObject;
+        custom_fields?: {
+          key1?: string;
+          key2?: string;
+        };
       },
       @query offset?: integer = 0,
       @query limit?: integer = 50,
@@ -140,7 +143,7 @@ namespace API {
 
     @summary("Fetch User Journey")
     @doc("Fetch a User Journey")
-    op show(@path id: string): {
+    op show(@path id: UUID): {
       @statusCode statusCode: 200;
       @body body: UserJourney;
     } | {
@@ -161,7 +164,7 @@ namespace API {
     @summary("Update User Journey")
     @doc("Update a User Journey")
     @patch(#{ implicitOptionality: true })
-    op update(@path id: string, @body userJourney: UserJourneyUpdate): {
+    op update(@path id: UUID, @body userJourney: UserJourneyUpdate): {
       @statusCode statusCode: 200;
       @body body: UserJourney;
     } | {
@@ -177,7 +180,7 @@ namespace API {
     @summary("Rescind User Journey")
     @delete
     op rescind(
-      @path id: string,
+      @path id: UUID,
       @body body: {
         rescind_reason: string;
       },
@@ -226,7 +229,7 @@ namespace API {
 
     @summary("Fetch Custom Field")
     @doc("Fetch a Custom Field")
-    op show(@path id: string): {
+    op show(@path id: UUID): {
       @statusCode statusCode: 200;
       @body customField: CustomField;
     } | {
@@ -248,7 +251,7 @@ namespace API {
     @summary("Activate Custom Field")
     @doc("Activates a custom field.")
     @patch
-    op activate(@path id: string): {
+    op activate(@path id: UUID): {
       @statusCode statusCode: 200;
     };
 
@@ -256,7 +259,7 @@ namespace API {
     @summary("Deactivate Custom Field")
     @doc("Deactivates a custom field. This will not delete the custom field, but will make it inactive. Once deactivated it cannot be used in the Create User Journey API")
     @patch
-    op deactivate(@path id: string): {
+    op deactivate(@path id: UUID): {
       @statusCode statusCode: 200;
     };
   }
@@ -327,6 +330,6 @@ namespace API {
     @summary("Rescind Offer Letter")
     @doc("Rescind an offer letter.")
     @delete
-    op delete(@path id: uuid): void;
+    op delete(@path id: UUID): void;
   }
 }
