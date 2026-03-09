@@ -652,6 +652,37 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Requests.UserJourneyCreate'
+  /api/v2/user_journeys/rescind:
+    patch:
+      operationId: UserJourneys_rescindMultiple
+      summary: Rescind Multiple User Journeys
+      description: Rescind all rescindable journeys for a user, optionally filtered by transition type. transition_type accepts a comma-separated list and spaces after commas are allowed.
+      parameters: []
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '401':
+          description: Access is unauthorized.
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors.NotFoundError'
+        '422':
+          description: Client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors.ValidationError'
+      tags:
+        - User Journeys
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Requests.UserJourneyRescindMultiple'
   /api/v2/user_journeys/{id}:
     get:
       operationId: UserJourneys_show
@@ -716,10 +747,10 @@ paths:
             schema:
               $ref: '#/components/schemas/Requests.UserJourneyUpdate'
   /api/v2/user_journeys/{id}/rescind:
-    delete:
+    patch:
       operationId: UserJourneys_rescind
-      summary: Rescind User Journey
-      description: Rescind User Journey
+      summary: Rescind Single User Journey
+      description: Rescind a single user journey by ID. This operation uses rescind_reason only.
       parameters:
         - name: id
           in: path
@@ -729,6 +760,8 @@ paths:
       responses:
         '204':
           description: 'There is no content to send for this request, but the headers may be useful. '
+        '401':
+          description: Access is unauthorized.
         '404':
           description: The server cannot find the requested resource.
           content:
@@ -748,12 +781,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                rescind_reason:
-                  type: string
-              required:
-                - rescind_reason
+              $ref: '#/components/schemas/Requests.UserJourneyRescind'
 security:
   - BearerAuth: []
 components:
@@ -796,6 +824,13 @@ components:
         - offboarding
       examples:
         - pre_offer
+    Enums.UserJourneyRescindReason:
+      type: string
+      enum:
+        - no_longer_needed
+        - offered_externally
+      examples:
+        - no_longer_needed
     Enums.UserJourneyState:
       type: string
       enum:
@@ -1539,6 +1574,39 @@ components:
                         - abc.pdf
                     file_content_base64:
                       $ref: '#/components/schemas/Base64'
+    Requests.UserJourneyRescind:
+      type: object
+      required:
+        - rescind_reason
+      properties:
+        rescind_reason:
+          allOf:
+            - $ref: '#/components/schemas/Enums.UserJourneyRescindReason'
+          description: Reason for rescinding the user journey.
+          examples:
+            - no_longer_needed
+    Requests.UserJourneyRescindMultiple:
+      type: object
+      required:
+        - rescind_reason
+        - user_id
+      properties:
+        transition_type:
+          type: string
+          description: Optional comma-separated list of transition types. Spaces after commas are allowed. Allowed values are pre_offer, offer, post_offer, onboarding, offboarding.
+          examples:
+            - pre_offer, offer, post_offer, onboarding, offboarding
+        rescind_reason:
+          allOf:
+            - $ref: '#/components/schemas/Enums.UserJourneyRescindReason'
+          description: Reason for rescinding the journey(s). One of no_longer_needed, offered_externally.
+          examples:
+            - no_longer_needed
+        user_id:
+          type: string
+          description: ID of the user whose journeys will be rescinded.
+          examples:
+            - 6949f4dcea80bfa3cb3c21d7
     Requests.UserJourneyUpdate:
       type: object
       properties:

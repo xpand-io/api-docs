@@ -183,16 +183,36 @@ namespace API {
     };
 
     @route("/{id}/rescind")
-    @doc("Rescind User Journey")
-    @summary("Rescind User Journey")
-    @delete
+    @doc("Rescind a single user journey by ID. This operation uses rescind_reason only.")
+    @summary("Rescind Single User Journey")
+    @patch(#{ implicitOptionality: false })
     op rescind(
       @path id: UUID,
-      @body body: {
-        rescind_reason: string;
-      },
+      @body body: Requests.UserJourneyRescind,
     ): {
+      @doc("No body. Success response for rescind operations.")
       @statusCode statusCode: 204;
+    } | {
+      @statusCode statusCode: 401;
+    } | {
+      @statusCode statusCode: 404;
+      @body error: Errors.NotFoundError;
+    } | {
+      @statusCode statusCode: 422;
+      @body error: Errors.ValidationError;
+    };
+
+    @route("/rescind")
+    @doc("Rescind all rescindable journeys for a user, optionally filtered by transition type. transition_type accepts a comma-separated list and spaces after commas are allowed.")
+    @summary("Rescind Multiple User Journeys")
+    @patch(#{ implicitOptionality: false })
+    op rescindMultiple(
+      @body body: Requests.UserJourneyRescindMultiple,
+    ): {
+      @doc("No body. Success response for rescind operations.")
+      @statusCode statusCode: 204;
+    } | {
+      @statusCode statusCode: 401;
     } | {
       @statusCode statusCode: 404;
       @body error: Errors.NotFoundError;
