@@ -2,8 +2,7 @@ model Attachment {
   @example("abc.pdf")
   file_name?: string;
 
-  @example("SGVsbG8gdGhlcmUgOi0pIEZpbmQgYW55dGhpbmcgZXhjaXRpbmc/")
-  file_content_base64?: string;
+  file_content_base64?: Base64;
 
   @doc("Responses provided in PDF form fields (only present when attachment is a PDF with form fields)")
   responses?: {

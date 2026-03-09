@@ -1,6 +1,5 @@
 model CustomFieldCreate {
-  @example("offer")
-  transition_type: string;
+  transition_type: JourneyTransitionType;
 
   @example("Start date")
   name: string;

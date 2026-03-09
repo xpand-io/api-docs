@@ -1,10 +1,8 @@
 import "./address.tsp";
 import "./attachment.tsp";
-import "./custom_field_value_object.tsp";
 import "./custom_field.tsp";
 import "./document.tsp";
 import "./education.tsp";
-import "./journey.tsp";
 import "./office_location.tsp";
 import "./phone_number.tsp";
 import "./user_journey.tsp";

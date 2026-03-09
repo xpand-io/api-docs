@@ -1,9 +1,6 @@
 model CustomField {
-  @example("12345")
-  id: string;
-
-  @example("offer")
-  transition_type: string;
+  id: UUID;
+  transition_type: JourneyTransitionType;
 
   @example("Start date")
   name: string;

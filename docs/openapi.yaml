@@ -134,7 +134,7 @@ paths:
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/uuid'
+            $ref: '#/components/schemas/UUID'
       responses:
         '204':
           description: 'There is no content to send for this request, but the headers may be useful. '
@@ -243,7 +243,7 @@ paths:
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/uuid'
+            $ref: '#/components/schemas/UUID'
       responses:
         '200':
           description: The request has succeeded.
@@ -267,7 +267,7 @@ paths:
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/uuid'
+            $ref: '#/components/schemas/UUID'
       responses:
         '200':
           description: The request has succeeded.
@@ -396,7 +396,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            $ref: '#/components/schemas/UUID'
       responses:
         '200':
           description: The request has succeeded.
@@ -422,7 +422,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            $ref: '#/components/schemas/UUID'
       responses:
         '200':
           description: The request has succeeded.
@@ -438,7 +438,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            $ref: '#/components/schemas/UUID'
       responses:
         '200':
           description: The request has succeeded.
@@ -507,7 +507,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Journey'
+                  $ref: '#/components/schemas/JourneyList'
       tags:
         - Journeys
   /api/v2/journeys/{id}:
@@ -520,14 +520,14 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            $ref: '#/components/schemas/UUID'
       responses:
         '200':
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Journey'
+                $ref: '#/components/schemas/JourneyShow'
         '404':
           description: The server cannot find the requested resource.
           content:
@@ -574,7 +574,12 @@ paths:
                 examples:
                   - draft, needs_attention, pending_approval, approved, rejected, rescinded, user_pending, submitted, declined, completed
               custom_fields:
-                $ref: '#/components/schemas/CustomFieldsValueObject'
+                type: object
+                properties:
+                  key1:
+                    type: string
+                  key2:
+                    type: string
           explode: false
         - name: offset
           in: query
@@ -651,7 +656,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            $ref: '#/components/schemas/UUID'
       responses:
         '200':
           description: The request has succeeded.
@@ -676,7 +681,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            $ref: '#/components/schemas/UUID'
       responses:
         '200':
           description: The request has succeeded.
@@ -714,7 +719,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            $ref: '#/components/schemas/UUID'
       responses:
         '204':
           description: 'There is no content to send for this request, but the headers may be useful. '
@@ -788,15 +793,9 @@ components:
           examples:
             - true
         start_date:
-          type: string
-          format: date
-          examples:
-            - '2021-10-23'
+          $ref: '#/components/schemas/Date'
         end_date:
-          type: string
-          format: date
-          examples:
-            - '2023-10-23'
+          $ref: '#/components/schemas/Date'
     Attachment:
       type: object
       properties:
@@ -805,9 +804,7 @@ components:
           examples:
             - abc.pdf
         file_content_base64:
-          type: string
-          examples:
-            - SGVsbG8gdGhlcmUgOi0pIEZpbmQgYW55dGhpbmcgZXhjaXRpbmc/
+          $ref: '#/components/schemas/Base64'
         responses:
           type: object
           properties:
@@ -820,6 +817,11 @@ components:
               examples:
                 - cba
           description: Responses provided in PDF form fields (only present when attachment is a PDF with form fields)
+    Base64:
+      type: string
+      format: Base64
+      examples:
+        - WW91J3JlIGEgY3VyaW91cyBmZWxsb3cgOy0p
     CustomField:
       type: object
       required:
@@ -836,13 +838,9 @@ components:
         - allowed_placeholder_type
       properties:
         id:
-          type: string
-          examples:
-            - '12345'
+          $ref: '#/components/schemas/UUID'
         transition_type:
-          type: string
-          examples:
-            - offer
+          $ref: '#/components/schemas/JourneyTransitionType'
         name:
           type: string
           examples:
@@ -943,9 +941,7 @@ components:
         - allowed_placeholder_type
       properties:
         transition_type:
-          type: string
-          examples:
-            - offer
+          $ref: '#/components/schemas/JourneyTransitionType'
         name:
           type: string
           examples:
@@ -1031,49 +1027,16 @@ components:
           description: Required if validation_rule is workday_organization
           examples:
             - Supervisory, Pay_Group, Cost_Center, Company, Cost_Center_Hierarchy, Location_Hierarchy, External_Payroll_Company, Company_Hierarchy
-    CustomFieldsValueObject:
-      type: object
-      required:
-        - id
-        - value
-        - name
-        - key
-      properties:
-        id:
-          type: string
-          examples:
-            - '1234'
-        value:
-          type: string
-          examples:
-            - custom field value
-        name:
-          type: string
-          examples:
-            - custom field name
-        key:
-          type: string
-          examples:
-            - '1234'
-    CustomFieldsValueObjectUpdate:
-      type: object
-      properties:
-        id:
-          type: string
-          examples:
-            - '1234'
-        value:
-          type: string
-          examples:
-            - custom field value
-        name:
-          type: string
-          examples:
-            - custom field name
-        key:
-          type: string
-          examples:
-            - '1234'
+    Date:
+      type: string
+      format: YYYY-MM-DD
+      examples:
+        - '2026-01-01'
+    DateTime:
+      type: string
+      format: iso8601
+      examples:
+        - '2026-02-01T01:02:03Z'
     Document:
       type: object
       properties:
@@ -1110,15 +1073,9 @@ components:
           examples:
             - USA
         issued_date:
-          type: string
-          format: date
-          examples:
-            - '2021-10-23'
+          $ref: '#/components/schemas/Date'
         expiry_date:
-          type: string
-          format: date
-          examples:
-            - '2023-10-23'
+          $ref: '#/components/schemas/Date'
         attachments:
           type: array
           items:
@@ -1160,10 +1117,7 @@ components:
           examples:
             - IT
         graduation_date:
-          type: string
-          format: date
-          examples:
-            - '2021-10-23'
+          $ref: '#/components/schemas/Date'
         grade:
           type: string
           examples:
@@ -1173,50 +1127,76 @@ components:
           examples:
             - Jon Doe
         start_date:
-          type: string
-          format: date
-          examples:
-            - '2021-10-23'
+          $ref: '#/components/schemas/Date'
         end_date:
-          type: string
-          format: date
-          examples:
-            - '2023-10-23'
+          $ref: '#/components/schemas/Date'
         address:
           $ref: '#/components/schemas/Address'
         attachments:
           type: array
           items:
             $ref: '#/components/schemas/Attachment'
-    Journey:
+    Email:
+      type: string
+      format: email
+      examples:
+        - testing@example.com
+    JourneyList:
       type: object
       required:
         - id
-        - title
         - transition_type
         - publishing_state
+        - title
         - created_at
       properties:
         id:
-          type: string
-          examples:
-            - '12345'
+          $ref: '#/components/schemas/UUID'
+        transition_type:
+          $ref: '#/components/schemas/JourneyTransitionType'
+        publishing_state:
+          $ref: '#/components/schemas/JourneyPublishingState'
         title:
           type: string
-          examples:
-            - Offer
-        transition_type:
-          type: string
-          examples:
-            - offer
-        publishing_state:
-          type: string
-          examples:
-            - unpublished, published, draft
         created_at:
+          $ref: '#/components/schemas/DateTime'
+    JourneyPublishingState:
+      type: string
+      enum:
+        - unpublished
+        - published
+        - draft
+      examples:
+        - published
+    JourneyShow:
+      type: object
+      required:
+        - id
+        - transition_type
+        - publishing_state
+        - title
+        - created_at
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        transition_type:
+          $ref: '#/components/schemas/JourneyTransitionType'
+        publishing_state:
+          $ref: '#/components/schemas/JourneyPublishingState'
+        title:
           type: string
-          examples:
-            - 2025/01/01
+        created_at:
+          $ref: '#/components/schemas/DateTime'
+    JourneyTransitionType:
+      type: string
+      enum:
+        - pre_offer
+        - offer
+        - post_offer
+        - onboarding
+        - offboarding
+      examples:
+        - pre_offer
     NotFoundError:
       type: object
       required:
@@ -1240,10 +1220,8 @@ components:
       properties:
         user_id:
           allOf:
-            - $ref: '#/components/schemas/uuid'
+            - $ref: '#/components/schemas/UUID'
           description: Unique ID of the user
-          examples:
-            - 64892208d5ee1bb16dfdafda
         offer_id:
           type: string
           description: Unique ID of the Offer
@@ -1263,11 +1241,9 @@ components:
                 - LOCATION-3-69
           description: "JSON where key is name of external service, e.g. {'HRIS_ID': 'NEWYORK'. There must be an office location in Xpand with a matching employee id. See reference values here for existing office location external ids"
         start_date:
-          type: string
-          format: date
+          allOf:
+            - $ref: '#/components/schemas/Date'
           description: Start date of the new hire
-          examples:
-            - '2023-10-23'
         legal_entity:
           type: string
           description: See reference values here for existing legal entity values.
@@ -1289,23 +1265,17 @@ components:
           examples:
             - 45000
         end_date:
-          type: string
-          format: date
+          allOf:
+            - $ref: '#/components/schemas/Date'
           description: End date of the new hire
-          examples:
-            - '2023-10-23'
         induction_date:
-          type: string
-          format: date
+          allOf:
+            - $ref: '#/components/schemas/Date'
           description: Induction Date
-          examples:
-            - '2023-10-23'
         expiration_date:
-          type: string
-          format: date
+          allOf:
+            - $ref: '#/components/schemas/Date'
           description: Expiration date of an offer
-          examples:
-            - '2023-10-23'
         offer_dispositioned:
           type: string
           description: dispositioning the offer
@@ -1334,11 +1304,9 @@ components:
           examples:
             - Exempt
         respond_by_date:
-          type: string
-          format: date
+          allOf:
+            - $ref: '#/components/schemas/Date'
           description: Date by when action to be taken on offer
-          examples:
-            - '2023-10-23'
         attorney_only:
           type: boolean
           examples:
@@ -1476,15 +1444,13 @@ components:
       properties:
         id:
           allOf:
-            - $ref: '#/components/schemas/uuid'
+            - $ref: '#/components/schemas/UUID'
           examples:
             - 64891c74d5ee1bb16dfdafd8
         user_id:
           allOf:
-            - $ref: '#/components/schemas/uuid'
+            - $ref: '#/components/schemas/UUID'
           description: Unique ID of the user
-          examples:
-            - 64892208d5ee1bb16dfdafda
         offer_id:
           type: string
           description: Unique ID of the Offer
@@ -1504,11 +1470,9 @@ components:
                 - LOCATION-3-69
           description: "JSON where key is name of external service, e.g. {'HRIS_ID': 'NEWYORK'. There must be an office location in Xpand with a matching employee id. See reference values here for existing office location external ids"
         start_date:
-          type: string
-          format: date
+          allOf:
+            - $ref: '#/components/schemas/Date'
           description: Start date of the new hire
-          examples:
-            - '2023-10-23'
         legal_entity:
           type: string
           description: See reference values here for existing legal entity values.
@@ -1530,23 +1494,17 @@ components:
           examples:
             - 45000
         end_date:
-          type: string
-          format: date
+          allOf:
+            - $ref: '#/components/schemas/Date'
           description: End date of the new hire
-          examples:
-            - '2023-10-23'
         induction_date:
-          type: string
-          format: date
+          allOf:
+            - $ref: '#/components/schemas/Date'
           description: Induction Date
-          examples:
-            - '2023-10-23'
         expiration_date:
-          type: string
-          format: date
+          allOf:
+            - $ref: '#/components/schemas/Date'
           description: Expiration date of an offer
-          examples:
-            - '2023-10-23'
         offer_dispositioned:
           type: string
           description: dispositioning the offer
@@ -1575,11 +1533,9 @@ components:
           examples:
             - Exempt
         respond_by_date:
-          type: string
-          format: date
+          allOf:
+            - $ref: '#/components/schemas/Date'
           description: Date by when action to be taken on offer
-          examples:
-            - '2023-10-23'
         attorney_only:
           type: boolean
           examples:
@@ -1712,94 +1668,25 @@ components:
       properties:
         id:
           allOf:
-            - $ref: '#/components/schemas/uuid'
+            - $ref: '#/components/schemas/UUID'
           examples:
             - 64891c74d5ee1bb16dfdafd8
-    OfficeLocationId:
+    OfficeLocation:
       type: object
       required:
         - id
-        - external_ids
+        - city
+        - country
       properties:
-        workday:
-          type: string
-          examples:
-            - LOCATION-3-69
         id:
-          type: string
-          examples:
-            - LOCATION-3-69
+          $ref: '#/components/schemas/UUID'
         external_ids:
           type: object
           properties:
-            hris_id:
+            workday:
               type: string
               examples:
-                - 'E-1234'
-        address1:
-          type: string
-          examples:
-            - 123 Main St
-        address2:
-          type: string
-          examples:
-            - Suite 200
-        address3:
-          type: string
-          examples:
-            - Building B
-        city:
-          type: string
-          examples:
-            - New York
-        state:
-          type: string
-          examples:
-            - NY
-        region:
-          type: string
-          examples:
-            - Northeast
-        country:
-          type: string
-          examples:
-            - USA
-        postal_code:
-          type: string
-          examples:
-            - '10001'
-        time_zone:
-          type: string
-          examples:
-            - NZT
-        latitude:
-          type: number
-          format: float
-          examples:
-            - 3.12332
-        longitude:
-          type: number
-          format: float
-          examples:
-            - 3.12332
-    OfficeLocationIdUpdate:
-      type: object
-      properties:
-        workday:
-          type: string
-          examples:
-            - LOCATION-3-69
-        id:
-          type: string
-          examples:
-            - LOCATION-3-69
-        external_ids:
-          type: object
-          properties:
-            hris_id:
-              type: string
-              examples:
-                - 'E-1234'
+                - LOCATION-3-69
         address1:
           type: string
           examples:
@@ -1866,79 +1753,129 @@ components:
           type: boolean
           examples:
             - true
+    UUID:
+      type: string
+      format: uuid
+      examples:
+        - 69ae0e64b02bfe73a44ca479
     UserJourney:
       type: object
       required:
         - id
         - journey_id
+        - user_id
+        - transition_type
+        - state
+        - created_at
+        - expiration_date
+        - office_location
+        - custom_field_values
       properties:
         id:
-          type: string
-          examples:
-            - '123456898'
+          $ref: '#/components/schemas/UUID'
         journey_id:
-          type: string
-          examples:
-            - '123456'
-        transition_type:
-          type: string
-          examples:
-            - pre_offer
+          $ref: '#/components/schemas/UUID'
         user_id:
-          type: string
-          examples:
-            - '123456'
+          $ref: '#/components/schemas/UUID'
+        transition_type:
+          $ref: '#/components/schemas/JourneyTransitionType'
         state:
-          allOf:
-            - $ref: '#/components/schemas/UserJourneyState'
-          examples:
-            - approved
+          $ref: '#/components/schemas/UserJourneyState'
         created_at:
-          type: string
-          examples:
-            - '2025-01-01'
+          $ref: '#/components/schemas/Date'
+        expiration_date:
+          $ref: '#/components/schemas/Date'
         office_location:
-          $ref: '#/components/schemas/OfficeLocationId'
+          anyOf:
+            - $ref: '#/components/schemas/OfficeLocation'
+            - type: 'null'
         custom_field_values:
-          allOf:
-            - $ref: '#/components/schemas/CustomFieldsValueObject'
-          description: Custom fields object for the user journey - we pass the key for any configured custom fields for this transition type.
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                examples:
+                  - '1234'
+              value:
+                type: string
+                examples:
+                  - custom field value
+              name:
+                type: string
+                examples:
+                  - custom field name
+              key:
+                type: string
+                examples:
+                  - '1234'
     UserJourneyCreate:
       type: object
-      required:
-        - journey_id
       properties:
-        journey_id:
-          type: string
-          examples:
-            - '123456'
         transition_type:
-          type: string
-          examples:
-            - pre_offer
+          $ref: '#/components/schemas/JourneyTransitionType'
         user_id:
-          type: string
-          examples:
-            - '123456'
+          anyOf:
+            - $ref: '#/components/schemas/UUID'
+            - type: object
+              properties:
+                workday:
+                  type: string
+                  examples:
+                    - LOCATION-3-69
         state:
-          allOf:
-            - $ref: '#/components/schemas/UserJourneyState'
-          examples:
-            - approved
-        created_at:
-          type: string
-          examples:
-            - '2025-01-01'
+          $ref: '#/components/schemas/UserJourneyState'
+        expiration_date:
+          $ref: '#/components/schemas/Date'
         office_location_id:
-          $ref: '#/components/schemas/OfficeLocationId'
+          anyOf:
+            - $ref: '#/components/schemas/UUID'
+            - type: object
+              properties:
+                workday:
+                  type: string
+                  examples:
+                    - LOCATION-3-69
         custom_fields:
-          allOf:
-            - $ref: '#/components/schemas/CustomFieldsValueObject'
-          description: Custom fields object for the user journey - we pass the key for any configured custom fields for this transition type.
+          type: object
+          unevaluatedProperties:
+            type: string
+          examples:
+            - key1: Hello
+              key2: World
         documents:
           type: array
           items:
-            $ref: '#/components/schemas/Document'
+            type: object
+            properties:
+              document_type:
+                type: string
+                examples:
+                  - offer_letter
+              document_number:
+                type: string
+                examples:
+                  - '1234'
+              document_title:
+                type: string
+                examples:
+                  - Offer Letter
+              document_description:
+                type: string
+                examples:
+                  - Offer Letter to the Joe
+              attachments:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    file_name:
+                      type: string
+                      examples:
+                        - abc.pdf
+                    file_content_base64:
+                      $ref: '#/components/schemas/Base64'
     UserJourneyState:
       type: string
       enum:
@@ -1952,32 +1889,63 @@ components:
         - submitted
         - declined
         - completed
+      examples:
+        - approved
     UserJourneyUpdate:
       type: object
       properties:
-        journey_id:
-          type: string
-          examples:
-            - '123456'
         state:
-          allOf:
-            - $ref: '#/components/schemas/UserJourneyState'
-          examples:
-            - approved
-        created_at:
-          type: string
-          examples:
-            - '2025-01-01'
+          $ref: '#/components/schemas/UserJourneyState'
+        expiration_date:
+          $ref: '#/components/schemas/Date'
         office_location_id:
-          $ref: '#/components/schemas/OfficeLocationIdUpdate'
+          anyOf:
+            - $ref: '#/components/schemas/UUID'
+            - type: object
+              properties:
+                workday:
+                  type: string
+                  examples:
+                    - LOCATION-3-69
         custom_fields:
-          allOf:
-            - $ref: '#/components/schemas/CustomFieldsValueObjectUpdate'
-          description: Custom fields object for the user journey - we pass the key for any configured custom fields for this transition type.
+          type: object
+          unevaluatedProperties:
+            type: string
+          examples:
+            - key1: Hello
+              key2: World
         documents:
           type: array
           items:
-            $ref: '#/components/schemas/Document'
+            type: object
+            properties:
+              document_type:
+                type: string
+                examples:
+                  - offer_letter
+              document_number:
+                type: string
+                examples:
+                  - '1234'
+              document_title:
+                type: string
+                examples:
+                  - Offer Letter
+              document_description:
+                type: string
+                examples:
+                  - Offer Letter to the Joe
+              attachments:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    file_name:
+                      type: string
+                      examples:
+                        - abc.pdf
+                    file_content_base64:
+                      $ref: '#/components/schemas/Base64'
     UserRequest:
       type: object
       required:
@@ -1994,16 +1962,12 @@ components:
       properties:
         email:
           allOf:
-            - $ref: '#/components/schemas/email'
+            - $ref: '#/components/schemas/Email'
           description: 'Must be a valid email address. Must be unique for each user. Non case-sensitive. Regex validation: ^(?!...)[a-zA-Z0-9][\w-.]@[A-Za-z\d-]+(.[A-Za-z\d-]+)*.[A-Za-z]+$'
-          examples:
-            - daniel@personal.com
         work_email:
           allOf:
-            - $ref: '#/components/schemas/email'
+            - $ref: '#/components/schemas/Email'
           description: 'Must be a valid email address. Must be unique for each user. Non case-sensitive. Regex validation: ^(?!...)[a-zA-Z0-9][\w-.]@[A-Za-z\d-]+(.[A-Za-z\d-]+)*.[A-Za-z]+$'
-          examples:
-            - daniel@company.com
         first_name:
           type: string
           description: Must not contain numbers or any of the following special characters !@#$%^&*()
@@ -2020,11 +1984,9 @@ components:
           examples:
             - Jones
         start_date:
-          type: string
-          format: date
+          allOf:
+            - $ref: '#/components/schemas/Date'
           description: 'Format: YYYY-MM-DD. Can be present, or future dates only.'
-          examples:
-            - '2023-09-08'
         employee_type:
           type: string
           description: See reference values here for allowed employee type values.
@@ -2141,16 +2103,12 @@ components:
       properties:
         email:
           allOf:
-            - $ref: '#/components/schemas/email'
+            - $ref: '#/components/schemas/Email'
           description: 'Must be a valid email address. Must be unique for each user. Non case-sensitive. Regex validation: ^(?!...)[a-zA-Z0-9][\w-.]@[A-Za-z\d-]+(.[A-Za-z\d-]+)*.[A-Za-z]+$'
-          examples:
-            - daniel@personal.com
         work_email:
           allOf:
-            - $ref: '#/components/schemas/email'
+            - $ref: '#/components/schemas/Email'
           description: 'Must be a valid email address. Must be unique for each user. Non case-sensitive. Regex validation: ^(?!...)[a-zA-Z0-9][\w-.]@[A-Za-z\d-]+(.[A-Za-z\d-]+)*.[A-Za-z]+$'
-          examples:
-            - daniel@company.com
         first_name:
           type: string
           description: Must not contain numbers or any of the following special characters !@#$%^&*()
@@ -2167,11 +2125,9 @@ components:
           examples:
             - Jones
         start_date:
-          type: string
-          format: date
+          allOf:
+            - $ref: '#/components/schemas/Date'
           description: 'Format: YYYY-MM-DD. Can be present, or future dates only.'
-          examples:
-            - '2023-09-08'
         employee_type:
           type: string
           description: See reference values here for allowed employee type values.
@@ -2297,7 +2253,7 @@ components:
       properties:
         id:
           allOf:
-            - $ref: '#/components/schemas/uuid'
+            - $ref: '#/components/schemas/UUID'
           examples:
             - 64891c74d5ee1bb16dfdafd8
         first_name:
@@ -2309,15 +2265,9 @@ components:
           examples:
             - Doe
         email:
-          allOf:
-            - $ref: '#/components/schemas/email'
-          examples:
-            - john@example.com
+          $ref: '#/components/schemas/Email'
         start_date:
-          type: string
-          format: date
-          examples:
-            - '2023-10-23'
+          $ref: '#/components/schemas/Date'
         external_ids:
           type: object
           properties:
@@ -2397,7 +2347,7 @@ components:
       properties:
         id:
           allOf:
-            - $ref: '#/components/schemas/uuid'
+            - $ref: '#/components/schemas/UUID'
           examples:
             - 64891c74d5ee1bb16dfdafd8
     ValidationError:
@@ -2461,10 +2411,7 @@ components:
           examples:
             - '+14044578776'
         manager_email:
-          allOf:
-            - $ref: '#/components/schemas/email'
-          examples:
-            - manager@xpand.io
+          $ref: '#/components/schemas/Email'
         hr_name:
           type: string
           examples:
@@ -2474,32 +2421,17 @@ components:
           examples:
             - '+14044578777'
         hr_email:
-          allOf:
-            - $ref: '#/components/schemas/email'
-          examples:
-            - hr@xpand.io
+          $ref: '#/components/schemas/Email'
         start_date:
-          type: string
-          format: date
-          examples:
-            - '2021-10-23'
+          $ref: '#/components/schemas/Date'
         end_date:
-          type: string
-          format: date
-          examples:
-            - '2023-10-23'
+          $ref: '#/components/schemas/Date'
         address:
           $ref: '#/components/schemas/Address'
         attachments:
           type: array
           items:
             $ref: '#/components/schemas/Attachment'
-    email:
-      type: string
-      format: email
-    uuid:
-      type: string
-      format: uuid
   securitySchemes:
     BearerAuth:
       type: http

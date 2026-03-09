@@ -23,11 +23,7 @@ model Document {
   @example("USA")
   issuer_country?: string;
 
-  @example(plainDate.fromISO("2021-10-23"))
-  issued_date?: plainDate;
-
-  @example(plainDate.fromISO("2023-10-23"))
-  expiry_date?: plainDate;
-
+  issued_date?: Date;
+  expiry_date?: Date;
   attachments?: Attachment[];
 }
