@@ -1939,24 +1939,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Document'
-    UserJourneyQueryData:
-      type: object
-      properties:
-        id:
-          type: string
-          examples:
-            - '12345'
-        user_id:
-          type: string
-          examples:
-            - '1234'
-        state:
-          allOf:
-            - $ref: '#/components/schemas/UserJourneyState'
-          examples:
-            - draft
-        custom_fields:
-          $ref: '#/components/schemas/CustomFieldsValueObject'
     UserJourneyState:
       type: string
       enum:
