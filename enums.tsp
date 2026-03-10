@@ -28,4 +28,10 @@ namespace Enums {
     declined: "declined",
     completed: "completed",
   }
+
+  @example(UserJourneyRescindReason.no_longer_needed)
+  enum UserJourneyRescindReason {
+    no_longer_needed: "no_longer_needed",
+    offered_externally: "offered_externally",
+  }
 }
