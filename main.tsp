@@ -148,6 +148,644 @@ namespace API {
       @body body: Responses.UserJourneyList[];
     };
 
+
+  model SubmissionPhoneNumber {
+    @example("698d61f5361fc034ace53231")
+    id?: string;
+
+    @example("mobile")
+    phone_type?: string;
+
+    @example("+91")
+    country_code?: string | null;
+
+    @example("0701234567")
+    phone_number?: string;
+  }
+
+  model SubmissionVisa {
+    @example("698d75a9361fc034ace53662")
+    id?: string;
+
+    @example("1234567890")
+    number?: string;
+
+    @example("unknown_type")
+    visa_type?: string;
+
+    @example("IN")
+    visa_issue_country?: string;
+
+    @example("2025-01-02")
+    issued_date?: string;
+
+    @example("2035-01-02")
+    expiry_date?: string;
+
+    @example("")
+    issuing_authority?: string;
+
+    @example("Hyderabad")
+    place_of_issue?: string;
+
+    @example("https://xpand-dev-journeys.s3.amazonaws.com/")
+    visa_s3_url?: string;
+  }
+
+  model AddressSubmission {
+    @example("12345")
+    id?: string;
+
+    @example("123 Main St")
+    line_1?: string;
+
+    @example("Apt 4B")
+    line_2?: string;
+
+    @example("New York")
+    city?: string;
+
+    @example("NY")
+    state?: string;
+
+    @example("10001")
+    postal_code?: string;
+
+    @example("US")
+    country?: string;
+  }
+
+  model WorkExperienceSubmission {
+    @example("698d75a9361fc034ace53664")
+    id?: string;
+
+    @example("XYZ Corp")
+    employer?: string;
+
+    @example("2020-01-01")
+    start_date?: string;
+
+    @example("2023-01-01")
+    end_date?: string;
+
+    @example(true)
+    current?: boolean;
+
+    @example("Software Engineer")
+    job_title?: string;
+
+    @example("Engineering")
+    department?: string;
+
+    @example("https://xpand-dev-journeys.s3.amazonaws.com/relieving_letter.pdf")
+    relieving_letter_url?: string;
+
+    @example("https://xpand-dev-journeys.s3.amazonaws.com/service_certificate.pdf")
+    service_certificate_url?: string;
+
+    @example("https://xpand-dev-journeys.s3.amazonaws.com/resignation_acceptance.pdf")
+    resignation_acceptance_url?: string;
+
+    @example("https://xpand-dev-journeys.s3.amazonaws.com/other_document.pdf")
+    other_document_url?: string;
+  }
+
+  model EducationSubmission {
+    @example("698d75a9361fc034ace53665")
+    id?: string;
+
+    @example("ABC University")
+    school_name?: string;
+
+    @example("B.Tech")
+    degree?: string;
+
+    @example("2015-08-01")
+    start_date?: string;
+
+    @example("2019-05-01")
+    end_date?: string;
+
+    @example("Computer Science")
+    major?: string;
+
+    @example(true)
+    graduated?: boolean;
+
+    @example("2019-05-01")
+    graduation_date?: string;
+
+    @example("8.5")
+    gpa?: string;
+
+    @example("https://xpand-dev-journeys.s3.amazonaws.com/marksheet.pdf")
+    marksheet_url?: string;
+
+    @example("https://xpand-dev-journeys.s3.amazonaws.com/degree_certificate.pdf")
+    degree_url?: string;
+  }
+
+  model PassportSubmission {
+    @example("698d75a9361fc034ace53666")
+    id?: string;
+
+    @example("N1234567")
+    number?: string;
+
+    @example("India")
+    issue_country?: string;
+
+    @example("2018-06-15")
+    issued_date?: string;
+
+    @example("2028-06-14")
+    expiry_date?: string;
+
+    @example("Regular")
+    type?: string;
+
+    @example("Ministry of External Affairs")
+    issuing_authority?: string;
+
+    @example("https://xpand-dev-journeys.s3.amazonaws.com/passport.pdf")
+    passport_url?: string;
+  }
+
+  model NationalIdSubmission {
+    @example("698d75a9361fc034ace53667")
+    id?: string;
+
+    @example("A123456789")
+    national_id?: string;
+
+    @example("National Identity Authority")
+    issuing_agency?: string;
+
+    @example("IN")
+    country_iso2?: string;
+  }
+
+  model BankAccountSubmission {
+    @example("698d75a9361fc034ace53668")
+    id?: string;
+
+    @example("Savings")
+    account_type?: string;
+
+    @example("HDFC001")
+    bank_id?: string;
+
+    @example("123456789012")
+    account_number?: string;
+
+    @example("00123")
+    branch_id?: string;
+
+    @example("7")
+    check_digit?: string;
+
+    @example("HDFC Bank")
+    bank_name?: string;
+
+    @example("Rahul Sharma")
+    bank_account_name?: string;
+  }
+
+  model BaseTaskSubmission {
+    @example("approved")
+    state: string;
+
+    @example(null)
+    pending_approval_at?: string | null;
+
+    @example("2026-01-08T10:09:58Z")
+    approved_at?: string | null;
+
+    @example(null)
+    rejected_at?: string | null;
+
+    @example(null)
+    rejection_reason?: string | null;
+
+    responses: { 
+      "checkbox-0": true; 
+      "signature-0": string; 
+    };
+
+    addresses?: [];
+    bank_accounts?: [];
+    educations?: [];
+    national_ids?: [];
+    passports?: [];
+    work_experiences?: [];
+    phone_numbers?: [];
+    visas?: [];
+  }
+
+  model FormBuilderBaseTaskSubmission {
+    @example("approved")
+    state: string;
+
+    @example(null)
+    pending_approval_at?: string | null;
+
+    @example("2026-01-08T10:09:58Z")
+    approved_at?: string | null;
+
+    @example(null)
+    rejected_at?: string | null;
+
+    @example(null)
+    rejection_reason?: string | null;
+  }
+
+  model UserJourneyTaskBase {
+    @example("695f5f8b1b962bf3b327a043")
+    id: string;
+
+    @example("completed")
+    state: string;
+
+    @example("2026-02-12T06:39:38Z")
+    completed_at?: string | null;
+
+    @example(false)
+    mandatory: boolean;
+
+    @example(false)
+    requires_submission: boolean;
+
+    @example(false)
+    requires_signature: boolean;
+
+    @example("Continue")
+    button_label?: string;
+
+    @example("")
+    value?: string;
+
+    @example("2026-02-10")
+    submitted_at?: string | null;
+
+    @example("2026-02-12")
+    due_date?: string | null;
+
+    @example("2026-02-14")
+    resubmit_date?: string | null;
+
+    @example("2026-02-15")
+    return_date?: string | null;
+  }
+
+  model TextTask extends UserJourneyTaskBase {
+    @example("text")
+    type: string;
+
+    @example("IP Protection and Restrictive Covenant Agreement.")
+    title: string;
+
+    @example("IP Protection and Restrictive Covenant Agreement.")
+    description?: string;
+
+    @example("<H1>Header value </H1>")
+    header_value: string;
+
+    @example("<H1>Footer value </H1>")
+    footer_value: string;
+
+    task_submission?: BaseTaskSubmission;
+  }
+
+  model DocumentTask extends UserJourneyTaskBase {
+    @example("document")
+    type: string;
+
+    @example("Offer Letter")
+    title: string;
+
+    @example("Offer Letter")
+    description?: string;
+
+    task_submission?: BaseTaskSubmission;
+  }
+
+  model VideoTask extends UserJourneyTaskBase {
+    @example("video")
+    type: string;
+
+    @example("Vimeo")
+    title: string;
+
+    @example("Vimeo")
+    video_type?: string;
+
+    @example("Vimeo")
+    description?: string;
+
+    @example("watched")
+    video_completion_type?: string;
+
+    response_thumbnail?: {
+      @example("https://xpand-dev-thumbnails.s3.amazonaws.com/")
+      s3_url: string;
+    };
+  }
+
+  model FormBuilderPhoneTaskSubmission extends FormBuilderBaseTaskSubmission {
+    addresses?: [];
+    bank_accounts?: [];
+    educations?: [];
+    national_ids?: [];
+    passports?: [];
+    work_experiences?: [];
+    visas?: [];
+    phone_numbers: SubmissionPhoneNumber[];
+    "responses": {
+      "694927bb4f1f89b0642be6fe": [
+        "698d75a9361fc034ace53660"
+      ]
+    },
+  }
+
+  model FormBuilderVisaTaskSubmission extends FormBuilderBaseTaskSubmission {
+    addresses?: [];
+    bank_accounts?: [];
+    educations?: [];
+    national_ids?: [];
+    passports?: [];
+    work_experiences?: [];
+    phone_numbers?: [];
+    visas: SubmissionVisa[];
+    "responses": {
+      "694927bb4f1f89b0642be6fe": [
+        "698d75a9361fc034ace53660"
+      ]
+    },
+  }
+
+  model FormBuilderAdresssTaskSubmission extends FormBuilderBaseTaskSubmission {
+    bank_accounts?: [];
+    educations?: [];
+    national_ids?: [];
+    passports?: [];
+    work_experiences?: [];
+    phone_numbers?: [];
+    visas?: [];
+    addresses: AddressSubmission[];
+    "responses": {
+      "694927bb4f1f89b0642be6fe": [
+        "698d75a9361fc034ace53660"
+      ]
+    },
+  }
+
+  model FormBuilderEducationTaskSubmission extends FormBuilderBaseTaskSubmission {
+    addresses?: [];
+    bank_accounts?: [];
+    national_ids?: [];
+    passports?: [];
+    work_experiences?: [];
+    phone_numbers?: [];
+    visas?: [];
+    educations: EducationSubmission[];
+    "responses": {
+      "694927bb4f1f89b0642be6fe": [
+        "698d75a9361fc034ace53660"
+      ]
+    },
+  }
+
+  model FormBuilderWorkExperienceTaskSubmission extends FormBuilderBaseTaskSubmission {
+    addresses?: [];
+    bank_accounts?: [];
+    educations?: [];
+    national_ids?: [];
+    passports?: [];
+    phone_numbers?: [];
+    visas?: [];
+    work_experiences: WorkExperienceSubmission[];
+    "responses": {
+      "694927bb4f1f89b0642be6fe": [
+        "698d75a9361fc034ace53660"
+      ]
+    },
+  }
+
+  model FormBuilderPassportTaskSubmission extends FormBuilderBaseTaskSubmission {
+    addresses?: [];
+    bank_accounts?: [];
+    educations?: [];
+    national_ids?: [];
+    work_experiences?: [];
+    phone_numbers?: [];
+    visas?: [];
+    passports: PassportSubmission[];
+    "responses": {
+      "694927bb4f1f89b0642be6fe": [
+        "698d75a9361fc034ace53660"
+      ]
+    },
+  }
+
+  model FormBuilderBankAccountTaskSubmission extends FormBuilderBaseTaskSubmission {
+    addresses?: [];
+    educations?: [];
+    national_ids?: [];
+    passports?: [];
+    work_experiences?: [];
+    phone_numbers?: [];
+    visas?: [];
+    bank_accounts: BankAccountSubmission[];
+    "responses": {
+      "694927bb4f1f89b0642be6fe": [
+        "698d75a9361fc034ace53660"
+      ]
+    },
+  }
+
+  model FormBuilderNationalIdTaskSubmission extends FormBuilderBaseTaskSubmission {
+    addresses?: [];
+    bank_accounts?: [];
+    educations?: [];
+    passports?: [];
+    work_experiences?: [];
+    phone_numbers?: [];
+    visas?: [];
+    national_ids: NationalIdSubmission[];
+    "responses": {
+      "694927bb4f1f89b0642be6fe": [
+        "698d75a9361fc034ace53660"
+      ]
+    },
+  }
+
+  model FormBuilderPhoneTask extends UserJourneyTaskBase {
+    @example("form_builder")
+    type: string;
+
+    @example("Phone number")
+    "title": string;
+
+    @example("Phone number")
+    description?: string;
+
+    form?: {
+      "id": "694e2976b6f06cc65143a239",
+      "name": "Journeys Work experience"
+    };
+
+    task_submission?: FormBuilderPhoneTaskSubmission;
+  }
+
+  model FormBuilderVisaTask extends UserJourneyTaskBase {
+    @example("form_builder")
+    type: string;
+
+    @example("Visa")
+    "title": string;
+
+    @example("Visa")
+    description?: string;
+
+    form?: {
+      "id": "694e2976b6f06cc65143a239",
+      "name": "Visa"
+    };
+
+    task_submission?: FormBuilderVisaTaskSubmission;
+  }
+
+  model FormBuilderAddressTask extends UserJourneyTaskBase {
+    @example("form_builder")
+    type: string;
+
+    @example("Address")
+    "title": string;
+
+    @example("Address")
+    description?: string;
+
+    form?: {
+      "id": "694e2976b6f06cc65143a239",
+      "name": "Address"
+    };
+
+    task_submission?: FormBuilderAdresssTaskSubmission;
+  }
+
+  model FormBuilderWorkExperienceTask extends UserJourneyTaskBase {
+    @example("form_builder")
+    type: string;
+
+    @example("Work Experience")
+    "title": string;
+
+    @example("Work Experience")
+    description?: string;
+
+    form?: {
+      "id": "694e2976b6f06cc65143a239",
+      "name": "Work Experience"
+    };
+
+    task_submission?: FormBuilderWorkExperienceTaskSubmission;
+  }
+
+  model FormBuilderPassportTask extends UserJourneyTaskBase {
+    @example("form_builder")
+    type: string;
+
+    @example("Passport")
+    "title": string;
+
+    @example("Passport")
+    description?: string;
+
+    form?: {
+      "id": "694e2976b6f06cc65143a239",
+      "name": "Passport"
+    };
+
+    task_submission?: FormBuilderPassportTaskSubmission;
+  }
+
+  model FormBuilderBankAccountTask extends UserJourneyTaskBase {
+    @example("form_builder")
+    type: string;
+
+    @example("Bank Account")
+    "title": string;
+
+    @example("Bank Account")
+    description?: string;
+
+    form?: {
+      "id": "694e2976b6f06cc65143a239",
+      "name": "Bank Account"
+    };
+
+    task_submission?: FormBuilderBankAccountTaskSubmission;
+  }
+
+  model FormBuilderEducationTask extends UserJourneyTaskBase {
+    @example("form_builder")
+    type: string;
+
+    @example("Education")
+    "title": string;
+
+    @example("Education")
+    description?: string;
+
+    form?: {
+      "id": "694e2976b6f06cc65143a239",
+      "name": "Education"
+    };
+
+    task_submission?: FormBuilderEducationTaskSubmission;
+  }
+
+  model FormBuilderNationalIdTask extends UserJourneyTaskBase {
+    @example("form_builder")
+    type: string;
+
+    @example("NationalId")
+    "title": string;
+
+    @example("National Id")
+    description?: string;
+
+    form?: {
+      "id": "694e2976b6f06cc65143a239",
+      "name": "NationalId"
+    };
+
+    task_submission?: FormBuilderNationalIdTaskSubmission;
+  }
+
+  alias UserJourneyTask =
+    | TextTask
+    | DocumentTask
+    | VideoTask
+    | FormBuilderPhoneTask
+    | FormBuilderVisaTask
+    | FormBuilderAddressTask
+    | FormBuilderWorkExperienceTask
+    | FormBuilderEducationTask
+    | FormBuilderPassportTask
+    | FormBuilderBankAccountTask
+    | FormBuilderNationalIdTask;
+
+    @route("/{id}/tasks")
+    @summary("Fetch Tasks for a User Journey")
+    op tasks(@path id: string): {
+      @statusCode statusCode: 200;
+      @body body: UserJourneyTask[];
+    } | {
+      @statusCode statusCode: 404;
+      @body error: Errors.NotFoundError;
+    };
+
     @summary("Fetch User Journey")
     @doc("Fetch a User Journey")
     op show(@path id: UUID): {
