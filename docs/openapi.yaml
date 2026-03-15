@@ -804,14 +804,7 @@ paths:
                     - $ref: '#/components/schemas/UserJourneys.TextTask'
                     - $ref: '#/components/schemas/UserJourneys.DocumentTask'
                     - $ref: '#/components/schemas/UserJourneys.VideoTask'
-                    - $ref: '#/components/schemas/UserJourneys.FormBuilderPhoneTask'
-                    - $ref: '#/components/schemas/UserJourneys.FormBuilderVisaTask'
-                    - $ref: '#/components/schemas/UserJourneys.FormBuilderAddressTask'
-                    - $ref: '#/components/schemas/UserJourneys.FormBuilderWorkExperienceTask'
-                    - $ref: '#/components/schemas/UserJourneys.FormBuilderEducationTask'
-                    - $ref: '#/components/schemas/UserJourneys.FormBuilderPassportTask'
-                    - $ref: '#/components/schemas/UserJourneys.FormBuilderBankAccountTask'
-                    - $ref: '#/components/schemas/UserJourneys.FormBuilderNationalIdTask'
+                    - $ref: '#/components/schemas/UserJourneys.FormBuilderTask'
         '404':
           description: The server cannot find the requested resource.
           content:
@@ -3202,43 +3195,7 @@ components:
           type: string
           examples:
             - https://xpand-dev-journeys.s3.amazonaws.com/degree_certificate.pdf
-    UserJourneys.FormBuilderAddressTask:
-      type: object
-      required:
-        - type
-        - title
-      properties:
-        type:
-          type: string
-          examples:
-            - form_builder
-        title:
-          type: string
-          examples:
-            - Address
-        description:
-          type: string
-          examples:
-            - Address
-        form:
-          type: object
-          properties:
-            id:
-              type: string
-              enum:
-                - 694e2976b6f06cc65143a239
-            name:
-              type: string
-              enum:
-                - Address
-          required:
-            - id
-            - name
-        task_submission:
-          $ref: '#/components/schemas/UserJourneys.FormBuilderAdresssTaskSubmission'
-      allOf:
-        - $ref: '#/components/schemas/UserJourneys.UserJourneyTaskBase'
-    UserJourneys.FormBuilderAdresssTaskSubmission:
+    UserJourneys.FormBuilderAdressTaskSubmission:
       type: object
       required:
         - addresses
@@ -3282,42 +3239,6 @@ components:
             - 694927bb4f1f89b0642be6fe
       allOf:
         - $ref: '#/components/schemas/UserJourneys.FormBuilderBaseTaskSubmission'
-    UserJourneys.FormBuilderBankAccountTask:
-      type: object
-      required:
-        - type
-        - title
-      properties:
-        type:
-          type: string
-          examples:
-            - form_builder
-        title:
-          type: string
-          examples:
-            - Bank Account
-        description:
-          type: string
-          examples:
-            - Bank Account
-        form:
-          type: object
-          properties:
-            id:
-              type: string
-              enum:
-                - 694e2976b6f06cc65143a239
-            name:
-              type: string
-              enum:
-                - Bank Account
-          required:
-            - id
-            - name
-        task_submission:
-          $ref: '#/components/schemas/UserJourneys.FormBuilderBankAccountTaskSubmission'
-      allOf:
-        - $ref: '#/components/schemas/UserJourneys.UserJourneyTaskBase'
     UserJourneys.FormBuilderBankAccountTaskSubmission:
       type: object
       required:
@@ -3395,42 +3316,6 @@ components:
             - type: 'null'
           examples:
             - null
-    UserJourneys.FormBuilderEducationTask:
-      type: object
-      required:
-        - type
-        - title
-      properties:
-        type:
-          type: string
-          examples:
-            - form_builder
-        title:
-          type: string
-          examples:
-            - Education
-        description:
-          type: string
-          examples:
-            - Education
-        form:
-          type: object
-          properties:
-            id:
-              type: string
-              enum:
-                - 694e2976b6f06cc65143a239
-            name:
-              type: string
-              enum:
-                - Education
-          required:
-            - id
-            - name
-        task_submission:
-          $ref: '#/components/schemas/UserJourneys.FormBuilderEducationTaskSubmission'
-      allOf:
-        - $ref: '#/components/schemas/UserJourneys.UserJourneyTaskBase'
     UserJourneys.FormBuilderEducationTaskSubmission:
       type: object
       required:
@@ -3475,42 +3360,6 @@ components:
             - 694927bb4f1f89b0642be6fe
       allOf:
         - $ref: '#/components/schemas/UserJourneys.FormBuilderBaseTaskSubmission'
-    UserJourneys.FormBuilderNationalIdTask:
-      type: object
-      required:
-        - type
-        - title
-      properties:
-        type:
-          type: string
-          examples:
-            - form_builder
-        title:
-          type: string
-          examples:
-            - NationalId
-        description:
-          type: string
-          examples:
-            - National Id
-        form:
-          type: object
-          properties:
-            id:
-              type: string
-              enum:
-                - 694e2976b6f06cc65143a239
-            name:
-              type: string
-              enum:
-                - NationalId
-          required:
-            - id
-            - name
-        task_submission:
-          $ref: '#/components/schemas/UserJourneys.FormBuilderNationalIdTaskSubmission'
-      allOf:
-        - $ref: '#/components/schemas/UserJourneys.UserJourneyTaskBase'
     UserJourneys.FormBuilderNationalIdTaskSubmission:
       type: object
       required:
@@ -3555,42 +3404,6 @@ components:
             - 694927bb4f1f89b0642be6fe
       allOf:
         - $ref: '#/components/schemas/UserJourneys.FormBuilderBaseTaskSubmission'
-    UserJourneys.FormBuilderPassportTask:
-      type: object
-      required:
-        - type
-        - title
-      properties:
-        type:
-          type: string
-          examples:
-            - form_builder
-        title:
-          type: string
-          examples:
-            - Passport
-        description:
-          type: string
-          examples:
-            - Passport
-        form:
-          type: object
-          properties:
-            id:
-              type: string
-              enum:
-                - 694e2976b6f06cc65143a239
-            name:
-              type: string
-              enum:
-                - Passport
-          required:
-            - id
-            - name
-        task_submission:
-          $ref: '#/components/schemas/UserJourneys.FormBuilderPassportTaskSubmission'
-      allOf:
-        - $ref: '#/components/schemas/UserJourneys.UserJourneyTaskBase'
     UserJourneys.FormBuilderPassportTaskSubmission:
       type: object
       required:
@@ -3635,42 +3448,6 @@ components:
             - 694927bb4f1f89b0642be6fe
       allOf:
         - $ref: '#/components/schemas/UserJourneys.FormBuilderBaseTaskSubmission'
-    UserJourneys.FormBuilderPhoneTask:
-      type: object
-      required:
-        - type
-        - title
-      properties:
-        type:
-          type: string
-          examples:
-            - form_builder
-        title:
-          type: string
-          examples:
-            - Phone number
-        description:
-          type: string
-          examples:
-            - Phone number
-        form:
-          type: object
-          properties:
-            id:
-              type: string
-              enum:
-                - 694e2976b6f06cc65143a239
-            name:
-              type: string
-              enum:
-                - Journeys Work experience
-          required:
-            - id
-            - name
-        task_submission:
-          $ref: '#/components/schemas/UserJourneys.FormBuilderPhoneTaskSubmission'
-      allOf:
-        - $ref: '#/components/schemas/UserJourneys.UserJourneyTaskBase'
     UserJourneys.FormBuilderPhoneTaskSubmission:
       type: object
       required:
@@ -3715,7 +3492,7 @@ components:
             - 694927bb4f1f89b0642be6fe
       allOf:
         - $ref: '#/components/schemas/UserJourneys.FormBuilderBaseTaskSubmission'
-    UserJourneys.FormBuilderVisaTask:
+    UserJourneys.FormBuilderTask:
       type: object
       required:
         - type
@@ -3728,27 +3505,31 @@ components:
         title:
           type: string
           examples:
-            - Visa
+            - Phone number / Visa / Address / Work Experience / etc.
         description:
           type: string
           examples:
-            - Visa
+            - Form Builder Task
         form:
           type: object
           properties:
             id:
               type: string
-              enum:
-                - 694e2976b6f06cc65143a239
             name:
               type: string
-              enum:
-                - Visa
           required:
             - id
             - name
         task_submission:
-          $ref: '#/components/schemas/UserJourneys.FormBuilderVisaTaskSubmission'
+          anyOf:
+            - $ref: '#/components/schemas/UserJourneys.FormBuilderPhoneTaskSubmission'
+            - $ref: '#/components/schemas/UserJourneys.FormBuilderVisaTaskSubmission'
+            - $ref: '#/components/schemas/UserJourneys.FormBuilderAdressTaskSubmission'
+            - $ref: '#/components/schemas/UserJourneys.FormBuilderWorkExperienceTaskSubmission'
+            - $ref: '#/components/schemas/UserJourneys.FormBuilderEducationTaskSubmission'
+            - $ref: '#/components/schemas/UserJourneys.FormBuilderPassportTaskSubmission'
+            - $ref: '#/components/schemas/UserJourneys.FormBuilderBankAccountTaskSubmission'
+            - $ref: '#/components/schemas/UserJourneys.FormBuilderNationalIdTaskSubmission'
       allOf:
         - $ref: '#/components/schemas/UserJourneys.UserJourneyTaskBase'
     UserJourneys.FormBuilderVisaTaskSubmission:
@@ -3795,42 +3576,6 @@ components:
             - 694927bb4f1f89b0642be6fe
       allOf:
         - $ref: '#/components/schemas/UserJourneys.FormBuilderBaseTaskSubmission'
-    UserJourneys.FormBuilderWorkExperienceTask:
-      type: object
-      required:
-        - type
-        - title
-      properties:
-        type:
-          type: string
-          examples:
-            - form_builder
-        title:
-          type: string
-          examples:
-            - Work Experience
-        description:
-          type: string
-          examples:
-            - Work Experience
-        form:
-          type: object
-          properties:
-            id:
-              type: string
-              enum:
-                - 694e2976b6f06cc65143a239
-            name:
-              type: string
-              enum:
-                - Work Experience
-          required:
-            - id
-            - name
-        task_submission:
-          $ref: '#/components/schemas/UserJourneys.FormBuilderWorkExperienceTaskSubmission'
-      allOf:
-        - $ref: '#/components/schemas/UserJourneys.UserJourneyTaskBase'
     UserJourneys.FormBuilderWorkExperienceTaskSubmission:
       type: object
       required:

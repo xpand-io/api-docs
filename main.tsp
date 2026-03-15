@@ -523,7 +523,7 @@ namespace API {
     },
   }
 
-  model FormBuilderAdresssTaskSubmission extends FormBuilderBaseTaskSubmission {
+  model FormBuilderAdressTaskSubmission extends FormBuilderBaseTaskSubmission {
     bank_accounts?: [];
     educations?: [];
     national_ids?: [];
@@ -619,162 +619,37 @@ namespace API {
     },
   }
 
-  model FormBuilderPhoneTask extends UserJourneyTaskBase {
+  model FormBuilderTask extends UserJourneyTaskBase {
     @example("form_builder")
     type: string;
 
-    @example("Phone number")
-    "title": string;
+    @example("Phone number / Visa / Address / Work Experience / etc.")
+    title: string;
 
-    @example("Phone number")
+    @example("Form Builder Task")
     description?: string;
 
     form?: {
-      "id": "694e2976b6f06cc65143a239",
-      "name": "Journeys Work experience"
+      id: string;
+      name: string;
     };
 
-    task_submission?: FormBuilderPhoneTaskSubmission;
-  }
-
-  model FormBuilderVisaTask extends UserJourneyTaskBase {
-    @example("form_builder")
-    type: string;
-
-    @example("Visa")
-    "title": string;
-
-    @example("Visa")
-    description?: string;
-
-    form?: {
-      "id": "694e2976b6f06cc65143a239",
-      "name": "Visa"
-    };
-
-    task_submission?: FormBuilderVisaTaskSubmission;
-  }
-
-  model FormBuilderAddressTask extends UserJourneyTaskBase {
-    @example("form_builder")
-    type: string;
-
-    @example("Address")
-    "title": string;
-
-    @example("Address")
-    description?: string;
-
-    form?: {
-      "id": "694e2976b6f06cc65143a239",
-      "name": "Address"
-    };
-
-    task_submission?: FormBuilderAdresssTaskSubmission;
-  }
-
-  model FormBuilderWorkExperienceTask extends UserJourneyTaskBase {
-    @example("form_builder")
-    type: string;
-
-    @example("Work Experience")
-    "title": string;
-
-    @example("Work Experience")
-    description?: string;
-
-    form?: {
-      "id": "694e2976b6f06cc65143a239",
-      "name": "Work Experience"
-    };
-
-    task_submission?: FormBuilderWorkExperienceTaskSubmission;
-  }
-
-  model FormBuilderPassportTask extends UserJourneyTaskBase {
-    @example("form_builder")
-    type: string;
-
-    @example("Passport")
-    "title": string;
-
-    @example("Passport")
-    description?: string;
-
-    form?: {
-      "id": "694e2976b6f06cc65143a239",
-      "name": "Passport"
-    };
-
-    task_submission?: FormBuilderPassportTaskSubmission;
-  }
-
-  model FormBuilderBankAccountTask extends UserJourneyTaskBase {
-    @example("form_builder")
-    type: string;
-
-    @example("Bank Account")
-    "title": string;
-
-    @example("Bank Account")
-    description?: string;
-
-    form?: {
-      "id": "694e2976b6f06cc65143a239",
-      "name": "Bank Account"
-    };
-
-    task_submission?: FormBuilderBankAccountTaskSubmission;
-  }
-
-  model FormBuilderEducationTask extends UserJourneyTaskBase {
-    @example("form_builder")
-    type: string;
-
-    @example("Education")
-    "title": string;
-
-    @example("Education")
-    description?: string;
-
-    form?: {
-      "id": "694e2976b6f06cc65143a239",
-      "name": "Education"
-    };
-
-    task_submission?: FormBuilderEducationTaskSubmission;
-  }
-
-  model FormBuilderNationalIdTask extends UserJourneyTaskBase {
-    @example("form_builder")
-    type: string;
-
-    @example("NationalId")
-    "title": string;
-
-    @example("National Id")
-    description?: string;
-
-    form?: {
-      "id": "694e2976b6f06cc65143a239",
-      "name": "NationalId"
-    };
-
-    task_submission?: FormBuilderNationalIdTaskSubmission;
+    task_submission?: 
+      FormBuilderPhoneTaskSubmission |
+      FormBuilderVisaTaskSubmission |
+      FormBuilderAdressTaskSubmission |
+      FormBuilderWorkExperienceTaskSubmission |
+      FormBuilderEducationTaskSubmission |
+      FormBuilderPassportTaskSubmission |
+      FormBuilderBankAccountTaskSubmission |
+      FormBuilderNationalIdTaskSubmission;
   }
 
   alias UserJourneyTask =
     | TextTask
     | DocumentTask
     | VideoTask
-    | FormBuilderPhoneTask
-    | FormBuilderVisaTask
-    | FormBuilderAddressTask
-    | FormBuilderWorkExperienceTask
-    | FormBuilderEducationTask
-    | FormBuilderPassportTask
-    | FormBuilderBankAccountTask
-    | FormBuilderNationalIdTask;
+    | FormBuilderTask;
 
     @route("/{id}/tasks")
     @summary("Fetch Tasks for a User Journey")
