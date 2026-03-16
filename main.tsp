@@ -466,6 +466,16 @@ namespace API {
     @example("Offer Letter")
     description?: string;
 
+    document?: {
+      _id: string;
+      s3_url: string;
+      file_name: string;
+      signed: boolean;
+      _urls: {
+        download: string;
+      };
+    };
+
     task_submission?: BaseTaskSubmission;
   }
 
@@ -489,6 +499,13 @@ namespace API {
       @example("https://xpand-dev-thumbnails.s3.amazonaws.com/")
       s3_url: string;
     };
+  }
+
+  model I9Task extends UserJourneyTaskBase {
+  }
+  model EmbeddedUrlTask extends UserJourneyTaskBase {
+  }
+  model PowerPointTask extends UserJourneyTaskBase {
   }
 
   model FormBuilderPhoneTaskSubmission extends FormBuilderBaseTaskSubmission {
@@ -649,6 +666,9 @@ namespace API {
     | TextTask
     | DocumentTask
     | VideoTask
+    | I9Task
+    | EmbeddedUrlTask
+    | PowerPointTask
     | FormBuilderTask;
 
     @route("/{id}/tasks")
