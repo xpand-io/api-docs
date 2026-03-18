@@ -1155,6 +1155,280 @@ components:
           type: boolean
           examples:
             - true
+    Models.TaskSubmission.Address:
+      type: object
+      properties:
+        id:
+          type: string
+          examples:
+            - '12345'
+        line_1:
+          type: string
+          examples:
+            - 123 Main St
+        line_2:
+          type: string
+          examples:
+            - Apt 4B
+        city:
+          type: string
+          examples:
+            - New York
+        state:
+          type: string
+          examples:
+            - NY
+        postal_code:
+          type: string
+          examples:
+            - '10001'
+        country:
+          type: string
+          examples:
+            - US
+    Models.TaskSubmission.BankAccount:
+      type: object
+      properties:
+        id:
+          type: string
+          examples:
+            - 698d75a9361fc034ace53668
+        account_type:
+          type: string
+          examples:
+            - Savings
+        bank_id:
+          type: string
+          examples:
+            - HDFC001
+        account_number:
+          type: string
+          examples:
+            - '123456789012'
+        branch_id:
+          type: string
+          examples:
+            - '00123'
+        check_digit:
+          type: string
+          examples:
+            - '7'
+        bank_name:
+          type: string
+          examples:
+            - HDFC Bank
+        bank_account_name:
+          type: string
+          examples:
+            - Rahul Sharma
+    Models.TaskSubmission.Education:
+      type: object
+      properties:
+        id:
+          type: string
+          examples:
+            - 698d75a9361fc034ace53665
+        school_name:
+          type: string
+          examples:
+            - ABC University
+        degree:
+          type: string
+          examples:
+            - B.Tech
+        start_date:
+          type: string
+          examples:
+            - '2015-08-01'
+        end_date:
+          type: string
+          examples:
+            - '2019-05-01'
+        major:
+          type: string
+          examples:
+            - Computer Science
+        graduated:
+          type: boolean
+          examples:
+            - true
+        graduation_date:
+          type: string
+          examples:
+            - '2019-05-01'
+        gpa:
+          type: string
+          examples:
+            - '8.5'
+        marksheet_url:
+          type: string
+          examples:
+            - https://xpand-dev-journeys.s3.amazonaws.com/marksheet.pdf
+        degree_url:
+          type: string
+          examples:
+            - https://xpand-dev-journeys.s3.amazonaws.com/degree_certificate.pdf
+    Models.TaskSubmission.NationalId:
+      type: object
+      properties:
+        id:
+          type: string
+          examples:
+            - 698d75a9361fc034ace53667
+        national_id:
+          type: string
+          examples:
+            - A123456789
+        issuing_agency:
+          type: string
+          examples:
+            - National Identity Authority
+        country_iso2:
+          type: string
+          examples:
+            - IN
+    Models.TaskSubmission.Passport:
+      type: object
+      properties:
+        id:
+          type: string
+          examples:
+            - 698d75a9361fc034ace53666
+        number:
+          type: string
+          examples:
+            - N1234567
+        issue_country:
+          type: string
+          examples:
+            - India
+        issued_date:
+          type: string
+          examples:
+            - '2018-06-15'
+        expiry_date:
+          type: string
+          examples:
+            - '2028-06-14'
+        type:
+          type: string
+          examples:
+            - Regular
+        issuing_authority:
+          type: string
+          examples:
+            - Ministry of External Affairs
+        passport_url:
+          type: string
+          examples:
+            - https://xpand-dev-journeys.s3.amazonaws.com/passport.pdf
+    Models.TaskSubmission.PhoneNumber:
+      type: object
+      properties:
+        id:
+          type: string
+          examples:
+            - 698d61f5361fc034ace53231
+        phone_type:
+          type: string
+          examples:
+            - mobile
+        country_code:
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - '+91'
+        phone_number:
+          type: string
+          examples:
+            - '0701234567'
+    Models.TaskSubmission.Visa:
+      type: object
+      properties:
+        id:
+          type: string
+          examples:
+            - 698d75a9361fc034ace53662
+        number:
+          type: string
+          examples:
+            - '1234567890'
+        visa_type:
+          type: string
+          examples:
+            - unknown_type
+        visa_issue_country:
+          type: string
+          examples:
+            - IN
+        issued_date:
+          type: string
+          examples:
+            - '2025-01-02'
+        expiry_date:
+          type: string
+          examples:
+            - '2035-01-02'
+        issuing_authority:
+          type: string
+          examples:
+            - ''
+        place_of_issue:
+          type: string
+          examples:
+            - Hyderabad
+        visa_s3_url:
+          type: string
+          examples:
+            - https://xpand-dev-journeys.s3.amazonaws.com/
+    Models.TaskSubmission.WorkExperience:
+      type: object
+      properties:
+        id:
+          type: string
+          examples:
+            - 698d75a9361fc034ace53664
+        employer:
+          type: string
+          examples:
+            - XYZ Corp
+        start_date:
+          type: string
+          examples:
+            - '2020-01-01'
+        end_date:
+          type: string
+          examples:
+            - '2023-01-01'
+        current:
+          type: boolean
+          examples:
+            - true
+        job_title:
+          type: string
+          examples:
+            - Software Engineer
+        department:
+          type: string
+          examples:
+            - Engineering
+        relieving_letter_url:
+          type: string
+          examples:
+            - https://xpand-dev-journeys.s3.amazonaws.com/relieving_letter.pdf
+        service_certificate_url:
+          type: string
+          examples:
+            - https://xpand-dev-journeys.s3.amazonaws.com/service_certificate.pdf
+        resignation_acceptance_url:
+          type: string
+          examples:
+            - https://xpand-dev-journeys.s3.amazonaws.com/resignation_acceptance.pdf
+        other_document_url:
+          type: string
+          examples:
+            - https://xpand-dev-journeys.s3.amazonaws.com/other_document.pdf
     Models.WorkExperience:
       type: object
       properties:
@@ -2993,72 +3267,6 @@ components:
       format: uuid
       examples:
         - 69ae0e64b02bfe73a44ca479
-    UserJourneys.AddressSubmission:
-      type: object
-      properties:
-        id:
-          type: string
-          examples:
-            - '12345'
-        line_1:
-          type: string
-          examples:
-            - 123 Main St
-        line_2:
-          type: string
-          examples:
-            - Apt 4B
-        city:
-          type: string
-          examples:
-            - New York
-        state:
-          type: string
-          examples:
-            - NY
-        postal_code:
-          type: string
-          examples:
-            - '10001'
-        country:
-          type: string
-          examples:
-            - US
-    UserJourneys.BankAccountSubmission:
-      type: object
-      properties:
-        id:
-          type: string
-          examples:
-            - 698d75a9361fc034ace53668
-        account_type:
-          type: string
-          examples:
-            - Savings
-        bank_id:
-          type: string
-          examples:
-            - HDFC001
-        account_number:
-          type: string
-          examples:
-            - '123456789012'
-        branch_id:
-          type: string
-          examples:
-            - '00123'
-        check_digit:
-          type: string
-          examples:
-            - '7'
-        bank_name:
-          type: string
-          examples:
-            - HDFC Bank
-        bank_account_name:
-          type: string
-          examples:
-            - Rahul Sharma
     UserJourneys.BaseTaskSubmission:
       type: object
       required:
@@ -3134,6 +3342,8 @@ components:
       required:
         - type
         - title
+        - requires_submission
+        - requires_signature
       properties:
         type:
           type: string
@@ -3147,86 +3357,36 @@ components:
           type: string
           examples:
             - Offer Letter
+        requires_submission:
+          type: boolean
+          examples:
+            - false
+        requires_signature:
+          type: boolean
+          examples:
+            - false
         document:
           type: object
           properties:
-            _id:
+            id:
               type: string
-            s3_url:
+            url:
               type: string
             file_name:
               type: string
-            signed:
-              type: boolean
-            _urls:
-              type: object
-              properties:
-                download:
-                  type: string
-              required:
-                - download
           required:
-            - _id
-            - s3_url
+            - id
+            - url
             - file_name
-            - signed
-            - _urls
         task_submission:
           $ref: '#/components/schemas/UserJourneys.BaseTaskSubmission'
       allOf:
         - $ref: '#/components/schemas/UserJourneys.UserJourneyTaskBase'
-    UserJourneys.EducationSubmission:
-      type: object
-      properties:
-        id:
-          type: string
-          examples:
-            - 698d75a9361fc034ace53665
-        school_name:
-          type: string
-          examples:
-            - ABC University
-        degree:
-          type: string
-          examples:
-            - B.Tech
-        start_date:
-          type: string
-          examples:
-            - '2015-08-01'
-        end_date:
-          type: string
-          examples:
-            - '2019-05-01'
-        major:
-          type: string
-          examples:
-            - Computer Science
-        graduated:
-          type: boolean
-          examples:
-            - true
-        graduation_date:
-          type: string
-          examples:
-            - '2019-05-01'
-        gpa:
-          type: string
-          examples:
-            - '8.5'
-        marksheet_url:
-          type: string
-          examples:
-            - https://xpand-dev-journeys.s3.amazonaws.com/marksheet.pdf
-        degree_url:
-          type: string
-          examples:
-            - https://xpand-dev-journeys.s3.amazonaws.com/degree_certificate.pdf
     UserJourneys.EmbeddedUrlTask:
       type: object
       allOf:
         - $ref: '#/components/schemas/UserJourneys.UserJourneyTaskBase'
-    UserJourneys.FormBuilderAdressTaskSubmission:
+    UserJourneys.FormBuilderAddressTaskSubmission:
       type: object
       required:
         - addresses
@@ -3256,7 +3416,7 @@ components:
         addresses:
           type: array
           items:
-            $ref: '#/components/schemas/UserJourneys.AddressSubmission'
+            $ref: '#/components/schemas/Models.TaskSubmission.Address'
         responses:
           type: object
           properties:
@@ -3300,7 +3460,7 @@ components:
         bank_accounts:
           type: array
           items:
-            $ref: '#/components/schemas/UserJourneys.BankAccountSubmission'
+            $ref: '#/components/schemas/Models.TaskSubmission.BankAccount'
         responses:
           type: object
           properties:
@@ -3377,7 +3537,7 @@ components:
         educations:
           type: array
           items:
-            $ref: '#/components/schemas/UserJourneys.EducationSubmission'
+            $ref: '#/components/schemas/Models.TaskSubmission.Education'
         responses:
           type: object
           properties:
@@ -3421,7 +3581,7 @@ components:
         national_ids:
           type: array
           items:
-            $ref: '#/components/schemas/UserJourneys.NationalIdSubmission'
+            $ref: '#/components/schemas/Models.TaskSubmission.NationalId'
         responses:
           type: object
           properties:
@@ -3465,7 +3625,7 @@ components:
         passports:
           type: array
           items:
-            $ref: '#/components/schemas/UserJourneys.PassportSubmission'
+            $ref: '#/components/schemas/Models.TaskSubmission.Passport'
         responses:
           type: object
           properties:
@@ -3509,7 +3669,7 @@ components:
         phone_numbers:
           type: array
           items:
-            $ref: '#/components/schemas/UserJourneys.SubmissionPhoneNumber'
+            $ref: '#/components/schemas/Models.TaskSubmission.PhoneNumber'
         responses:
           type: object
           properties:
@@ -3555,7 +3715,7 @@ components:
           anyOf:
             - $ref: '#/components/schemas/UserJourneys.FormBuilderPhoneTaskSubmission'
             - $ref: '#/components/schemas/UserJourneys.FormBuilderVisaTaskSubmission'
-            - $ref: '#/components/schemas/UserJourneys.FormBuilderAdressTaskSubmission'
+            - $ref: '#/components/schemas/UserJourneys.FormBuilderAddressTaskSubmission'
             - $ref: '#/components/schemas/UserJourneys.FormBuilderWorkExperienceTaskSubmission'
             - $ref: '#/components/schemas/UserJourneys.FormBuilderEducationTaskSubmission'
             - $ref: '#/components/schemas/UserJourneys.FormBuilderPassportTaskSubmission'
@@ -3593,7 +3753,7 @@ components:
         visas:
           type: array
           items:
-            $ref: '#/components/schemas/UserJourneys.SubmissionVisa'
+            $ref: '#/components/schemas/Models.TaskSubmission.Visa'
         responses:
           type: object
           properties:
@@ -3637,7 +3797,7 @@ components:
         work_experiences:
           type: array
           items:
-            $ref: '#/components/schemas/UserJourneys.WorkExperienceSubmission'
+            $ref: '#/components/schemas/Models.TaskSubmission.WorkExperience'
         responses:
           type: object
           properties:
@@ -3655,124 +3815,10 @@ components:
       type: object
       allOf:
         - $ref: '#/components/schemas/UserJourneys.UserJourneyTaskBase'
-    UserJourneys.NationalIdSubmission:
-      type: object
-      properties:
-        id:
-          type: string
-          examples:
-            - 698d75a9361fc034ace53667
-        national_id:
-          type: string
-          examples:
-            - A123456789
-        issuing_agency:
-          type: string
-          examples:
-            - National Identity Authority
-        country_iso2:
-          type: string
-          examples:
-            - IN
-    UserJourneys.PassportSubmission:
-      type: object
-      properties:
-        id:
-          type: string
-          examples:
-            - 698d75a9361fc034ace53666
-        number:
-          type: string
-          examples:
-            - N1234567
-        issue_country:
-          type: string
-          examples:
-            - India
-        issued_date:
-          type: string
-          examples:
-            - '2018-06-15'
-        expiry_date:
-          type: string
-          examples:
-            - '2028-06-14'
-        type:
-          type: string
-          examples:
-            - Regular
-        issuing_authority:
-          type: string
-          examples:
-            - Ministry of External Affairs
-        passport_url:
-          type: string
-          examples:
-            - https://xpand-dev-journeys.s3.amazonaws.com/passport.pdf
     UserJourneys.PowerPointTask:
       type: object
       allOf:
         - $ref: '#/components/schemas/UserJourneys.UserJourneyTaskBase'
-    UserJourneys.SubmissionPhoneNumber:
-      type: object
-      properties:
-        id:
-          type: string
-          examples:
-            - 698d61f5361fc034ace53231
-        phone_type:
-          type: string
-          examples:
-            - mobile
-        country_code:
-          anyOf:
-            - type: string
-            - type: 'null'
-          examples:
-            - '+91'
-        phone_number:
-          type: string
-          examples:
-            - '0701234567'
-    UserJourneys.SubmissionVisa:
-      type: object
-      properties:
-        id:
-          type: string
-          examples:
-            - 698d75a9361fc034ace53662
-        number:
-          type: string
-          examples:
-            - '1234567890'
-        visa_type:
-          type: string
-          examples:
-            - unknown_type
-        visa_issue_country:
-          type: string
-          examples:
-            - IN
-        issued_date:
-          type: string
-          examples:
-            - '2025-01-02'
-        expiry_date:
-          type: string
-          examples:
-            - '2035-01-02'
-        issuing_authority:
-          type: string
-          examples:
-            - ''
-        place_of_issue:
-          type: string
-          examples:
-            - Hyderabad
-        visa_s3_url:
-          type: string
-          examples:
-            - https://xpand-dev-journeys.s3.amazonaws.com/
     UserJourneys.TextTask:
       type: object
       required:
@@ -3780,6 +3826,8 @@ components:
         - title
         - header_value
         - footer_value
+        - requires_submission
+        - requires_signature
       properties:
         type:
           type: string
@@ -3801,6 +3849,14 @@ components:
           type: string
           examples:
             - <H1>Footer value </H1>
+        requires_submission:
+          type: boolean
+          examples:
+            - false
+        requires_signature:
+          type: boolean
+          examples:
+            - false
         task_submission:
           $ref: '#/components/schemas/UserJourneys.BaseTaskSubmission'
       allOf:
@@ -3811,8 +3867,6 @@ components:
         - id
         - state
         - mandatory
-        - requires_submission
-        - requires_signature
       properties:
         id:
           type: string
@@ -3829,14 +3883,6 @@ components:
           examples:
             - '2026-02-12T06:39:38Z'
         mandatory:
-          type: boolean
-          examples:
-            - false
-        requires_submission:
-          type: boolean
-          examples:
-            - false
-        requires_signature:
           type: boolean
           examples:
             - false
@@ -3909,53 +3955,6 @@ components:
             - s3_url
       allOf:
         - $ref: '#/components/schemas/UserJourneys.UserJourneyTaskBase'
-    UserJourneys.WorkExperienceSubmission:
-      type: object
-      properties:
-        id:
-          type: string
-          examples:
-            - 698d75a9361fc034ace53664
-        employer:
-          type: string
-          examples:
-            - XYZ Corp
-        start_date:
-          type: string
-          examples:
-            - '2020-01-01'
-        end_date:
-          type: string
-          examples:
-            - '2023-01-01'
-        current:
-          type: boolean
-          examples:
-            - true
-        job_title:
-          type: string
-          examples:
-            - Software Engineer
-        department:
-          type: string
-          examples:
-            - Engineering
-        relieving_letter_url:
-          type: string
-          examples:
-            - https://xpand-dev-journeys.s3.amazonaws.com/relieving_letter.pdf
-        service_certificate_url:
-          type: string
-          examples:
-            - https://xpand-dev-journeys.s3.amazonaws.com/service_certificate.pdf
-        resignation_acceptance_url:
-          type: string
-          examples:
-            - https://xpand-dev-journeys.s3.amazonaws.com/resignation_acceptance.pdf
-        other_document_url:
-          type: string
-          examples:
-            - https://xpand-dev-journeys.s3.amazonaws.com/other_document.pdf
   securitySchemes:
     BearerAuth:
       type: http

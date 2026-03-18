@@ -7,6 +7,7 @@ import "./errors.tsp";
 import "./models";
 import "./requests";
 import "./responses";
+import "./models/task_submission/index.tsp";
 
 using TypeSpec.Http;
 using TypeSpec.OpenAPI;
@@ -148,209 +149,6 @@ namespace API {
       @body body: Responses.UserJourneyList[];
     };
 
-
-  model SubmissionPhoneNumber {
-    @example("698d61f5361fc034ace53231")
-    id?: string;
-
-    @example("mobile")
-    phone_type?: string;
-
-    @example("+91")
-    country_code?: string | null;
-
-    @example("0701234567")
-    phone_number?: string;
-  }
-
-  model SubmissionVisa {
-    @example("698d75a9361fc034ace53662")
-    id?: string;
-
-    @example("1234567890")
-    number?: string;
-
-    @example("unknown_type")
-    visa_type?: string;
-
-    @example("IN")
-    visa_issue_country?: string;
-
-    @example("2025-01-02")
-    issued_date?: string;
-
-    @example("2035-01-02")
-    expiry_date?: string;
-
-    @example("")
-    issuing_authority?: string;
-
-    @example("Hyderabad")
-    place_of_issue?: string;
-
-    @example("https://xpand-dev-journeys.s3.amazonaws.com/")
-    visa_s3_url?: string;
-  }
-
-  model AddressSubmission {
-    @example("12345")
-    id?: string;
-
-    @example("123 Main St")
-    line_1?: string;
-
-    @example("Apt 4B")
-    line_2?: string;
-
-    @example("New York")
-    city?: string;
-
-    @example("NY")
-    state?: string;
-
-    @example("10001")
-    postal_code?: string;
-
-    @example("US")
-    country?: string;
-  }
-
-  model WorkExperienceSubmission {
-    @example("698d75a9361fc034ace53664")
-    id?: string;
-
-    @example("XYZ Corp")
-    employer?: string;
-
-    @example("2020-01-01")
-    start_date?: string;
-
-    @example("2023-01-01")
-    end_date?: string;
-
-    @example(true)
-    current?: boolean;
-
-    @example("Software Engineer")
-    job_title?: string;
-
-    @example("Engineering")
-    department?: string;
-
-    @example("https://xpand-dev-journeys.s3.amazonaws.com/relieving_letter.pdf")
-    relieving_letter_url?: string;
-
-    @example("https://xpand-dev-journeys.s3.amazonaws.com/service_certificate.pdf")
-    service_certificate_url?: string;
-
-    @example("https://xpand-dev-journeys.s3.amazonaws.com/resignation_acceptance.pdf")
-    resignation_acceptance_url?: string;
-
-    @example("https://xpand-dev-journeys.s3.amazonaws.com/other_document.pdf")
-    other_document_url?: string;
-  }
-
-  model EducationSubmission {
-    @example("698d75a9361fc034ace53665")
-    id?: string;
-
-    @example("ABC University")
-    school_name?: string;
-
-    @example("B.Tech")
-    degree?: string;
-
-    @example("2015-08-01")
-    start_date?: string;
-
-    @example("2019-05-01")
-    end_date?: string;
-
-    @example("Computer Science")
-    major?: string;
-
-    @example(true)
-    graduated?: boolean;
-
-    @example("2019-05-01")
-    graduation_date?: string;
-
-    @example("8.5")
-    gpa?: string;
-
-    @example("https://xpand-dev-journeys.s3.amazonaws.com/marksheet.pdf")
-    marksheet_url?: string;
-
-    @example("https://xpand-dev-journeys.s3.amazonaws.com/degree_certificate.pdf")
-    degree_url?: string;
-  }
-
-  model PassportSubmission {
-    @example("698d75a9361fc034ace53666")
-    id?: string;
-
-    @example("N1234567")
-    number?: string;
-
-    @example("India")
-    issue_country?: string;
-
-    @example("2018-06-15")
-    issued_date?: string;
-
-    @example("2028-06-14")
-    expiry_date?: string;
-
-    @example("Regular")
-    type?: string;
-
-    @example("Ministry of External Affairs")
-    issuing_authority?: string;
-
-    @example("https://xpand-dev-journeys.s3.amazonaws.com/passport.pdf")
-    passport_url?: string;
-  }
-
-  model NationalIdSubmission {
-    @example("698d75a9361fc034ace53667")
-    id?: string;
-
-    @example("A123456789")
-    national_id?: string;
-
-    @example("National Identity Authority")
-    issuing_agency?: string;
-
-    @example("IN")
-    country_iso2?: string;
-  }
-
-  model BankAccountSubmission {
-    @example("698d75a9361fc034ace53668")
-    id?: string;
-
-    @example("Savings")
-    account_type?: string;
-
-    @example("HDFC001")
-    bank_id?: string;
-
-    @example("123456789012")
-    account_number?: string;
-
-    @example("00123")
-    branch_id?: string;
-
-    @example("7")
-    check_digit?: string;
-
-    @example("HDFC Bank")
-    bank_name?: string;
-
-    @example("Rahul Sharma")
-    bank_account_name?: string;
-  }
-
   model BaseTaskSubmission {
     @example("approved")
     state: string;
@@ -412,12 +210,6 @@ namespace API {
     @example(false)
     mandatory: boolean;
 
-    @example(false)
-    requires_submission: boolean;
-
-    @example(false)
-    requires_signature: boolean;
-
     @example("Continue")
     button_label?: string;
 
@@ -453,6 +245,12 @@ namespace API {
     @example("<H1>Footer value </H1>")
     footer_value: string;
 
+    @example(false)
+    requires_submission: boolean;
+
+    @example(false)
+    requires_signature: boolean;
+
     task_submission?: BaseTaskSubmission;
   }
 
@@ -466,14 +264,16 @@ namespace API {
     @example("Offer Letter")
     description?: string;
 
+    @example(false)
+    requires_submission: boolean;
+
+    @example(false)
+    requires_signature: boolean;
+
     document?: {
-      _id: string;
-      s3_url: string;
+      id: string;
+      url: string;
       file_name: string;
-      signed: boolean;
-      _urls: {
-        download: string;
-      };
     };
 
     task_submission?: BaseTaskSubmission;
@@ -516,7 +316,7 @@ namespace API {
     passports?: [];
     work_experiences?: [];
     visas?: [];
-    phone_numbers: SubmissionPhoneNumber[];
+    phone_numbers: Models.TaskSubmission.PhoneNumber[];
     "responses": {
       "694927bb4f1f89b0642be6fe": [
         "698d75a9361fc034ace53660"
@@ -532,7 +332,7 @@ namespace API {
     passports?: [];
     work_experiences?: [];
     phone_numbers?: [];
-    visas: SubmissionVisa[];
+    visas: Models.TaskSubmission.Visa[];
     "responses": {
       "694927bb4f1f89b0642be6fe": [
         "698d75a9361fc034ace53660"
@@ -540,7 +340,7 @@ namespace API {
     },
   }
 
-  model FormBuilderAdressTaskSubmission extends FormBuilderBaseTaskSubmission {
+  model FormBuilderAddressTaskSubmission extends FormBuilderBaseTaskSubmission {
     bank_accounts?: [];
     educations?: [];
     national_ids?: [];
@@ -548,7 +348,7 @@ namespace API {
     work_experiences?: [];
     phone_numbers?: [];
     visas?: [];
-    addresses: AddressSubmission[];
+    addresses: Models.TaskSubmission.Address[];
     "responses": {
       "694927bb4f1f89b0642be6fe": [
         "698d75a9361fc034ace53660"
@@ -564,7 +364,7 @@ namespace API {
     work_experiences?: [];
     phone_numbers?: [];
     visas?: [];
-    educations: EducationSubmission[];
+    educations: Models.TaskSubmission.Education[];
     "responses": {
       "694927bb4f1f89b0642be6fe": [
         "698d75a9361fc034ace53660"
@@ -580,7 +380,7 @@ namespace API {
     passports?: [];
     phone_numbers?: [];
     visas?: [];
-    work_experiences: WorkExperienceSubmission[];
+    work_experiences: Models.TaskSubmission.WorkExperience[];
     "responses": {
       "694927bb4f1f89b0642be6fe": [
         "698d75a9361fc034ace53660"
@@ -596,7 +396,7 @@ namespace API {
     work_experiences?: [];
     phone_numbers?: [];
     visas?: [];
-    passports: PassportSubmission[];
+    passports: Models.TaskSubmission.Passport[];
     "responses": {
       "694927bb4f1f89b0642be6fe": [
         "698d75a9361fc034ace53660"
@@ -612,7 +412,7 @@ namespace API {
     work_experiences?: [];
     phone_numbers?: [];
     visas?: [];
-    bank_accounts: BankAccountSubmission[];
+    bank_accounts: Models.TaskSubmission.BankAccount[];
     "responses": {
       "694927bb4f1f89b0642be6fe": [
         "698d75a9361fc034ace53660"
@@ -628,7 +428,7 @@ namespace API {
     work_experiences?: [];
     phone_numbers?: [];
     visas?: [];
-    national_ids: NationalIdSubmission[];
+    national_ids: Models.TaskSubmission.NationalId[];
     "responses": {
       "694927bb4f1f89b0642be6fe": [
         "698d75a9361fc034ace53660"
@@ -654,7 +454,7 @@ namespace API {
     task_submission?: 
       FormBuilderPhoneTaskSubmission |
       FormBuilderVisaTaskSubmission |
-      FormBuilderAdressTaskSubmission |
+      FormBuilderAddressTaskSubmission |
       FormBuilderWorkExperienceTaskSubmission |
       FormBuilderEducationTaskSubmission |
       FormBuilderPassportTaskSubmission |
