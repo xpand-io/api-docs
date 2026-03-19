@@ -148,6 +148,16 @@ namespace API {
       @body body: Responses.UserJourneyList[];
     };
 
+    @route("/{id}/tasks")
+    @summary("Fetch Tasks for a User Journey")
+    op tasks(@path id: string): {
+      @statusCode statusCode: 200;
+      @body body: Models.Task.UserJourneyTask[];
+    } | {
+      @statusCode statusCode: 404;
+      @body error: Errors.NotFoundError;
+    };
+
     @summary("Fetch User Journey")
     @doc("Fetch a User Journey")
     op show(@path id: UUID): {

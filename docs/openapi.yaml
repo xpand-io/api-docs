@@ -782,6 +782,40 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Requests.UserJourneyRescind'
+  /api/v2/user_journeys/{id}/tasks:
+    get:
+      operationId: UserJourneys_tasks
+      summary: Fetch Tasks for a User Journey
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  anyOf:
+                    - $ref: '#/components/schemas/Models.Task.TextTask'
+                    - $ref: '#/components/schemas/Models.Task.DocumentTask'
+                    - $ref: '#/components/schemas/Models.Task.VideoTask'
+                    - $ref: '#/components/schemas/Models.Task.I9Task'
+                    - $ref: '#/components/schemas/Models.Task.EmbeddedUrlTask'
+                    - $ref: '#/components/schemas/Models.Task.PowerPointTask'
+                    - $ref: '#/components/schemas/Models.Task.FormBuilderTask'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors.NotFoundError'
+      tags:
+        - User Journeys
 security:
   - BearerAuth: []
 components:
@@ -1121,6 +1155,968 @@ components:
           type: boolean
           examples:
             - true
+    Models.Task.DocumentTask:
+      type: object
+      required:
+        - type
+        - title
+        - requires_submission
+        - requires_signature
+      properties:
+        type:
+          type: string
+          examples:
+            - document
+        title:
+          type: string
+          examples:
+            - Offer Letter
+        description:
+          type: string
+          examples:
+            - Offer Letter
+        requires_submission:
+          type: boolean
+          examples:
+            - false
+        requires_signature:
+          type: boolean
+          examples:
+            - false
+        document:
+          type: object
+          properties:
+            id:
+              type: string
+            url:
+              type: string
+            file_name:
+              type: string
+          required:
+            - id
+            - url
+            - file_name
+        task_submission:
+          $ref: '#/components/schemas/Models.TaskSubmission.BaseTaskSubmission'
+      allOf:
+        - $ref: '#/components/schemas/Models.Task.UserJourneyTaskBase'
+    Models.Task.EmbeddedUrlTask:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Models.Task.UserJourneyTaskBase'
+    Models.Task.FormBuilderTask:
+      type: object
+      required:
+        - type
+        - title
+      properties:
+        type:
+          type: string
+          examples:
+            - form_builder
+        title:
+          type: string
+          examples:
+            - Phone number / Visa / Address / Work Experience / etc.
+        description:
+          type: string
+          examples:
+            - Form Builder Task
+        form:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+          required:
+            - id
+            - name
+        task_submission:
+          anyOf:
+            - $ref: '#/components/schemas/Models.TaskSubmission.FormBuilderPhoneTaskSubmission'
+            - $ref: '#/components/schemas/Models.TaskSubmission.FormBuilderVisaTaskSubmission'
+            - $ref: '#/components/schemas/Models.TaskSubmission.FormBuilderAddressTaskSubmission'
+            - $ref: '#/components/schemas/Models.TaskSubmission.FormBuilderWorkExperienceTaskSubmission'
+            - $ref: '#/components/schemas/Models.TaskSubmission.FormBuilderEducationTaskSubmission'
+            - $ref: '#/components/schemas/Models.TaskSubmission.FormBuilderPassportTaskSubmission'
+            - $ref: '#/components/schemas/Models.TaskSubmission.FormBuilderBankAccountTaskSubmission'
+            - $ref: '#/components/schemas/Models.TaskSubmission.FormBuilderNationalIdTaskSubmission'
+      allOf:
+        - $ref: '#/components/schemas/Models.Task.UserJourneyTaskBase'
+    Models.Task.I9Task:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Models.Task.UserJourneyTaskBase'
+    Models.Task.PowerPointTask:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Models.Task.UserJourneyTaskBase'
+    Models.Task.TextTask:
+      type: object
+      required:
+        - type
+        - title
+        - header_value
+        - footer_value
+        - requires_submission
+        - requires_signature
+      properties:
+        type:
+          type: string
+          examples:
+            - text
+        title:
+          type: string
+          examples:
+            - IP Protection and Restrictive Covenant Agreement.
+        description:
+          type: string
+          examples:
+            - IP Protection and Restrictive Covenant Agreement.
+        header_value:
+          type: string
+          examples:
+            - <H1>Header value </H1>
+        footer_value:
+          type: string
+          examples:
+            - <H1>Footer value </H1>
+        requires_submission:
+          type: boolean
+          examples:
+            - false
+        requires_signature:
+          type: boolean
+          examples:
+            - false
+        task_submission:
+          $ref: '#/components/schemas/Models.TaskSubmission.BaseTaskSubmission'
+      allOf:
+        - $ref: '#/components/schemas/Models.Task.UserJourneyTaskBase'
+    Models.Task.UserJourneyTaskBase:
+      type: object
+      required:
+        - id
+        - state
+        - mandatory
+      properties:
+        id:
+          type: string
+          examples:
+            - 695f5f8b1b962bf3b327a043
+        state:
+          type: string
+          examples:
+            - completed
+        completed_at:
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - '2026-02-12T06:39:38Z'
+        mandatory:
+          type: boolean
+          examples:
+            - false
+        button_label:
+          type: string
+          examples:
+            - Continue
+        value:
+          type: string
+          examples:
+            - ''
+        submitted_at:
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - '2026-02-10'
+        due_date:
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - '2026-02-12'
+        resubmit_date:
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - '2026-02-14'
+        return_date:
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - '2026-02-15'
+    Models.Task.VideoTask:
+      type: object
+      required:
+        - type
+        - title
+      properties:
+        type:
+          type: string
+          examples:
+            - video
+        title:
+          type: string
+          examples:
+            - Vimeo
+        video_type:
+          type: string
+          examples:
+            - Vimeo
+        description:
+          type: string
+          examples:
+            - Vimeo
+        video_completion_type:
+          type: string
+          examples:
+            - watched
+        response_thumbnail:
+          type: object
+          properties:
+            s3_url:
+              type: string
+              examples:
+                - https://xpand-dev-thumbnails.s3.amazonaws.com/
+          required:
+            - s3_url
+      allOf:
+        - $ref: '#/components/schemas/Models.Task.UserJourneyTaskBase'
+    Models.TaskSubmission.Address:
+      type: object
+      properties:
+        id:
+          type: string
+          examples:
+            - '12345'
+        line_1:
+          type: string
+          examples:
+            - 123 Main St
+        line_2:
+          type: string
+          examples:
+            - Apt 4B
+        city:
+          type: string
+          examples:
+            - New York
+        state:
+          type: string
+          examples:
+            - NY
+        postal_code:
+          type: string
+          examples:
+            - '10001'
+        country:
+          type: string
+          examples:
+            - US
+    Models.TaskSubmission.BankAccount:
+      type: object
+      properties:
+        id:
+          type: string
+          examples:
+            - 698d75a9361fc034ace53668
+        account_type:
+          type: string
+          examples:
+            - Savings
+        bank_id:
+          type: string
+          examples:
+            - HDFC001
+        account_number:
+          type: string
+          examples:
+            - '123456789012'
+        branch_id:
+          type: string
+          examples:
+            - '00123'
+        check_digit:
+          type: string
+          examples:
+            - '7'
+        bank_name:
+          type: string
+          examples:
+            - HDFC Bank
+        bank_account_name:
+          type: string
+          examples:
+            - Rahul Sharma
+    Models.TaskSubmission.BaseTaskSubmission:
+      type: object
+      required:
+        - state
+        - responses
+      properties:
+        state:
+          type: string
+          examples:
+            - approved
+        pending_approval_at:
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - null
+        approved_at:
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - '2026-01-08T10:09:58Z'
+        rejected_at:
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - null
+        rejection_reason:
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - null
+        responses:
+          type: object
+          properties:
+            checkbox-0:
+              type: boolean
+              enum:
+                - true
+            signature-0:
+              type: string
+          required:
+            - checkbox-0
+            - signature-0
+        addresses:
+          type: array
+          prefixItems: []
+        bank_accounts:
+          type: array
+          prefixItems: []
+        educations:
+          type: array
+          prefixItems: []
+        national_ids:
+          type: array
+          prefixItems: []
+        passports:
+          type: array
+          prefixItems: []
+        work_experiences:
+          type: array
+          prefixItems: []
+        phone_numbers:
+          type: array
+          prefixItems: []
+        visas:
+          type: array
+          prefixItems: []
+    Models.TaskSubmission.Education:
+      type: object
+      properties:
+        id:
+          type: string
+          examples:
+            - 698d75a9361fc034ace53665
+        school_name:
+          type: string
+          examples:
+            - ABC University
+        degree:
+          type: string
+          examples:
+            - B.Tech
+        start_date:
+          type: string
+          examples:
+            - '2015-08-01'
+        end_date:
+          type: string
+          examples:
+            - '2019-05-01'
+        major:
+          type: string
+          examples:
+            - Computer Science
+        graduated:
+          type: boolean
+          examples:
+            - true
+        graduation_date:
+          type: string
+          examples:
+            - '2019-05-01'
+        gpa:
+          type: string
+          examples:
+            - '8.5'
+        marksheet_url:
+          type: string
+          examples:
+            - https://xpand-dev-journeys.s3.amazonaws.com/marksheet.pdf
+        degree_url:
+          type: string
+          examples:
+            - https://xpand-dev-journeys.s3.amazonaws.com/degree_certificate.pdf
+    Models.TaskSubmission.FormBuilderAddressTaskSubmission:
+      type: object
+      required:
+        - addresses
+        - responses
+      properties:
+        bank_accounts:
+          type: array
+          prefixItems: []
+        educations:
+          type: array
+          prefixItems: []
+        national_ids:
+          type: array
+          prefixItems: []
+        passports:
+          type: array
+          prefixItems: []
+        work_experiences:
+          type: array
+          prefixItems: []
+        phone_numbers:
+          type: array
+          prefixItems: []
+        visas:
+          type: array
+          prefixItems: []
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Models.TaskSubmission.Address'
+        responses:
+          type: object
+          properties:
+            694927bb4f1f89b0642be6fe:
+              type: array
+              prefixItems:
+                - type: string
+                  enum:
+                    - 698d75a9361fc034ace53660
+          required:
+            - 694927bb4f1f89b0642be6fe
+      allOf:
+        - $ref: '#/components/schemas/Models.TaskSubmission.FormBuilderBaseTaskSubmission'
+    Models.TaskSubmission.FormBuilderBankAccountTaskSubmission:
+      type: object
+      required:
+        - bank_accounts
+        - responses
+      properties:
+        addresses:
+          type: array
+          prefixItems: []
+        educations:
+          type: array
+          prefixItems: []
+        national_ids:
+          type: array
+          prefixItems: []
+        passports:
+          type: array
+          prefixItems: []
+        work_experiences:
+          type: array
+          prefixItems: []
+        phone_numbers:
+          type: array
+          prefixItems: []
+        visas:
+          type: array
+          prefixItems: []
+        bank_accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Models.TaskSubmission.BankAccount'
+        responses:
+          type: object
+          properties:
+            694927bb4f1f89b0642be6fe:
+              type: array
+              prefixItems:
+                - type: string
+                  enum:
+                    - 698d75a9361fc034ace53660
+          required:
+            - 694927bb4f1f89b0642be6fe
+      allOf:
+        - $ref: '#/components/schemas/Models.TaskSubmission.FormBuilderBaseTaskSubmission'
+    Models.TaskSubmission.FormBuilderBaseTaskSubmission:
+      type: object
+      required:
+        - state
+      properties:
+        state:
+          type: string
+          examples:
+            - approved
+        pending_approval_at:
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - null
+        approved_at:
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - '2026-01-08T10:09:58Z'
+        rejected_at:
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - null
+        rejection_reason:
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - null
+    Models.TaskSubmission.FormBuilderEducationTaskSubmission:
+      type: object
+      required:
+        - educations
+        - responses
+      properties:
+        addresses:
+          type: array
+          prefixItems: []
+        bank_accounts:
+          type: array
+          prefixItems: []
+        national_ids:
+          type: array
+          prefixItems: []
+        passports:
+          type: array
+          prefixItems: []
+        work_experiences:
+          type: array
+          prefixItems: []
+        phone_numbers:
+          type: array
+          prefixItems: []
+        visas:
+          type: array
+          prefixItems: []
+        educations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Models.TaskSubmission.Education'
+        responses:
+          type: object
+          properties:
+            694927bb4f1f89b0642be6fe:
+              type: array
+              prefixItems:
+                - type: string
+                  enum:
+                    - 698d75a9361fc034ace53660
+          required:
+            - 694927bb4f1f89b0642be6fe
+      allOf:
+        - $ref: '#/components/schemas/Models.TaskSubmission.FormBuilderBaseTaskSubmission'
+    Models.TaskSubmission.FormBuilderNationalIdTaskSubmission:
+      type: object
+      required:
+        - national_ids
+        - responses
+      properties:
+        addresses:
+          type: array
+          prefixItems: []
+        bank_accounts:
+          type: array
+          prefixItems: []
+        educations:
+          type: array
+          prefixItems: []
+        passports:
+          type: array
+          prefixItems: []
+        work_experiences:
+          type: array
+          prefixItems: []
+        phone_numbers:
+          type: array
+          prefixItems: []
+        visas:
+          type: array
+          prefixItems: []
+        national_ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/Models.TaskSubmission.NationalId'
+        responses:
+          type: object
+          properties:
+            694927bb4f1f89b0642be6fe:
+              type: array
+              prefixItems:
+                - type: string
+                  enum:
+                    - 698d75a9361fc034ace53660
+          required:
+            - 694927bb4f1f89b0642be6fe
+      allOf:
+        - $ref: '#/components/schemas/Models.TaskSubmission.FormBuilderBaseTaskSubmission'
+    Models.TaskSubmission.FormBuilderPassportTaskSubmission:
+      type: object
+      required:
+        - passports
+        - responses
+      properties:
+        addresses:
+          type: array
+          prefixItems: []
+        bank_accounts:
+          type: array
+          prefixItems: []
+        educations:
+          type: array
+          prefixItems: []
+        national_ids:
+          type: array
+          prefixItems: []
+        work_experiences:
+          type: array
+          prefixItems: []
+        phone_numbers:
+          type: array
+          prefixItems: []
+        visas:
+          type: array
+          prefixItems: []
+        passports:
+          type: array
+          items:
+            $ref: '#/components/schemas/Models.TaskSubmission.Passport'
+        responses:
+          type: object
+          properties:
+            694927bb4f1f89b0642be6fe:
+              type: array
+              prefixItems:
+                - type: string
+                  enum:
+                    - 698d75a9361fc034ace53660
+          required:
+            - 694927bb4f1f89b0642be6fe
+      allOf:
+        - $ref: '#/components/schemas/Models.TaskSubmission.FormBuilderBaseTaskSubmission'
+    Models.TaskSubmission.FormBuilderPhoneTaskSubmission:
+      type: object
+      required:
+        - phone_numbers
+        - responses
+      properties:
+        addresses:
+          type: array
+          prefixItems: []
+        bank_accounts:
+          type: array
+          prefixItems: []
+        educations:
+          type: array
+          prefixItems: []
+        national_ids:
+          type: array
+          prefixItems: []
+        passports:
+          type: array
+          prefixItems: []
+        work_experiences:
+          type: array
+          prefixItems: []
+        visas:
+          type: array
+          prefixItems: []
+        phone_numbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Models.TaskSubmission.PhoneNumber'
+        responses:
+          type: object
+          properties:
+            694927bb4f1f89b0642be6fe:
+              type: array
+              prefixItems:
+                - type: string
+                  enum:
+                    - 698d75a9361fc034ace53660
+          required:
+            - 694927bb4f1f89b0642be6fe
+      allOf:
+        - $ref: '#/components/schemas/Models.TaskSubmission.FormBuilderBaseTaskSubmission'
+    Models.TaskSubmission.FormBuilderVisaTaskSubmission:
+      type: object
+      required:
+        - visas
+        - responses
+      properties:
+        addresses:
+          type: array
+          prefixItems: []
+        bank_accounts:
+          type: array
+          prefixItems: []
+        educations:
+          type: array
+          prefixItems: []
+        national_ids:
+          type: array
+          prefixItems: []
+        passports:
+          type: array
+          prefixItems: []
+        work_experiences:
+          type: array
+          prefixItems: []
+        phone_numbers:
+          type: array
+          prefixItems: []
+        visas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Models.TaskSubmission.Visa'
+        responses:
+          type: object
+          properties:
+            694927bb4f1f89b0642be6fe:
+              type: array
+              prefixItems:
+                - type: string
+                  enum:
+                    - 698d75a9361fc034ace53660
+          required:
+            - 694927bb4f1f89b0642be6fe
+      allOf:
+        - $ref: '#/components/schemas/Models.TaskSubmission.FormBuilderBaseTaskSubmission'
+    Models.TaskSubmission.FormBuilderWorkExperienceTaskSubmission:
+      type: object
+      required:
+        - work_experiences
+        - responses
+      properties:
+        addresses:
+          type: array
+          prefixItems: []
+        bank_accounts:
+          type: array
+          prefixItems: []
+        educations:
+          type: array
+          prefixItems: []
+        national_ids:
+          type: array
+          prefixItems: []
+        passports:
+          type: array
+          prefixItems: []
+        phone_numbers:
+          type: array
+          prefixItems: []
+        visas:
+          type: array
+          prefixItems: []
+        work_experiences:
+          type: array
+          items:
+            $ref: '#/components/schemas/Models.TaskSubmission.WorkExperience'
+        responses:
+          type: object
+          properties:
+            694927bb4f1f89b0642be6fe:
+              type: array
+              prefixItems:
+                - type: string
+                  enum:
+                    - 698d75a9361fc034ace53660
+          required:
+            - 694927bb4f1f89b0642be6fe
+      allOf:
+        - $ref: '#/components/schemas/Models.TaskSubmission.FormBuilderBaseTaskSubmission'
+    Models.TaskSubmission.NationalId:
+      type: object
+      properties:
+        id:
+          type: string
+          examples:
+            - 698d75a9361fc034ace53667
+        national_id:
+          type: string
+          examples:
+            - A123456789
+        issuing_agency:
+          type: string
+          examples:
+            - National Identity Authority
+        country_iso2:
+          type: string
+          examples:
+            - IN
+    Models.TaskSubmission.Passport:
+      type: object
+      properties:
+        id:
+          type: string
+          examples:
+            - 698d75a9361fc034ace53666
+        number:
+          type: string
+          examples:
+            - N1234567
+        issue_country:
+          type: string
+          examples:
+            - India
+        issued_date:
+          type: string
+          examples:
+            - '2018-06-15'
+        expiry_date:
+          type: string
+          examples:
+            - '2028-06-14'
+        type:
+          type: string
+          examples:
+            - Regular
+        issuing_authority:
+          type: string
+          examples:
+            - Ministry of External Affairs
+        passport_url:
+          type: string
+          examples:
+            - https://xpand-dev-journeys.s3.amazonaws.com/passport.pdf
+    Models.TaskSubmission.PhoneNumber:
+      type: object
+      properties:
+        id:
+          type: string
+          examples:
+            - 698d61f5361fc034ace53231
+        phone_type:
+          type: string
+          examples:
+            - mobile
+        country_code:
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - '+91'
+        phone_number:
+          type: string
+          examples:
+            - '0701234567'
+    Models.TaskSubmission.Visa:
+      type: object
+      properties:
+        id:
+          type: string
+          examples:
+            - 698d75a9361fc034ace53662
+        number:
+          type: string
+          examples:
+            - '1234567890'
+        visa_type:
+          type: string
+          examples:
+            - unknown_type
+        visa_issue_country:
+          type: string
+          examples:
+            - IN
+        issued_date:
+          type: string
+          examples:
+            - '2025-01-02'
+        expiry_date:
+          type: string
+          examples:
+            - '2035-01-02'
+        issuing_authority:
+          type: string
+          examples:
+            - ''
+        place_of_issue:
+          type: string
+          examples:
+            - Hyderabad
+        visa_s3_url:
+          type: string
+          examples:
+            - https://xpand-dev-journeys.s3.amazonaws.com/
+    Models.TaskSubmission.WorkExperience:
+      type: object
+      properties:
+        id:
+          type: string
+          examples:
+            - 698d75a9361fc034ace53664
+        employer:
+          type: string
+          examples:
+            - XYZ Corp
+        start_date:
+          type: string
+          examples:
+            - '2020-01-01'
+        end_date:
+          type: string
+          examples:
+            - '2023-01-01'
+        current:
+          type: boolean
+          examples:
+            - true
+        job_title:
+          type: string
+          examples:
+            - Software Engineer
+        department:
+          type: string
+          examples:
+            - Engineering
+        relieving_letter_url:
+          type: string
+          examples:
+            - https://xpand-dev-journeys.s3.amazonaws.com/relieving_letter.pdf
+        service_certificate_url:
+          type: string
+          examples:
+            - https://xpand-dev-journeys.s3.amazonaws.com/service_certificate.pdf
+        resignation_acceptance_url:
+          type: string
+          examples:
+            - https://xpand-dev-journeys.s3.amazonaws.com/resignation_acceptance.pdf
+        other_document_url:
+          type: string
+          examples:
+            - https://xpand-dev-journeys.s3.amazonaws.com/other_document.pdf
     Models.WorkExperience:
       type: object
       properties:

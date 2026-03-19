@@ -1,0 +1,9 @@
+import "./user_journey_task_base.tsp";
+import "./text_task.tsp";
+import "./document_task.tsp";
+import "./video_task.tsp";
+import "./i9_task.tsp";
+import "./embedded_url_task.tsp";
+import "./power_point_task.tsp";
+import "./form_builder_task.tsp";
+import "./user_journey_task.tsp";
