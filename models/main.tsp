@@ -10,3 +10,5 @@ import "./phone_number.tsp";
 import "./user.tsp";
 import "./user_journey.tsp";
 import "./work_experience.tsp";
+import "./task_submission/index.tsp";
+import "./task/index.tsp";
