@@ -2607,8 +2607,6 @@ components:
     Requests.UserJourneyUpdate:
       type: object
       properties:
-        state:
-          $ref: '#/components/schemas/Enums.UserJourneyState'
         expiration_date:
           $ref: '#/components/schemas/Date'
         office_location_id:

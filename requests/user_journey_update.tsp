@@ -1,6 +1,5 @@
 namespace Requests {
   model UserJourneyUpdate {
-    state?: Enums.UserJourneyState;
     expiration_date?: Date;
     office_location_id?: UUID | {
       @example("LOCATION-3-69")
