@@ -27,6 +27,7 @@ namespace Enums {
     submitted: "submitted",
     declined: "declined",
     completed: "completed",
+    voided: "voided",
   }
 
   @example(UserJourneyRescindReason.no_longer_needed)

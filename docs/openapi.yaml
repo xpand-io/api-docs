@@ -578,7 +578,7 @@ paths:
                 type: string
                 description: Comma separated list of states
                 examples:
-                  - draft, needs_attention, pending_approval, approved, rejected, rescinded, user_pending, submitted, declined, completed
+                  - draft, needs_attention, pending_approval, approved, rejected, rescinded, user_pending, submitted, declined, completed, voided
               custom_fields:
                 type: object
                 properties:
@@ -878,6 +878,7 @@ components:
         - submitted
         - declined
         - completed
+        - voided
       examples:
         - approved
     Errors.NotFoundError:

@@ -131,7 +131,7 @@ namespace API {
         transition_type?: string;
 
         @doc("Comma separated list of states")
-        @example("draft, needs_attention, pending_approval, approved, rejected, rescinded, user_pending, submitted, declined, completed")
+        @example("draft, needs_attention, pending_approval, approved, rejected, rescinded, user_pending, submitted, declined, completed, voided")
         state?: string;
 
         custom_fields?: {
