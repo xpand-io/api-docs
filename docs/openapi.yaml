@@ -712,7 +712,7 @@ paths:
     patch:
       operationId: UserJourneys_update
       summary: Update User Journey
-      description: Update a User Journey
+      description: Update a User Journey. Cannot update User Journeys with a Voided or Rescinded state
       parameters:
         - name: id
           in: path

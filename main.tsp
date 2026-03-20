@@ -179,7 +179,7 @@ namespace API {
     };
 
     @summary("Update User Journey")
-    @doc("Update a User Journey")
+    @doc("Update a User Journey. Cannot update User Journeys with a Voided or Rescinded state")
     @patch(#{ implicitOptionality: true })
     op update(@path id: UUID, @body body: Requests.UserJourneyUpdate): {
       @statusCode statusCode: 200;
