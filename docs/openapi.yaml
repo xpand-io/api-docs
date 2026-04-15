@@ -1163,6 +1163,7 @@ components:
         - title
         - requires_submission
         - requires_signature
+        - download_url
       properties:
         type:
           type: string
@@ -1197,12 +1198,21 @@ components:
             - id
             - url
             - file_name
+        download_url:
+          type: string
+          examples:
+            - http://s3.amazonaws.com/api/v2/tasks/69aa76d0e3425abba82fe554/download?type=document
         task_submission:
           $ref: '#/components/schemas/Models.TaskSubmission.BaseTaskSubmission'
       allOf:
         - $ref: '#/components/schemas/Models.Task.UserJourneyTaskBase'
     Models.Task.EmbeddedUrlTask:
       type: object
+      properties:
+        value:
+          type: string
+          examples:
+            - ''
       allOf:
         - $ref: '#/components/schemas/Models.Task.UserJourneyTaskBase'
     Models.Task.FormBuilderTask:
@@ -1251,6 +1261,11 @@ components:
         - $ref: '#/components/schemas/Models.Task.UserJourneyTaskBase'
     Models.Task.PowerPointTask:
       type: object
+      properties:
+        value:
+          type: string
+          examples:
+            - ''
       allOf:
         - $ref: '#/components/schemas/Models.Task.UserJourneyTaskBase'
     Models.Task.TextTask:
@@ -1258,10 +1273,9 @@ components:
       required:
         - type
         - title
-        - header_value
-        - footer_value
         - requires_submission
         - requires_signature
+        - download_url
       properties:
         type:
           type: string
@@ -1275,14 +1289,6 @@ components:
           type: string
           examples:
             - IP Protection and Restrictive Covenant Agreement.
-        header_value:
-          type: string
-          examples:
-            - <H1>Header value </H1>
-        footer_value:
-          type: string
-          examples:
-            - <H1>Footer value </H1>
         requires_submission:
           type: boolean
           examples:
@@ -1291,6 +1297,10 @@ components:
           type: boolean
           examples:
             - false
+        download_url:
+          type: string
+          examples:
+            - http://s3.amazonaws.com/api/v2/tasks/69aa76d0e3425abba82fe554/download?type=text
         task_submission:
           $ref: '#/components/schemas/Models.TaskSubmission.BaseTaskSubmission'
       allOf:
@@ -1324,10 +1334,6 @@ components:
           type: string
           examples:
             - Continue
-        value:
-          type: string
-          examples:
-            - ''
         submitted_at:
           anyOf:
             - type: string
@@ -1378,6 +1384,10 @@ components:
           type: string
           examples:
             - watched
+        value:
+          type: string
+          examples:
+            - ''
         response_thumbnail:
           type: object
           properties:
@@ -1494,13 +1504,32 @@ components:
           properties:
             checkbox-0:
               type: boolean
-              enum:
+              examples:
                 - true
             signature-0:
               type: string
+              examples:
+                - user-signature
+            Select citizenship status:
+              type: string
+              examples:
+                - CITIZENSHIP_STATUS-3-404
+            Enter national ID aligned to this country:
+              type: array
+              items:
+                type: string
+              examples:
+                - - 69c22d47044b57dc9f53b96b
+            Enter permanent resident card number:
+              type: string
+              examples:
+                - '123456789'
           required:
             - checkbox-0
             - signature-0
+            - Select citizenship status
+            - Enter national ID aligned to this country
+            - Enter permanent resident card number
         addresses:
           type: array
           prefixItems: []
