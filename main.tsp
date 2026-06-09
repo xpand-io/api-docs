@@ -56,7 +56,7 @@ namespace API {
 
     @summary("Update User")
     @doc("Update a User")
-    @patch(#{ implicitOptionality: true })
+    @patch
     op update(
       @path id: UUID,
       @body body: {
@@ -180,7 +180,7 @@ namespace API {
 
     @summary("Update User Journey")
     @doc("Update a User Journey. Cannot update User Journeys with a Voided or Rescinded state")
-    @patch(#{ implicitOptionality: true })
+    @patch
     op update(@path id: UUID, @body body: Requests.UserJourneyUpdate): {
       @statusCode statusCode: 200;
       @body body: Responses.UserJourneyUpdate;
@@ -195,7 +195,7 @@ namespace API {
     @route("/{id}/rescind")
     @doc("Rescind a single user journey by ID. This operation uses rescind_reason only.")
     @summary("Rescind Single User Journey")
-    @patch(#{ implicitOptionality: false })
+    @patch
     op rescind(
       @path id: UUID,
       @body body: Requests.UserJourneyRescind,
@@ -215,7 +215,7 @@ namespace API {
     @route("/rescind")
     @doc("Rescind all rescindable journeys for a user, optionally filtered by transition type. transition_type accepts a comma-separated list and spaces after commas are allowed.")
     @summary("Rescind Multiple User Journeys")
-    @patch(#{ implicitOptionality: false })
+    @patch
     op rescindMultiple(
       @body body: Requests.UserJourneyRescindMultiple,
     ): {
