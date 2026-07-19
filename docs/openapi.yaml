@@ -2318,8 +2318,7 @@ components:
                 - LOCATION-3-69
           description: "JSON where key is name of external service, e.g. {'HRIS_ID': 'NEWYORK'. There must be an office location in Xpand with a matching employee id. See reference values here for existing office location external ids"
         start_date:
-          allOf:
-            - $ref: '#/components/schemas/Date'
+          $ref: '#/components/schemas/Date'
           description: Start date of the new hire
         legal_entity:
           type: string
@@ -2342,16 +2341,13 @@ components:
           examples:
             - 45000
         end_date:
-          allOf:
-            - $ref: '#/components/schemas/Date'
+          $ref: '#/components/schemas/Date'
           description: End date of the new hire
         induction_date:
-          allOf:
-            - $ref: '#/components/schemas/Date'
+          $ref: '#/components/schemas/Date'
           description: Induction Date
         expiration_date:
-          allOf:
-            - $ref: '#/components/schemas/Date'
+          $ref: '#/components/schemas/Date'
           description: Expiration date of an offer
         offer_dispositioned:
           type: string
@@ -2381,8 +2377,7 @@ components:
           examples:
             - Exempt
         respond_by_date:
-          allOf:
-            - $ref: '#/components/schemas/Date'
+          $ref: '#/components/schemas/Date'
           description: Date by when action to be taken on offer
         attorney_only:
           type: boolean
@@ -2581,8 +2576,7 @@ components:
         - rescind_reason
       properties:
         rescind_reason:
-          allOf:
-            - $ref: '#/components/schemas/Enums.UserJourneyRescindReason'
+          $ref: '#/components/schemas/Enums.UserJourneyRescindReason'
           description: Reason for rescinding the user journey.
           examples:
             - no_longer_needed
@@ -2598,8 +2592,7 @@ components:
           examples:
             - pre_offer, offer, post_offer, onboarding, offboarding
         rescind_reason:
-          allOf:
-            - $ref: '#/components/schemas/Enums.UserJourneyRescindReason'
+          $ref: '#/components/schemas/Enums.UserJourneyRescindReason'
           description: Reason for rescinding the journey(s). One of no_longer_needed, offered_externally.
           examples:
             - no_longer_needed
@@ -2676,12 +2669,10 @@ components:
         - recruiter_ids
       properties:
         email:
-          allOf:
-            - $ref: '#/components/schemas/Email'
+          $ref: '#/components/schemas/Email'
           description: 'Must be a valid email address. Must be unique for each user. Non case-sensitive. Regex validation: ^(?!...)[a-zA-Z0-9][\w-.]@[A-Za-z\d-]+(.[A-Za-z\d-]+)*.[A-Za-z]+$'
         work_email:
-          allOf:
-            - $ref: '#/components/schemas/Email'
+          $ref: '#/components/schemas/Email'
           description: 'Must be a valid email address. Must be unique for each user. Non case-sensitive. Regex validation: ^(?!...)[a-zA-Z0-9][\w-.]@[A-Za-z\d-]+(.[A-Za-z\d-]+)*.[A-Za-z]+$'
         first_name:
           type: string
@@ -2699,8 +2690,7 @@ components:
           examples:
             - Jones
         start_date:
-          allOf:
-            - $ref: '#/components/schemas/Date'
+          $ref: '#/components/schemas/Date'
           description: 'Format: YYYY-MM-DD. Can be present, or future dates only.'
         employee_type:
           type: string
@@ -3203,8 +3193,7 @@ components:
                 - LOCATION-3-69
           description: "JSON where key is name of external service, e.g. {'HRIS_ID': 'NEWYORK'. There must be an office location in Xpand with a matching employee id. See reference values here for existing office location external ids"
         start_date:
-          allOf:
-            - $ref: '#/components/schemas/Date'
+          $ref: '#/components/schemas/Date'
           description: Start date of the new hire
         legal_entity:
           type: string
@@ -3227,16 +3216,13 @@ components:
           examples:
             - 45000
         end_date:
-          allOf:
-            - $ref: '#/components/schemas/Date'
+          $ref: '#/components/schemas/Date'
           description: End date of the new hire
         induction_date:
-          allOf:
-            - $ref: '#/components/schemas/Date'
+          $ref: '#/components/schemas/Date'
           description: Induction Date
         expiration_date:
-          allOf:
-            - $ref: '#/components/schemas/Date'
+          $ref: '#/components/schemas/Date'
           description: Expiration date of an offer
         offer_dispositioned:
           type: string
@@ -3266,8 +3252,7 @@ components:
           examples:
             - Exempt
         respond_by_date:
-          allOf:
-            - $ref: '#/components/schemas/Date'
+          $ref: '#/components/schemas/Date'
           description: Date by when action to be taken on offer
         attorney_only:
           type: boolean

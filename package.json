@@ -9,11 +9,11 @@
     "preview": "npx http-server docs -p 8080"
   },
   "dependencies": {
-    "@typespec/compiler": "^1.13.0",
-    "@typespec/http": "^1.13.0",
-    "@typespec/openapi": "^1.13.0",
-    "@typespec/openapi3": "^1.13.0",
-    "@typespec/rest": "^0.83.0",
-    "@typespec/versioning": "^0.83.0"
+    "@typespec/compiler": "^1.14.0",
+    "@typespec/http": "^1.14.0",
+    "@typespec/openapi": "^1.14.0",
+    "@typespec/openapi3": "^1.14.0",
+    "@typespec/rest": "^0.84.0",
+    "@typespec/versioning": "^0.84.0"
   }
 }
