@@ -1,5 +1,9 @@
 namespace Models {
   namespace Task {
-    model PowerPointTask extends UserJourneyTaskBase {}
+    model PowerPointTask extends UserJourneyTaskBase {
+      @example("")
+      value?: string;
+    }
+    
   }
 }

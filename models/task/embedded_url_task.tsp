@@ -1,5 +1,8 @@
 namespace Models {
   namespace Task {
-    model EmbeddedUrlTask extends UserJourneyTaskBase {}
+    model EmbeddedUrlTask extends UserJourneyTaskBase {
+      @example("")
+      value?: string;
+    }
   }
 }

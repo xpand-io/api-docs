@@ -17,8 +17,20 @@ namespace Models {
       rejection_reason?: string | null;
 
       responses: {
-        "checkbox-0": true;
+        @example(true)
+        "checkbox-0": boolean;
+
+        @example("user-signature")
         "signature-0": string;
+
+        @example("CITIZENSHIP_STATUS-3-404")
+        "Select citizenship status": string;
+
+        @example(#["69c22d47044b57dc9f53b96b"])
+        "Enter national ID aligned to this country": string[];
+
+        @example("123456789")
+        "Enter permanent resident card number": string;
       };
 
       addresses?: [];
