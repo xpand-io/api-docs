@@ -30,18 +30,19 @@ snapshot of it, and untracked files that look like they belong in this change.
 
 No third paragraph, bullets, headings, labels, or emoji.
 
-**Tag.** A fix leads with `[Rollbar#12345]`, `[XP-1234]`, or both when a
-ticket tracks a Rollbar item, Jira first: `[XP-3414] [Rollbar#20893]`. Take the
-number from an explicit argument, else the branch name, else the session. With
-none of those omit it, never invent one, and ask when the change looks
-ticket-related but the number is unclear. A tooling change with no ticket takes
-a scope prefix the repo already uses: `ESLint:`, `Rubocop:`, `Claude:`,
-`Claude MCP:`.
+**Tag.** A fix leads with the repo's issue-tracker reference, `[TICKET-1234]`,
+or the error-tracker item, `[Errors#20893]`, or both when a ticket tracks an
+error item, the issue tracker first: `[TICKET-3414] [Errors#20893]`. Read the
+log for the forms this repo uses. Take the number from an explicit argument,
+else the branch name, else the session. With none of those omit it, never
+invent one, and ask when the change looks ticket-related but the number is
+unclear. A tooling change with no ticket takes a scope prefix already in the
+log, such as `Lint:` or `Claude:`.
 
 **Subject.** Imperative, sentence case, no trailing period, 72 chars or fewer
 including the tag. Name the behaviour, not the files. No `feat:` prefix. Never
 append a PR number like `(#7714)`; GitHub adds that on squash-merge.
-Good: `[XP-1234] Reject uploads above the configured size limit`.
+Good: `[TICKET-1234] Reject uploads above the configured size limit`.
 Bad: `Fixed a bug in the date parsing logic`.
 
 **Body.** Wrap at 72. Why, never a file-by-file recap. For a fix, the root
@@ -55,12 +56,12 @@ prompt. Never copy one from an older commit or from the example below.
 
 ## Example
 
-    [Rollbar#20902] Report missing legal entity LOV with a backtrace
+    [TICKET-20902] Report the missing option list with a backtrace
 
-    Rollbar's Item#build_body only builds a trace when an exception object
-    is passed, so the bare string reported here produced a payload with no
-    frames. Wrap the report in ListOfValuesOption::MissingError with an
-    explicit caller backtrace.
+    The error reporter only builds a trace when it is handed an exception
+    object, so the bare string reported here produced a payload with no
+    frames. Wrap the report in a dedicated error class with an explicit
+    caller backtrace.
 
     <Co-Authored-By: line>
 

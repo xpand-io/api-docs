@@ -1,10 +1,3 @@
----
-name: plain-english
-description: Plain English in everything you write. No AI tells, no filler. Must always apply.
-disable-model-invocation: true
-user-invocable: false
----
-
 # Plain English
 
 Say the thing, then stop. All prose you write; not code identifiers or quoted

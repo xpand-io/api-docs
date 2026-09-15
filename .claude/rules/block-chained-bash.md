@@ -1,10 +1,3 @@
----
-name: block-chained-bash
-description: One command per Bash call. Chaining with && or ; causes needless permission prompts.
-disable-model-invocation: true
-user-invocable: false
----
-
 # One command per Bash call
 
 Permission rules match a command prefix, such as `Bash(git diff *)`. A chained
@@ -22,13 +15,9 @@ instead, or `git -C <path>`, `make -C <path>`.
 
 ## When chaining is fine
 
-A pipeline that is genuinely one operation: `grep -r foo src | head -20`.
-
-A heredoc, or a `python3 - <<'PY'` block, where the whole thing is one
-invocation.
-
-A throwaway sequence in a scratch directory that no permission rule covers and
-that would be noise as separate calls.
+One genuine operation: a pipeline like `grep -r foo src | head -20`, a heredoc
+such as `python3 - <<'PY'`, or a throwaway sequence in a scratch directory that
+no permission rule covers and that would be noise as separate calls.
 
 Never chain when part of the command mutates state and an earlier part could
 fail in a way you have not handled.

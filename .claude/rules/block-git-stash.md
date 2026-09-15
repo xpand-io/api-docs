@@ -1,10 +1,3 @@
----
-name: block-git-stash
-description: "Never git stash: worktrees share one stash stack. Covers autostash, and how to park work instead."
-disable-model-invocation: true
-user-invocable: false
----
-
 # Never git stash
 
 `refs/stash` lives in the common git directory, so every worktree of a repo

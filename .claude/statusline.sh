@@ -45,13 +45,22 @@ format_countdown() {
   fi
 }
 
+# Mark a rate limit percentage: warning triangle from 90%, red alert at 100%
+LIMIT_ICON=$(printf '\357\201\261')
+limit_marker() {
+  case "$(awk -v p="$1" 'BEGIN { print (p >= 100) ? 2 : ((p >= 90) ? 1 : 0) }')" in
+    2) printf ' \033[1;31m%s\033[0m' "$LIMIT_ICON" ;;
+    1) printf ' \033[1;33m%s\033[0m' "$LIMIT_ICON" ;;
+  esac
+}
+
 now=$(date +%s)
 
 # Append hourly (5-hour) rate limit usage and reset countdown if available
 five_pct=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
 five_resets=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
 if [ -n "$five_pct" ]; then
-  five_str="󱑔 5h: $(printf '%.0f' "$five_pct")%"
+  five_str="󱑔 5h: $(printf '%.0f' "$five_pct")%$(limit_marker "$five_pct")"
   if [ -n "$five_resets" ]; then
     five_remaining=$(( five_resets - now ))
     five_str="$five_str ($(format_countdown "$five_remaining"))"
@@ -63,7 +72,7 @@ fi
 week_pct=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
 week_resets=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
 if [ -n "$week_pct" ]; then
-  week_str="󰃶 7d: $(printf '%.0f' "$week_pct")%"
+  week_str="󰃶 7d: $(printf '%.0f' "$week_pct")%$(limit_marker "$week_pct")"
   if [ -n "$week_resets" ]; then
     week_remaining=$(( week_resets - now ))
     week_str="$week_str ($(format_countdown "$week_remaining"))"
