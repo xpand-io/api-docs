@@ -2533,7 +2533,7 @@ components:
                     - LOCATION-3-69
         custom_fields:
           type: object
-          unevaluatedProperties:
+          additionalProperties:
             type: string
           examples:
             - key1: Hello
@@ -2617,7 +2617,7 @@ components:
                     - LOCATION-3-69
         custom_fields:
           type: object
-          unevaluatedProperties:
+          additionalProperties:
             type: string
           examples:
             - key1: Hello
