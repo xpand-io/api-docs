@@ -16,9 +16,6 @@ namespace Models {
       @example("Continue")
       button_label?: string;
 
-      @example("")
-      value?: string;
-
       @example("2026-02-10")
       submitted_at?: string | null;
 

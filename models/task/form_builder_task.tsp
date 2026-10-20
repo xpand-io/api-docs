@@ -2,7 +2,7 @@ namespace Models {
   namespace Task {
     model FormBuilderTask extends UserJourneyTaskBase {
       @example("form_builder")
-      type: string;
+      "type": string;
 
       @example("Phone number / Visa / Address / Work Experience / etc.")
       title: string;
