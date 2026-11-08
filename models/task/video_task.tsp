@@ -2,7 +2,7 @@ namespace Models {
   namespace Task {
     model VideoTask extends UserJourneyTaskBase {
       @example("video")
-      type: string;
+      "type": string;
 
       @example("Vimeo")
       title: string;
@@ -15,6 +15,9 @@ namespace Models {
 
       @example("watched")
       video_completion_type?: string;
+
+      @example("")
+      value?: string;
 
       response_thumbnail?: {
         @example("https://xpand-dev-thumbnails.s3.amazonaws.com/")

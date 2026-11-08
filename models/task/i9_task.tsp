@@ -1,5 +1,6 @@
 namespace Models {
   namespace Task {
-    model I9Task extends UserJourneyTaskBase {}
+    model I9Task extends UserJourneyTaskBase {
+    }
   }
 }
